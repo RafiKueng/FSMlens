@@ -18,7 +18,8 @@ its descendant |Lens|.
   import java.text.*;
   import java.awt.Color;
   import java.awt.Image;
-  import java.awt.Graphics;
+  import java.awt.Graphics2D;
+  import java.awt.image.BufferedImage;
 
 @ Most of the generic-stuff code will be repeated verbatim.  Only
 |obj_txt| needs individual attention here.
@@ -44,8 +45,15 @@ its descendant |Lens|.
   lens = null;
   JApplet app = new JApplet();
   String str = "images/2filters.jpg";
-  image = app.getToolkit().getImage(getClass().getResource(str));
+  Image img = app.getToolkit().getImage(getClass().getResource(str));
+  int w = 320; int h = 320;
+  image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB); 
+  Graphics2D g2 = image.createGraphics(); 
+  g2.drawImage(img, 0, 0, null); 
   System.out.println("Got "+str);
+  for (int nx=0; nx <50; nx++)
+    for (int ny=0; ny <50; ny++)
+      image.setRGB(nx,ny,Color.red.getRGB());
 
 @ @<Generic stuff in |PlotPix|@>=
   public void update(LensBase lens)
@@ -81,7 +89,3 @@ its descendant |Lens|.
       repaint();
     }
 
-@ @<Plotting code in |PlotPix|@>=
-  public synchronized void paintComponent(Graphics g)
-    { super.paintComponent(g);
-    }

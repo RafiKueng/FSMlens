@@ -22,7 +22,7 @@ packages itself with various interactive things inside a |JPanel|.
   import java.awt.Font;
   import java.awt.Dimension;
   import java.awt.Graphics;
-  import java.awt.Image;
+  import java.awt.image.BufferedImage;
 
 @ @<Fields and constructor for |FigBase|@>=
   protected int ht,wd;
@@ -39,7 +39,7 @@ interactive stuff.  Space filler on top.
 @<Fields and constructor for |FigBase|@>=
   protected JPanel hook;  @/
   JPanel panel;
-  protected Image image=null;
+  protected BufferedImage image=null;
   public JPanel getPanel()
     { return panel;
     }
