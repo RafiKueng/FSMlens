@@ -23,6 +23,7 @@ jarumf:
 	jar umf  $(PKG)/manifest $(PUB)/$(JAR).jar \
                  $(PKG)/*.w $(PKG)/*.class \
                  $(PKG)/makefile $(PKG)/manifest \
+                 $(PKG)/images/* \
                  makefile README
 
 clean:

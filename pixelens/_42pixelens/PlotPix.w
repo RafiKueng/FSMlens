@@ -17,13 +17,14 @@ its descendant |Lens|.
   import java.util.*;
   import java.text.*;
   import java.awt.Color;
+  import java.awt.Image;
+  import java.awt.Graphics;
 
 @ Most of the generic-stuff code will be repeated verbatim.  Only
 |obj_txt| needs individual attention here.
 @<Generic stuff in |PlotPix|@>=
   LensBase lens;  @/
   int nobj,obj;  InputField obj_txt;
-
 
 @ @<Generic stuff in |PlotPix|@>=
   public PlotPix()
@@ -41,7 +42,10 @@ its descendant |Lens|.
 
 @ @<Initialize fields in |PlotPix|@>=
   lens = null;
-  
+  JApplet app = new JApplet();
+  String str = "images/2filters.jpg";
+  image = app.getToolkit().getImage(getClass().getResource(str));
+  System.out.println("Got "+str);
 
 @ @<Generic stuff in |PlotPix|@>=
   public void update(LensBase lens)
@@ -77,3 +81,7 @@ its descendant |Lens|.
       repaint();
     }
 
+@ @<Plotting code in |PlotPix|@>=
+  public synchronized void paintComponent(Graphics g)
+    { super.paintComponent(g);
+    }

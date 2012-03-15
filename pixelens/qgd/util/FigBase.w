@@ -22,6 +22,7 @@ packages itself with various interactive things inside a |JPanel|.
   import java.awt.Font;
   import java.awt.Dimension;
   import java.awt.Graphics;
+  import java.awt.Image;
 
 @ @<Fields and constructor for |FigBase|@>=
   protected int ht,wd;
@@ -38,6 +39,7 @@ interactive stuff.  Space filler on top.
 @<Fields and constructor for |FigBase|@>=
   protected JPanel hook;  @/
   JPanel panel;
+  protected Image image=null;
   public JPanel getPanel()
     { return panel;
     }
@@ -154,6 +156,7 @@ painting.
 @<Screen output from |FigBase|@>=
   public synchronized void paintComponent(Graphics g)
     { super.paintComponent(g);
+      if (image!=null) g.drawImage(image,0,0,this);
       int fontsize = this.fontsize;
       g.setFont(new Font("Times", Font.PLAIN, fontsize));
       for (int i=0; i<list.size(); i++)
