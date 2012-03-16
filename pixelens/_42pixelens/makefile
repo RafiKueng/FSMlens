@@ -1,4 +1,4 @@
-all:	PixeLens.java Illus.java \
+all:	PixeLens.java Illus.java Unicorn.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
@@ -10,6 +10,9 @@ PixeLens.java: PixeLens.w
 
 Illus.java: Illus.w
 	javatangle Illus.w
+
+Unicorn.java: Unicorn.w
+	javatangle Unicorn.w
 
 LensBase.java: LensBase.w
 	javatangle LensBase.w

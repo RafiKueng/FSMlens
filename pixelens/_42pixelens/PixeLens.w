@@ -36,6 +36,7 @@
       @<Put control buttons to North@>
       @<Put text panels to West@>
       @<Put plots to East@>
+      @<Put raw image in the middle@>
       setWaiting();
       show("Lens model applet version 0.1", "Show window");
     }
@@ -58,6 +59,7 @@
 @ @<Managing the buttons in |PixeLens|@>=
   boolean completed;
   JButton bresume;
+  Unicorn unicorn;
 
 @ @<Put control buttons to North@>=
   bresume = new JButton("resume");  bresume.addActionListener(this);
@@ -84,6 +86,11 @@
   pd.addFigure("arrival time",lenses.plotArriv);
   mainPane.add("East",pd);
 
+@ @<Put raw image in the middle@>=
+  unicorn = new Unicorn(this);
+  mainPane.add("Center",unicorn.getPanel());
+  unicorn.repaint();
+
 
 @ @<Managing the text and plots in |PixeLens|@>=
   protected void printMessage(String str)
@@ -101,6 +108,7 @@
 @ @<Managing the buttons in |PixeLens|@>=
   public void actionPerformed(ActionEvent event)
     { super.actionPerformed(event);
+      unicorn.repaint();
       String str = event.getActionCommand();
       if (str.equals("resume")) resumeRun();
     }
