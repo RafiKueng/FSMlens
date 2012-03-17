@@ -1,7 +1,7 @@
 @* Plotting arrival times.
 
 @(PlotArriv.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |PlotArriv|@>
   public class PlotArriv extends Figure implements ActionListener
     { @<Generic stuff in |PlotArriv|@>

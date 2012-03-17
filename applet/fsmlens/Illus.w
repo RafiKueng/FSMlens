@@ -1,7 +1,7 @@
 @* Examples.
 
 @(Illus.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   import java.util.Vector;
   import javax.swing.*;

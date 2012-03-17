@@ -1,12 +1,12 @@
-all:	PixeLens.java Illus.java Unicorn.java \
+all:	Monster.java Illus.java Unicorn.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
         Poten.java PtMass.java Shear.java Cosm.java Simpwalk.java
-	$(JAVAC) PixeLens.java
+	$(JAVAC) Monster.java
 
-PixeLens.java: PixeLens.w
-	javatangle PixeLens.w
+Monster.java: Monster.w
+	javatangle Monster.w
 
 Illus.java: Illus.w
 	javatangle Illus.w

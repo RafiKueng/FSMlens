@@ -1,7 +1,7 @@
 @* .
 
 @(Unicorn.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |Unicorn|@>
   public class Unicorn extends Figure implements ActionListener
     { @<Code to read and show raw lenses@>

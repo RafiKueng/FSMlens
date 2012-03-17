@@ -1,7 +1,7 @@
 @* Point Mass.
 
 @(PtMass.java@>=
-package _42pixelens;
+package fsmlens;
 import java.util.*;
 
 public class PtMass {   

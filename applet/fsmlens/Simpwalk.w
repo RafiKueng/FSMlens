@@ -1,7 +1,7 @@
 @* Simpwalk.
 
 @(Simpwalk.java@>=
-  package _42pixelens;
+  package fsmlens;
   import simplex.Simplex;
   import qgd.util.*;
   public class Simpwalk extends Simplex

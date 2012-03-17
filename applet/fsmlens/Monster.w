@@ -1,18 +1,18 @@
-@* PixeLens.
+@* Monster.
 
-@(PixeLens.java@>=
-  package _42pixelens;
-  @<Imports for |PixeLens|@>
-  public class PixeLens extends Dual
-    { @<Layout for the |PixeLens| GUI@>
-      @<Managing the text and plots in |PixeLens|@>
-      @<Managing the buttons in |PixeLens|@>
+@(Monster.java@>=
+  package fsmlens;
+  @<Imports for |Monster|@>
+  public class Monster extends Dual
+    { @<Layout for the |Monster| GUI@>
+      @<Managing the text and plots in |Monster|@>
+      @<Managing the buttons in |Monster|@>
       @<The numerical thread@>
       @<Setting GUI states@>
     }
 
 
-@ @<Imports for |PixeLens|@>=
+@ @<Imports for |Monster|@>=
   import qgd.util.*;
   import javax.swing.*;
   import java.awt.event.*;
@@ -20,17 +20,17 @@
   import java.io.*;
   import java.text.*;
 
-@ @<Layout for the |PixeLens| GUI@>=
+@ @<Layout for the |Monster| GUI@>=
   int threads=8;
   static boolean quiet = false;
 
-@ @<Layout for the |PixeLens| GUI@>=
+@ @<Layout for the |Monster| GUI@>=
   public static void main(String[] args)
-    { PixeLens wyn = new PixeLens();
+    { Monster wyn = new Monster();
       wyn.main();
     }
 
-@ @<Layout for the |PixeLens| GUI@>=
+@ @<Layout for the |Monster| GUI@>=
   public void main()
     { lenses = new Lenses(threads);
       @<Put control buttons to North@>
@@ -53,10 +53,10 @@
     + tag + " of memory available.");
 
 @ Now for the many elements in the GUI.
-@<Managing the text and plots in |PixeLens|@>=
+@<Managing the text and plots in |Monster|@>=
   Illus inp; qgd.util.Console err;  @/
 
-@ @<Managing the buttons in |PixeLens|@>=
+@ @<Managing the buttons in |Monster|@>=
   boolean completed;
   JButton bresume;
   Unicorn unicorn;
@@ -92,7 +92,7 @@
   unicorn.repaint();
 
 
-@ @<Managing the text and plots in |PixeLens|@>=
+@ @<Managing the text and plots in |Monster|@>=
   protected void printMessage(String str)
     { if (quiet) return;
       synchronized(err)
@@ -105,7 +105,7 @@
     }
 
 
-@ @<Managing the buttons in |PixeLens|@>=
+@ @<Managing the buttons in |Monster|@>=
   public void actionPerformed(ActionEvent event)
     { super.actionPerformed(event);
       unicorn.repaint();
@@ -113,7 +113,7 @@
       if (str.equals("resume")) resumeRun();
     }
 
-@ @<Managing the buttons in |PixeLens|@>=
+@ @<Managing the buttons in |Monster|@>=
   protected void quit()
     { Object[] options = {"quit","cancel"};
       int resp = Dialogs.getUserChoice(this,

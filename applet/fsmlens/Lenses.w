@@ -1,7 +1,7 @@
 @* Lenses.
 
 @ @(Lenses.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |Lenses|@>
   public class Lenses
     { @<Fields and constructor for |Lenses|@>

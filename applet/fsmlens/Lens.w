@@ -1,7 +1,7 @@
 @* Lens.
 
 @(Lens.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   import java.util.Vector;
   public class Lens extends LensPost

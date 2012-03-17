@@ -3,7 +3,7 @@ pattern.  It knows about |LensBase|, but will actually interact with
 its descendant |Lens|.
 
 @(PlotPix.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |PlotPix|@>
   public class PlotPix extends Figure
     { @<Generic stuff in |PlotPix|@>

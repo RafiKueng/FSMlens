@@ -4,7 +4,7 @@ into |leq|, and (i)~later check that these constraints are satisfied.
 The code for these two parts is interleaved.
 
 @(LensData.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   import java.text.*;
   public abstract class LensData extends LensPrior

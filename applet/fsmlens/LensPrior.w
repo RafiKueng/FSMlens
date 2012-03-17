@@ -2,7 +2,7 @@
 inequalities) into |geq|.
 
 @(LensPrior.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   public abstract class LensPrior extends LensPix
     { public void set_prior()

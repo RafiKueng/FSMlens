@@ -4,7 +4,7 @@ See Fukugita et al.\ (1992) ApJ, 393, 3. Filled beam is |flag=0|, or
 empty beam is |flag=1|. Transcribed from a program by LLRW.
 
 @(Cosm.java@>=
-  package _42pixelens;
+  package fsmlens;
   public class Cosm
     { int flag=0;  double omega=0.3,lambda=0.7;
       @<Angular diameter distances@>

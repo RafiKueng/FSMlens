@@ -1,7 +1,7 @@
 @* LensPost.
 
 @(LensPost.java@>=
-  package _42pixelens;
+  package fsmlens;
   import java.text.*;
   public abstract class LensPost extends LensData
     { @<Postprocessing the mean model@>

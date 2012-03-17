@@ -1,7 +1,7 @@
 @* Plotting the potential.
 
 @(PlotPoten.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |PlotPoten|@>
   public class PlotPoten extends Figure implements ActionListener
     { @<Generic stuff in |PlotPoten|@>

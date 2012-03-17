@@ -1,7 +1,7 @@
 @* Plotting surface density.
 
 @(PlotMass.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |PlotMass|@>
   public class PlotMass extends Figure implements ActionListener
     { @<Generic stuff in |PlotMass|@>

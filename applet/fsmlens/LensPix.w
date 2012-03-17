@@ -3,7 +3,7 @@
 making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
 
 @(LensPix.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   public abstract class LensPix extends LensBase
     { @<Indexing the pixel map@>
