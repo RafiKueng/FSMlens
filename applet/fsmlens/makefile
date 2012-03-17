@@ -2,7 +2,7 @@ all:	Monster.java Illus.java Unicorn.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
-        Poten.java PtMass.java Shear.java Cosm.java Simpwalk.java
+        Poten.java Shear.java Cosm.java Simpwalk.java
 	$(JAVAC) Monster.java
 
 Monster.java: Monster.w
@@ -49,9 +49,6 @@ PlotArriv.java: PlotArriv.w
 
 Poten.java: Poten.w
 	javatangle Poten.w
-
-PtMass.java: PtMass.w
-	javatangle PtMass.w
 
 Shear.java: Shear.w
 	javatangle Shear.w

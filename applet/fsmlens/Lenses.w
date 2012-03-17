@@ -103,9 +103,6 @@
     }
   else if (tok.compareTo("maprad")==0) lens.a = parse_double();
   else if (tok.compareTo("shear")==0) lens.allow_shear(parse_double());
-  else if (tok.compareTo("ptmass")==0)
-    { @<Allow a point mass in the range indicated@>
-    }
   else if (tok.compareTo("minsteep")==0) lens.minsteep = parse_double();
   else if (tok.compareTo("maxsteep")==0) lens.maxsteep = parse_double();
   else if (tok.compareTo("dgcone")==0)
@@ -122,7 +119,6 @@
       cosm = new Cosm(om,lam);
     }
   else if (tok.compareTo("g")==0) lens.h_spec = 1/parse_double();
-  else if (tok.compareTo("kann")==0) lens.kann_spec = parse_double();
   else if (tok.compareTo("cmax")==0)
     { lens.cmax = parse_double();
       if (lens.cmax < 1)
@@ -160,11 +156,6 @@
   throw new ErrorMsg("need 0 < dgcone <= 90");
   lens.cen_ang = (90-deg)*Math.PI/180;
 
-@ @<Allow a point mass in the range indicated@>=
-  double xc,yc,mmin,mmax;  @/
-  xc = parse_double();  yc = parse_double();  @/
-  mmin = parse_double();  mmax = parse_double();  @/
-  lens.add_ptmass(xc,yc,mmin,mmax);
 
 @ @<Read $z_l$ and set scales in |lens|@>=
   zflag = 1; double zl = parse_double();
@@ -200,8 +191,7 @@
                                                ndata[i-1][1]-ndata[i][1]);  @/
       ndata[i][5] = 0.1; ndata[i][6] = 10; ndata[i][7] = 0.9;
     }
-  lens.imsys.addElement(ndata);  @/
-  lens.show_scales(ndata);
+  lens.imsys.addElement(ndata);
 
 
 @ @<Packing the simplex@>=

@@ -35,9 +35,7 @@ The code for these two parts is interleaved.
           @<Set time-delay constraints@>
           @<Set $h$ constraint, if required@>
           @<Set magnification constraints@>
-          @<Set annular density constraint, if required@>
           @<Set velocity-dispersion constraint, if required@>
-          @<Set point mass constraints@>
         }
     }
 
@@ -59,14 +57,6 @@ The code for these two parts is interleaved.
   int im,i,j,n,k; double[] row;
   double zcap = data[0][0];
 
-@ @<Set point mass constraints@>=
-  for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-    { double[] row0 = new double[1+nunk];
-      double[] row1 = new double[1+nunk];
-      ptmass.setConstraints(n-npix-nex, n, row0, row1);
-      leq.addElement(row0);
-      geq.addElement(row1);
-    }
 
 @ @<Set image-position constraints@>=
   for (im=0; im<data.length; im++)
@@ -87,11 +77,7 @@ The code for these two parts is interleaved.
             { if (k==1)  row[n] -= shear.poten_x(n-npix,x,y);
               if (k==2)  row[n] -= shear.poten_y(n-npix,x,y);
             }
-          for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-            { if (k==1)  row[n] -= ptmass.poten_x(n-npix-nex,x,y);
-              if (k==2)  row[n] -= ptmass.poten_y(n-npix-nex,x,y);
-            }
-          int offs = npix+nex+nmass+2*s;
+          int offs = npix+nex+2*s;
           if (k==1) { row[offs+1] = -1; row[offs+2] =  0; }
           if (k==2) { row[offs+1] =  0; row[offs+2] = -1; }
           for (n=1; n<=2; n++)  row[offs+n] *= zcap;
@@ -107,7 +93,7 @@ The code for these two parts is interleaved.
 @ @<Set source-opposed constraint@>=
   row = new double[1+nunk];
   double x = data[0][1], y = data[0][2];
-  int offs = npix+nex+nmass+2*s;
+  int offs = npix+nex+2*s;
   row[offs+1] = x; row[offs+2] = y;
   row[0] = -sourceShiftConstant*(x+y);
   leq.addElement(row);
@@ -131,12 +117,7 @@ The code for these two parts is interleaved.
                   if (k==1)  row[1+n] -= shear.poten_x(1+n-npix,x,y);
                   if (k==2)  row[1+n] -= shear.poten_y(1+n-npix,x,y);
                 }
-              for (n=npix+nex; n<npix+nex+nmass; n++)
-                { double x,y; x = data[im][1];  y = data[im][2];
-                  if (k==1)  row[1+n] -= ptmass.poten_x(1+n-npix-nex,x,y);
-                  if (k==2)  row[1+n] -= ptmass.poten_y(1+n-npix-nex,x,y);
-                }
-              int offs = npix+nex+nmass+2*s;
+              int offs = npix+nex+2*s;
               if (k==1) { row[offs+1] = -1; row[offs+2] =  0; }
               if (k==2) { row[offs+1] =  0; row[offs+2] = -1; }
               for (n=1; n<=2; n++)  row[offs+n] *= zcap;
@@ -152,7 +133,7 @@ The code for these two parts is interleaved.
   for (im=1; im<data.length; im++)
     { double x,y,del;  @/
       row = new double[1+nunk];
-      int offs = npix+nex+nmass+2*s;
+      int offs = npix+nex+2*s;
       x = data[im][1]; y =  data[im][2];
       row[0] = (x*x+y*y)/2 + (x + y) * sourceShiftConstant;
       row[offs+1] = -x;
@@ -176,12 +157,6 @@ The code for these two parts is interleaved.
           row[n] -= shear.poten(n-npix,x,y);   @/
           x = data[im-1][1]; y = data[im-1][2];
           row[n] += shear.poten(n-npix,x,y);
-        }
-      for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-        { x = data[im][1];  y = data[im][2];
-          row[n] -= ptmass.poten(n-npix-nex,x,y);   @/
-          x = data[im-1][1]; y = data[im-1][2];
-          row[n] += ptmass.poten(n-npix-nex,x,y);
         }
       del = data[im][0];
       if (del == 0)
@@ -210,7 +185,7 @@ The code for these two parts is interleaved.
   double[] tau = new double[data.length];
   for (im=0; im<data.length; im++)
     { double x,y;
-      int offs = npix+nex+nmass+2*s;
+      int offs = npix+nex+2*s;
       x = data[im][1]; y = data[im][2];
       tau[im] = (x*x+y*y)/2 + (x + y) * sourceShiftConstant;
       tau[im] -= x*sol[offs+1];
@@ -226,10 +201,6 @@ The code for these two parts is interleaved.
       for (n=npix+1; n<=npix+nex; n++)
         { x = data[im][1]; y = data[im][2];
           tau[im] -= sol[n]*shear.poten(n-npix,x,y);
-        }
-      for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-        { x = data[im][1]; y = data[im][2];
-          tau[im] -= sol[n]*ptmass.poten(n-npix-nex,x,y);
         }
     }
   Dual.message("Time delays");
@@ -264,23 +235,8 @@ The code for these two parts is interleaved.
         { double[] mag = shear.maginv(n-npix,x,y,theta);
           @<Put inequalities in |rows[]|@>
         }
-      //
-      // Nothing to do for point masses
-      //
       for (k=0; k<6; k++)  leq.addElement(rows[k]);
     }
-
-@ @<Set annular density constraint, if required@>=
-  if (kann_spec>0 && s==0)
-    { @<Set |rlo,rhi| to image ring range@>
-      row = new double[1+nunk];
-      for (int r=rlo; r<=rhi; r++)
-        for (n=rings[r][0]; n<=rings[r][1]; n++)
-          { row[n] = -1; row[0] += kann_spec;
-          }
-      eq.addElement(row);
-    }
-
 
 @ @<Set |rlo,rhi| to image ring range@>=
   int rlo=1000,rhi=0;

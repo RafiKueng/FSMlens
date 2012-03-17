@@ -8,7 +8,6 @@ making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
   public abstract class LensPix extends LensBase
     { @<Indexing the pixel map@>
       @<Setting up external shear@>
-      @<Setting up point masses@>
       @<Setting up the output grids@>
     }
 
@@ -132,13 +131,6 @@ making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
     }
 
 
-@ @<Setting up point masses@>=
-  void add_ptmass(double x, double y, double M_min, double M_max) 
-    { nmass = ptmass.add(x, y, M_min, M_max);
-      System.err.println("nmass = " + nmass);
-    }
-
-                 
           
 @ @<Setting up the output grids@>=
   void init_grids()
