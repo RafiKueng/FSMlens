@@ -94,7 +94,7 @@
       double[] sol = lens.sol; int p = lens.npix+lens.nex;
       for (int s=0; s<lens.imsys.size(); s++)
         { setColor(Color.red.getRGB()); dotsize = 6;
-          double[][] data = (double[][]) lens.imsys.elementAt(s);
+          double[][] data = lens.imsys.get(s).data;
           for (int i=0; i<data.length; i++)
             drawPoint(data[i][1],data[i][2]);
           setColor(Color.cyan.getRGB()); dotsize = 4;

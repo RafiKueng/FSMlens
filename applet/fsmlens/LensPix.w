@@ -97,7 +97,7 @@ making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
 
 @ @<Choose |a| from data@>=
   for (int s=0; s<imsys.size(); s++)
-    { double[][] data = (double[][]) imsys.elementAt(s);
+    { double[][] data = ((Tuple)imsys.get(s)).data;
       double rmin=infty, rmax=-infty, rad=infty;
       for (i=0; i<data.length; i++)
         { double x,y,r;

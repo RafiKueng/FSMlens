@@ -35,7 +35,6 @@ The code for these two parts is interleaved.
           @<Set time-delay constraints@>
           @<Set $h$ constraint, if required@>
           @<Set magnification constraints@>
-          @<Set velocity-dispersion constraint, if required@>
         }
     }
 
@@ -53,9 +52,9 @@ The code for these two parts is interleaved.
 
 
 @ @<Extract the data on one image system@>=
-  double[][] data = (double[][]) imsys.elementAt(s);  @/
+  double[][] data = imsys.get(s).data;
   int im,i,j,n,k; double[] row;
-  double zcap = data[0][0];
+  double zcap = imsys.get(s).zcap;
 
 
 @ @<Set image-position constraints@>=
@@ -158,14 +157,10 @@ The code for these two parts is interleaved.
           x = data[im-1][1]; y = data[im-1][2];
           row[n] += shear.poten(n-npix,x,y);
         }
-      del = data[im][0];
+      del = 0;
       if (del == 0)
         { geq.addElement(row);
           Dual.message("inequality");
-        }
-      else if (del > 1000)
-        { row[nunk] = -del;
-          geq.addElement(row);
         }
       else
         { row[nunk] = -del;
@@ -241,7 +236,7 @@ The code for these two parts is interleaved.
 @ @<Set |rlo,rhi| to image ring range@>=
   int rlo=1000,rhi=0;
   for (int ss=0; ss<imsys.size(); ss++)
-    { data = (double[][]) imsys.elementAt(ss);
+    { data = imsys.elementAt(ss).data;
       for (i=0; i<data.length; i++)
         { double x,y; x = data[i][1]; y = data[i][2];
           int r = (int)(Math.sqrt(x*x+y*y)/a+0.5);
@@ -249,33 +244,6 @@ The code for these two parts is interleaved.
           if (r > rhi) rhi = r;
         }
     }
-
-@ @<Set velocity-dispersion constraint, if required@>=
-  if (Rkin>0 && s==0)
-    { @<Set |r| to kinematic ring and |sigf| too@>
-      row = new double[1+nunk];
-      row[0] = siglo*siglo*sigf;
-      for (int l=0; l<=r; l++)
-        for (n=rings[l][0]; n<=rings[l][1]; n++)
-          if (symm && l>0) row[n] = -2;
-          else row[n] = -1;
-      leq.addElement(row);
-      row = new double[1+nunk];
-      row[0] = sighi*sighi*sigf;
-      for (int l=0; l<=r; l++)
-        for (n=rings[l][0]; n<=rings[l][1]; n++)
-          if (symm && l>0) row[n] = -2;
-          else row[n] = -1;
-      geq.addElement(row);
-    }
-
-@ @<Set |r| to kinematic ring and |sigf| too@>=
-  int r; double sigf;
-  r = (int) (Rkin/a);
-  sigf = 1/1.170e-3; sigf *= sigf;
-  sigf *= dlscale/(cdscale*a)*(r+0.5)*1.5;
-  System.out.println("vdisp row "+r);
-
 
 @ @<Put inequalities in |rows[]|@>=
   double xx,yy,xy;

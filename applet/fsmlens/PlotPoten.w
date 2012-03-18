@@ -86,7 +86,7 @@
   double[][] grid = new double[Z][Z];
   double[][][] data = new double[lens.imsys.size()][][];
   for (int s=0; s<data.length; s++)
-    data[s] = (double[][]) lens.imsys.elementAt(s);
+    data[s] = lens.imsys.elementAt(s).data;
   double tmin=1e14,tmax=-1e14;
   for (int i=-ZB; i<=ZB; i++)
     for (int j=-ZB; j<=ZB; j++)

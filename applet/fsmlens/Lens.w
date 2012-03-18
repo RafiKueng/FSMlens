@@ -11,8 +11,9 @@
 
 @ @<Lens ensemble for one object@>=
   public Lens()
-    { imsys = new Vector<double[][]>();  @/
-      geq = new Vector<double[]>();  leq = new Vector<double[]>();
+    { imsys = new Vector<Tuple>();  @/
+      geq = new Vector<double[]>();
+      leq = new Vector<double[]>();
       eq = new Vector<double[]>();
     }
 

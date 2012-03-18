@@ -88,7 +88,7 @@
   double[][] imdels(double[] sol)
     { double[][] taus = new double[imsys.size()][];
       for (int s=0; s<imsys.size(); s++)
-        { double[][] data = (double[][]) imsys.elementAt(s);
+        { double[][] data = imsys.elementAt(s).data;
           taus[s] = new double[data.length];
           double zcap = data[0][0];
           @<Set |sx,sy| to source position@>
@@ -133,7 +133,7 @@
   double[][][] maginv(double[] sol)
     { double[][][] imag = new double[imsys.size()][][];
       for (int s=0; s<imsys.size(); s++)
-        { double[][] data = (double[][]) imsys.elementAt(s);
+        { double[][] data = imsys.elementAt(s).data;
           double zcap = data[0][0];
           imag[s] = new double[data.length][3];
           for (int im=0; im<data.length; im++)

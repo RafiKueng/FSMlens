@@ -72,7 +72,7 @@
 
 @ @<Interpreting the input@>=
   void read_input(String user_inp) throws ErrorMsg
-    { lens=null; double[][][] data = null;  @/
+    { lens=null; // double[][][] data = null;
       inptoks = new StringTokenizer(user_inp);
       int zflag = 0;
       try
@@ -170,28 +170,31 @@
 @ @<Read data for a multiple-image system@>=
   if (zflag==0) throw new ErrorMsg("need redshift or zlens");
   int nim = parse_int();
-  double[][] ndata = new double[nim][8];
+  // double[][] ndata = new double[nim][8];
+  Tuple ntuple = new Tuple(nim);
   if (zflag==1)
     { double zs = parse_double();
       if (cosm==null) cosm = new Cosm();
-      ndata[0][0] = cosm.angdist(0,zs)/cosm.angdist(lens.zlens,zs);
+      ntuple.zcap = cosm.angdist(0,zs)/cosm.angdist(lens.zlens,zs);
     }
-  else ndata[0][0] = 1;
+  else ntuple.zcap = 1;
   for (int i=0; i<nim; i++)
-    { ndata[i][1] = parse_double(); ndata[i][2] = parse_double();
-      if (tok.compareTo("multi")==0) ndata[i][3] = parse_int();
+    { ntuple.data[i][1] = parse_double(); ntuple.data[i][2] = parse_double();
+      if (tok.compareTo("multi")==0) ntuple.data[i][3] = parse_int();
       else
-        { if (i<nim/2) ndata[i][3] = 1;
-          else ndata[i][3] = 2;
+        { if (i<nim/2) ntuple.data[i][3] = 1;
+          else ntuple.data[i][3] = 2;
         }
-      if (zflag==2 && i>0) ndata[i][0] = parse_double();
-      ndata[i][4] = 180/Math.PI*Math.atan2(ndata[i][2],ndata[i][1]);  @/
-      if (i>0 && ndata[i-1][3]==2 && ndata[i][3]==3)
-        ndata[i-1][4] = 180/Math.PI*Math.atan2(ndata[i-1][2]-ndata[i][2],
-                                               ndata[i-1][1]-ndata[i][1]);  @/
-      ndata[i][5] = 0.1; ndata[i][6] = 10; ndata[i][7] = 0.9;
+      if (zflag==2 && i>0) ntuple.data[i][0] = parse_double();
+      ntuple.data[i][4] =
+        180/Math.PI*Math.atan2(ntuple.data[i][2],ntuple.data[i][1]);
+      if (i>0 && ntuple.data[i-1][3]==2 && ntuple.data[i][3]==3)
+        ntuple.data[i-1][4] =
+           180/Math.PI*Math.atan2(ntuple.data[i-1][2]-ntuple.data[i][2],
+                                  ntuple.data[i-1][1]-ntuple.data[i][1]);
+      ntuple.data[i][5] = 0.1; ntuple.data[i][6] = 10; ntuple.data[i][7] = 0.9;
     }
-  lens.imsys.addElement(ndata);
+  lens.imsys.addElement(ntuple);
 
 
 @ @<Packing the simplex@>=

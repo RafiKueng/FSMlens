@@ -25,7 +25,7 @@
 @ @<Data and constraints in |LensBase|@>=
   final double infty=1e12;  @/
   String nickname;  @/
-  Vector<double[][]> imsys;  @/
+  Vector<Tuple> imsys;  @/
   boolean symm=false; @/
   Shear shear=null;   @/
   double zlens,tscale=1,tscalebg=1,dlscale,cdscale,dt_astrom=0; // $T_0$ etc

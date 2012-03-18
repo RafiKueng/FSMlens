@@ -69,7 +69,7 @@ its descendant |Lens|.
         }
       setColor(Color.red.getRGB()); setDotsize(6);
       for (int s=0; s<lens.imsys.size(); s++)
-        { double[][] data = (double[][]) lens.imsys.elementAt(s);
+        { double[][] data = lens.imsys.get(s).data;
           for (int i=0; i<data.length; i++)
             drawPoint(data[i][1],data[i][2]);
         }
