@@ -111,9 +111,6 @@
   else if (tok.compareTo("zlens")==0)
     { @<Read $z_l$ and set scales in |lens|@>
     }
-  else if (tok.compareTo("redshifts")==0)
-    { @<Read $z_l,z_s$ and set scales in |lens|@>
-    }
   else if (tok.compareTo("cosm")==0)
     { double om,lam; om = parse_double(); lam = parse_double();
       cosm = new Cosm(om,lam);
@@ -162,15 +159,9 @@
   if (cosm==null) cosm = new Cosm();
   lens.set_scales(cosm.scales(zl,0));
 
-@ @<Read $z_l,z_s$ and set scales in |lens|@>=
-  zflag = 2; double zl,zs; zl = parse_double(); zs = parse_double();
-  if (cosm==null) cosm = new Cosm();
-  lens.set_scales(cosm.scales(zl,zs));
-
 @ @<Read data for a multiple-image system@>=
   if (zflag==0) throw new ErrorMsg("need redshift or zlens");
   int nim = parse_int();
-  // double[][] ndata = new double[nim][8];
   Tuple ntuple = new Tuple(nim);
   if (zflag==1)
     { double zs = parse_double();
@@ -180,12 +171,7 @@
   else ntuple.zcap = 1;
   for (int i=0; i<nim; i++)
     { ntuple.data[i][1] = parse_double(); ntuple.data[i][2] = parse_double();
-      if (tok.compareTo("multi")==0) ntuple.data[i][3] = parse_int();
-      else
-        { if (i<nim/2) ntuple.data[i][3] = 1;
-          else ntuple.data[i][3] = 2;
-        }
-      if (zflag==2 && i>0) ntuple.data[i][0] = parse_double();
+      ntuple.data[i][3] = parse_int();
       ntuple.data[i][4] =
         180/Math.PI*Math.atan2(ntuple.data[i][2],ntuple.data[i][1]);
       if (i>0 && ntuple.data[i-1][3]==2 && ntuple.data[i][3]==3)

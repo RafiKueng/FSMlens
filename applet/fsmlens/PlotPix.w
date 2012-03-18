@@ -19,11 +19,9 @@ its descendant |Lens|.
   import java.awt.Color;
 
 
-@ Most of the generic-stuff code will be repeated verbatim.  Only
-|obj_txt| needs individual attention here.
+@ Most of the generic-stuff code will be repeated verbatim.
 @<Generic stuff in |PlotPix|@>=
   LensBase lens;  @/
-  int nobj,obj;  InputField obj_txt;
 
 @ @<Generic stuff in |PlotPix|@>=
   public PlotPix()
