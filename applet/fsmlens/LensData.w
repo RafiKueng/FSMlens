@@ -13,6 +13,7 @@ The code for these two parts is interleaved.
       static final int MAXIMUM=3;
       @<Setting the data constraints@>
       @<Checking the model@>
+      @<Ray trace to source plane@>
     }
 
 @ @<Setting the data constraints@>=
@@ -99,32 +100,38 @@ The code for these two parts is interleaved.
 
 @ @<Check image positions@>=
       for (im=0; im<data.length; im++)
-        { for (k=1; k<=2; k++)
+        { double[] sxy = src_plane(data[im]);
+          for (k=1; k<=2; k++)
+            { double sum = sxy[k];
+	      sum -= zcap * (sol[npix+nex+2*s+k] - sourceShiftConstant);
+              Dual.message("sum is "+fmtsum.format(sum));
+            }
+        }
+
+@ @<Ray trace to source plane@>=
+  double[] src_plane(double[] xy)
+    { double[] sxy = new double[3];
+      double zcap = imsys.get(s).zcap;
+          for (k=1; k<=2; k++)
             { row = new double[1+nunk];
-              row[0] = (data[im][k] + sourceShiftConstant) * zcap;
+              sxy[k] = xy[k] * zcap;
               for (i=-L; i<=L; i++)
                 for (j=-L; j<=L; j++)
                   if ((n=pmap[L+i][L+j]-1) != -1)
                     { double x,y;
                       x = data[im][1] - i*a;
                       y = data[im][2] - j*a;
-                      if (k==1)  row[1+n] -= Poten.poten_x(x,y,a);
-                      if (k==2)  row[1+n] -= Poten.poten_y(x,y,a);
+                      if (k==1) sxy[k] -= sol[1+n]*Poten.poten_x(x,y,a);
+                      if (k==2) sxy[k] -= sol[1+n]*Poten.poten_y(x,y,a);
                     }
               for (n=npix; n<npix+nex; n++)
                 { double x,y; x = data[im][1];  y = data[im][2];
-                  if (k==1)  row[1+n] -= shear.poten_x(1+n-npix,x,y);
-                  if (k==2)  row[1+n] -= shear.poten_y(1+n-npix,x,y);
+                  if (k==1) sxy[k] -= sol[1+n]*shear.poten_x(1+n-npix,x,y);
+                  if (k==2) sxy[k] -= sol[1+n]*shear.poten_y(1+n-npix,x,y);
                 }
-              int offs = npix+nex+2*s;
-              if (k==1) { row[offs+1] = -1; row[offs+2] =  0; }
-              if (k==2) { row[offs+1] =  0; row[offs+2] = -1; }
-              for (n=1; n<=2; n++)  row[offs+n] *= zcap;
-              double sum = row[0];
-              for (n=1; n<=nunk; n++)  sum += sol[n]*row[n];
-              Dual.message("sum is "+fmtsum.format(sum));
             }
-        }
+      return sxy;
+    }
 
 
 
