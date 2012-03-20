@@ -1,4 +1,4 @@
-all:	Monster.java Illus.java Unicorn.java Tuple.java \
+all:	Monster.java Illus.java Unicorn.java Synth.java Tuple.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
@@ -13,6 +13,9 @@ Illus.java: Illus.w
 
 Unicorn.java: Unicorn.w
 	javatangle Unicorn.w
+
+Synth.java: Synth.w
+	javatangle Synth.w
 
 Tuple.java: Tuple.w
 	javatangle Tuple.w

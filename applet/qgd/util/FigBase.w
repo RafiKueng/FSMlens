@@ -10,6 +10,7 @@ packages itself with various interactive things inside a |JPanel|.
       @<Coordinate-pixel conversion@>
       @<Plotting methods@>
       @<Screen output from |FigBase|@>
+      @<|Image| to |BufferedImage|@>
     }
 
 @ @<Imports for |FigBase|@>=
@@ -17,12 +18,8 @@ packages itself with various interactive things inside a |JPanel|.
   import java.awt.event.*;
   import javax.swing.*;
   import java.io.*;
-  import java.awt.BorderLayout;
-  import java.awt.Color;
-  import java.awt.Font;
-  import java.awt.Dimension;
-  import java.awt.Graphics;
-  import java.awt.image.BufferedImage;
+  import java.awt.*;
+  import java.awt.image.*;
 
 @ @<Fields and constructor for |FigBase|@>=
   protected int ht,wd;
@@ -192,6 +189,36 @@ painting.
       nx -= (1+v[3])*g.getFontMetrics().stringWidth(s)/2;
       ny += (1+v[4])*fontsize/2;  @/
       g.drawString(s,nx,ny);
+    }
+
+
+@ @<|Image| to |BufferedImage|@>=
+  public static BufferedImage toBufferedImage(Image image, int wd, int ht)
+    { image = new ImageIcon(image).getImage();
+      PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+      try
+        { pg.grabPixels();
+        } 
+      catch (InterruptedException e) {  }
+      boolean hasAlpha = pg.getColorModel().hasAlpha();
+      BufferedImage bimage = null;
+      GraphicsEnvironment ge;
+      ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      try
+        { int transparency = Transparency.OPAQUE;
+          if (hasAlpha) transparency = Transparency.BITMASK;
+          GraphicsDevice gs = ge.getDefaultScreenDevice();
+          GraphicsConfiguration gc = gs.getDefaultConfiguration();
+          bimage = gc.createCompatibleImage(wd,ht,transparency);
+        }
+      catch (HeadlessException e) { }
+      if (bimage == null)
+        { int type = BufferedImage.TYPE_INT_RGB;
+          if (hasAlpha) type = BufferedImage.TYPE_INT_ARGB;
+          bimage = new BufferedImage(wd, ht, type);
+        }
+      bimage.createGraphics().drawImage(image, 0, 0, wd, ht, null);
+      return bimage;
     }
 
 
