@@ -59,7 +59,7 @@
 @ @<Managing the buttons in |Monster|@>=
   boolean completed;
   JButton bresume;
-  Unicorn unicorn;
+  Unicorn unicorn,synth;
 
 @ @<Put control buttons to North@>=
   bresume = new JButton("resume");  bresume.addActionListener(this);
@@ -88,7 +88,11 @@
 
 @ @<Put raw image in the middle@>=
   unicorn = new Unicorn(this);
-  mainPane.add("Center",unicorn.getPanel());
+  synth = new Unicorn(this);
+  JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
+  ip.add("North",unicorn.getPanel());
+  ip.add("South",synth.getPanel());
+  mainPane.add("Center",ip);
   unicorn.repaint();
 
 

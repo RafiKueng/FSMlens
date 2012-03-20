@@ -100,7 +100,7 @@ The code for these two parts is interleaved.
 
 @ @<Check image positions@>=
       for (im=0; im<data.length; im++)
-        { double[] sxy = src_plane(data[im]);
+        { double[] sxy = src_plane(data[im],zcap);
           for (k=1; k<=2; k++)
             { double sum = sxy[k];
 	      sum -= zcap * (sol[npix+nex+2*s+k] - sourceShiftConstant);
@@ -109,23 +109,22 @@ The code for these two parts is interleaved.
         }
 
 @ @<Ray trace to source plane@>=
-  double[] src_plane(double[] xy)
+  double[] src_plane(double[] xy, double zcap)
     { double[] sxy = new double[3];
-      double zcap = imsys.get(s).zcap;
+      int i,j,k,n;
           for (k=1; k<=2; k++)
-            { row = new double[1+nunk];
-              sxy[k] = xy[k] * zcap;
+            { sxy[k] = xy[k] * zcap;
               for (i=-L; i<=L; i++)
                 for (j=-L; j<=L; j++)
                   if ((n=pmap[L+i][L+j]-1) != -1)
                     { double x,y;
-                      x = data[im][1] - i*a;
-                      y = data[im][2] - j*a;
+                      x = xy[1] - i*a;
+                      y = xy[2] - j*a;
                       if (k==1) sxy[k] -= sol[1+n]*Poten.poten_x(x,y,a);
                       if (k==2) sxy[k] -= sol[1+n]*Poten.poten_y(x,y,a);
                     }
               for (n=npix; n<npix+nex; n++)
-                { double x,y; x = data[im][1];  y = data[im][2];
+                { double x,y; x = xy[1];  y = xy[2];
                   if (k==1) sxy[k] -= sol[1+n]*shear.poten_x(1+n-npix,x,y);
                   if (k==2) sxy[k] -= sol[1+n]*shear.poten_y(1+n-npix,x,y);
                 }
