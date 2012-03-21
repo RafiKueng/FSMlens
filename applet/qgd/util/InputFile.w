@@ -4,7 +4,7 @@
   package qgd.util;
   import java.io.*;
   import java.util.StringTokenizer;
-  /** bjdoc For reading text files. ejdoc */
+  /** For reading text files. */
   public class InputFile extends BufferedReader
     { @<Fields and constructor for |InputFile|@>
       @<Opening and closing a file@>
@@ -22,14 +22,14 @@
   String fname;
   StringTokenizer toks;
   boolean eof,seenFlaws; String lastFlaw;
-  /** bjdoc Last skipped string. ejdoc */
+  /** Last skipped string. */
   public String lastFlaw()
     { if (seenFlaws) return lastFlaw;
       return new String(" ");
     }
 
 @ @<Opening and closing a file@>=
-  /** bjdoc Use to open a file. ejdoc */
+  /** Use to open a file. */
   public static InputFile summon(String fname) throws ErrorMsg
     { try
         { InputFile file = new InputFile(fname);
@@ -44,7 +44,7 @@
     }
 
 @ @<Opening and closing a file@>=
-  /** bjdoc Use to close a file. ejdoc */
+  /** Use to close a file. */
   public void dismiss() throws ErrorMsg
     { try
         { close();
@@ -55,15 +55,15 @@
     }
 
 @ @<Reading from |InputFile|@>=
-  /** bjdoc Checks whether @= end-of-file@>. ejdoc */
+  /** Checks whether @= end-of-file@>. */
   public boolean eof()
     { return eof;
     }
   
 
 @ @<Reading from |InputFile|@>=
-  /** bjdoc Reads an integer,
-      skipping anything not. ejdoc */
+  /** Reads an integer,
+      skipping anything not. */
   public int readInt() throws ErrorMsg
     { for (;;)
         { String str = new String();
@@ -80,8 +80,8 @@
     }
 
 @ @<Reading from |InputFile|@>=
-  /** bjdoc Reads a floating point number,
-      skipping anything not. ejdoc */
+  /** Reads a floating point number,
+      skipping anything not. */
   public double readDouble() throws ErrorMsg
     { for (;;)
         { String str = new String();
@@ -98,7 +98,7 @@
     }
 
 @ @<Reading from |InputFile|@>=
-  /** bjdoc Reads a string. ejdoc */
+  /** Reads a string. */
   public String readString() throws ErrorMsg
     { for (;;)
         { String str = new String();

@@ -2,15 +2,15 @@
 
 @(Bins.java@>=
   package qgd.util;
-  /** bjdoc Functions to help deal with binned data. ejdoc */
+  /** Functions to help deal with binned data. */
   public class Bins
     { @<Binning routines@>
     }
 
 
 @ @<Binning routines@>=
-  /** bjdoc This creates bpar N epar bins between bpar lo epar and
-      bpar hi epar and returns the bin centers ejdoc */
+  /** This creates N bins between lo and
+      hi and returns the bin centers */
   public static double[] xvals(double lo, double hi, int N)
     { double[] x = new double[N];
       double dx = (hi-lo)/N; int n;  @/
@@ -20,8 +20,8 @@
     }
 
 @ @<Binning routines@>=
-  /** bjdoc Bins bpar v epar into bpar N epar bins between bpar lo epar
-      and bpar hi epar and returns the result. ejdoc */
+  /** Bins v into N bins between lo
+      and hi and returns the result. */
   public static double[] yvals(double lo, double hi, int N, double[] v)
     { double[] y = new double[N]; int i,n;
       for (n=0; n<N; n++) y[n] = 0;
@@ -34,8 +34,8 @@
     }
 
 @ @<Binning routines@>=
-  /** bjdoc Like the other bpar yvals epar but now the elements of
-      bpar w epar weight the corresponding elements of bpar v epar ejdoc */
+  /** Like the other yvals but now the elements of
+      w weight the corresponding elements of v */
   public static double[] yvals(double lo, double hi, int N,
                                double[] v, double[] w)
     { double[] y = new double[N]; int i,n;
@@ -49,7 +49,7 @@
     }
 
 @ @<Binning routines@>=
-  /** bjdoc Like the other bpar yvals epar but returns the bin counts
+  /** Like the other yvals but returns the bin counts
   as integers. ejpar */
   public static int[] yvals_int(double lo, double hi, int N, double[] v)
     { int[] n = new int[v.length]; int i;
@@ -63,8 +63,8 @@
     }
 
 @ @<Binning routines@>=
-  /** bjdoc Returns the maxinum and maximum of bpar x epar in an array of
-      length 2. ejdoc */
+  /** Returns the maxinum and maximum of x in an array of
+      length 2. */
   public static double[] range(double[] x)
     { double lo,hi;
       lo = hi = x[0];
@@ -76,7 +76,7 @@
     }
 
 @ @<Binning routines@>=
-  /** bjdoc Applies bpar range epar to each row of bpar v epar. ejdoc */
+  /** Applies range to each row of v. */
   public static double[][] range(double[][] v)
     { double[][] ans = new double[v[0].length][2];
       for (int n=0; n<v[0].length; n++)

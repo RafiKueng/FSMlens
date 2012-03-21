@@ -3,7 +3,7 @@
 @(Figure.java@>=
   package qgd.util;
   @<Imports for |Figure|@>
-  /** bjdoc For scientific figures. ejdoc */
+  /** For scientific figures. */
   public class Figure extends FigBase
     { private static final long serialVersionUID = 42;
       @<Constructor for |Figure|@>
@@ -24,19 +24,19 @@
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Specify color using one integer. ejdoc */
+  /** Specify color using one integer. */
   public synchronized void setColor(int rgb)
     { list.addElement(new Color(rgb));
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Set size for bpar drawPoint() epar in screen pixels. ejdoc */
+  /** Set size for drawPoint() in screen pixels. */
   public void setDotsize(int p)
     { dotsize = p;
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Draw a point at bpar (x,y). epar ejdoc */
+  /** Draw a point at (x,y). */
   public void drawPoint(double x, double y)
     { if (xmin < x && x < xmax && ymin < y && y < ymax)
         super.addpoint(x,y);
@@ -44,7 +44,7 @@
 
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Draw a line from bpar (xi,yi) epar to bpar (xf,yf). epar ejdoc */
+  /** Draw a line from (xi,yi) to (xf,yf). */
 @ @<Axis-drawing and suchlike in |Figure|@>=
   public void drawLine(double xi, double yi, double xf, double yf)
     { if (xf > xi)
@@ -69,7 +69,7 @@
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Draw lines connecting the points. epar ejdoc */
+  /** Draw lines connecting the points. */
   public void drawLine(double[] x, double[] y)
     { for (int i=1; i<x.length; i++)
         drawLine(x[i-1],y[i-1],x[i],y[i]);
@@ -85,7 +85,7 @@
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Sets the various margins. ejdoc */
+  /** Sets the various margins. */
   public void setMargins(int l, int r, int t, int b)
     { lmar = l; rmar = r; tmar = t; bmar = b;  
     }
@@ -194,8 +194,8 @@
 
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Draw axes assuming range bpar @=[-1,1]@> epar in
-      both bpar x epar and bpar y. epar ejdoc */
+  /** Draw axes assuming range @=[-1,1]@> in
+      both x and y. */
   public void drawAxes()
     { int[] fl = new int[2]; fl[0] = 2; fl[1] = 1;  @/
       xaxis(fl,tick(xmax-xmin));
@@ -203,16 +203,16 @@
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Set ranges to bpar [x1,x2] epar and bpar [y1,y2] epar and
-      draw axes. ejdoc */
+  /** Set ranges to [x1,x2] and [y1,y2] and
+      draw axes. */
   public void drawAxes(double x1, double x2, double y1, double y2)
     { xmin = x1;  xmax = x2;  ymin = y1;  ymax = y2;  @/
       drawAxes();
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Set ranges to bpar @=[-r,r]@> epar and draw axes
-      and also set left and bottom margins to bpar lbmar. epar ejdoc */
+  /** Set ranges to @=[-r,r]@> and draw axes
+      and also set left and bottom margins to lbmar. */
   public void drawAxes(double r, int lbmar)
     { lmar = bmar = lbmar;  @/
       xmin = -r;  xmax = r;  ymin = -r;  ymax = r;  @/
@@ -220,7 +220,7 @@
     }
 
 @ @<Axis-drawing and suchlike in |Figure|@>=
-  /** bjdoc Set ranges to bpar @=[-r,r]@> epar and draw axes. ejdoc */
+  /** Set ranges to @=[-r,r]@> and draw axes. */
   public void drawAxes(double r)
     { xmin = -r;  xmax = r;  ymin = -r;  ymax = r;  @/
       int[] fl = new int[2]; fl[0] = 1; fl[1] = 1;  @/
@@ -230,10 +230,10 @@
 
 
 @ @<Histogram-drawing and point-plotting@>=
-  /** bjdoc Draws a histogram;
+  /** Draws a histogram;
       input arrays are the bin locations and values;
-      use bpar @=Bin.bla@> epar to generate these arrays from
-      the raw data. ejdoc */
+      use @=Bin.bla@> to generate these arrays from
+      the raw data. */
   public void drawHistogram(double[] x, double[] y)
     { int N = x.length-1;  // Note subtracted 1
       double dx = (x[N]-x[0])/(2*N);
@@ -247,13 +247,13 @@
     }
 
 @ @<Histogram-drawing and point-plotting@>=
-  /** bjdoc Draws a symmetric errorbar. ejdoc */
+  /** Draws a symmetric errorbar. */
   public void drawErrorbar(double x, double y, double dy)
     { drawErrorbar(x,y,dy,dy);
     }
 
 @ @<Histogram-drawing and point-plotting@>=
-  /** bjdoc Draws a asymmetric errorbar. ejdoc */
+  /** Draws a asymmetric errorbar. */
   public void drawErrorbar(double x, double y, double dym, double dyp)
     { addpoint(x,y); drawLine(x,y-dym,x,y+dyp);  @/
       double dx = x(dotsize)-x(0);  @/
@@ -263,8 +263,8 @@
 
 
 @ @<Histogram-drawing and point-plotting@>=
-  /** bjdoc Takes bpar grid epar and aligns it to the range given,
-      then draws contours at the levels specified in bpar lev[]. epar */
+  /** Takes grid and aligns it to the range given,
+      then draws contours at the levels specified in lev[]. */
   public void drawContours(double[][] grid,
       double xmin, double xmax, double ymin, double ymax,
       double[] lev)
@@ -279,15 +279,15 @@
 
 
 @ @<More things in |Figure|@>=
-  /** bjdoc Text added to the text out buffer. ejdoc */
+  /** Text added to the text out buffer. */
   public void addText(String str)
     { super.add_text(str);
     }
-  /** bjdoc Adds a title to the figure. ejdoc */
+  /** Adds a title to the figure. */
   public void setTitle(String str)
     { hook.add(new JLabel(str+" ",JLabel.CENTER));
     }
-  /** bjdoc Use to prevent spurious joins. ejdoc */
+  /** Use to prevent spurious joins. */
   public void newPath()
     { super.add_newpath();
     }
