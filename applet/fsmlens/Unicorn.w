@@ -1,10 +1,11 @@
-@* .
+@* Unicorn.
 
 @(Unicorn.java@>=
   package fsmlens;
   @<Imports for |Unicorn|@>
-  public class Unicorn extends Figure implements ActionListener
+  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener
     { @<Code to read and show raw lenses@>
+      @<Drawing curves with the mouse@>
     }
 
 @ @<Imports for |Unicorn|@>=
@@ -22,6 +23,8 @@
       choice = new JComboBox();
       choice.addActionListener(this);
       hook.add(choice);
+      addMouseListener(this);
+      addMouseMotionListener(this);
       @<Initialize fields in |Unicorn|@>
     }
 
@@ -51,4 +54,31 @@
         for (int ny=0; ny <50; ny++)
           image.setRGB(nx,ny,Color.red.getRGB());
     }
+
+@ @<Drawing curves with the mouse@>=
+  public void mouseEntered(MouseEvent event) { }
+  public void mouseExited(MouseEvent event) { }
+  public void mouseClicked(MouseEvent event) { }
+  public void mouseReleased(MouseEvent event) { }
+  public void mouseMoved(MouseEvent event) { }
+
+
+@ @<Drawing curves with the mouse@>=
+  double x1,y1,x2,y2;
+  public void mousePressed(MouseEvent event)
+    { drawAxes(1);
+      x1 = x(event.getX());
+      y1 = y(event.getY());
+    }
+
+@ @<Drawing curves with the mouse@>=
+  public void mouseDragged(MouseEvent event)
+    { erase();
+      setColor(Color.green.getRGB());
+      x2 = x(event.getX());
+      y2 = y(event.getY());
+      drawLine(x1,y1,x2,y2);
+      repaint();
+    }
+
 
