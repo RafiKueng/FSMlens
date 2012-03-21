@@ -41,4 +41,3 @@
       catch (InterruptedException ex) { }
     }
 
-@i JDmac.h

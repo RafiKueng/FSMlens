@@ -292,7 +292,3 @@
     { super.add_newpath();
     }
 
-
-
-@i JDmac.h
-

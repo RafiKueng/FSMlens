@@ -36,7 +36,7 @@ interactive stuff.  Space filler on top.
 @<Fields and constructor for |FigBase|@>=
   protected JPanel hook;  @/
   JPanel panel;
-  protected BufferedImage image=null;
+  public BufferedImage image=null;
   public JPanel getPanel()
     { return panel;
     }

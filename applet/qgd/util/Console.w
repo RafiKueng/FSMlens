@@ -42,5 +42,4 @@
     { setText("");
     }
 
-@i JDmac.h
 
