@@ -1,0 +1,45 @@
+Documents / Infos
+=================
+about data processing / generating pictures from fits files 
+
+
+
+general / overview
+------------------
+
+primer, very(!) basic introduction in astronomical photo generation
+http://hubblesite.org/newscenter/press_resources/skytel200209028034.pdf
+http://hubblesite.org/gallery/behind_the_pictures/
+http://www.spacetelescope.org/projects/fits_liberator/improc/
+
+
+FITS data format
+----------------
+
+primer / overview
+http://fits.gsfc.nasa.gov/fits_primer.html
+
+full standarts paper
+http://www.aanda.org/index.php?option=com_article&access=doi&doi=10.1051/0004-6361/201015362&Itemid=129
+
+
+
+
+
+Coordinate System
+-----------------
+
+collection of papers
+http://fits.gsfc.nasa.gov/fits_wcs.html
+
+wcs in fits paper (paper I from collection)
+http://arxiv.org/abs/astro-ph/0207407
+
+
+
+Hubble camera ccd / filter info
+-------------------------------
+
+for WFPC2:
+http://www.spacetelescope.org/projects/fits_liberator/improc/
+http://www.spacetelescope.org/static/projects/img/wfpc2_filtre.jpg

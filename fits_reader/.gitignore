@@ -1,2 +1,8 @@
-*.fits  # we don't want those huge binary files in the repro
-out.jpg # dont add the sample output file
+# fits_reader ignores
+# -------------------
+
+# we don't want those huge binary files in the repro
+/*.fits
+
+# dont add the sample output file
+/out.jpg
