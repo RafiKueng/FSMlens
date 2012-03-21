@@ -1,7 +1,7 @@
 @* Examples.
 
 @(Illus.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   import java.util.Vector;
   import javax.swing.*;
@@ -85,7 +85,6 @@
   strb.append("symm pixrad 8 \n");
   strb.append("zlens 0.311 \n");
   strb.append("g 14 \n");
-  strb.append("shear -45 \n");
   strb.append("multi 4 1.722 \n");
   strb.append(" 0.3550 1.3220  1 \n");
   strb.append("-0.9090 -0.7140 1 \n");
@@ -100,7 +99,6 @@
   strb.append("pixrad 10 \n");
   strb.append("minsteep 0 \n");
   strb.append("zlens 0.28 \n");
-  strb.append("shear 45 \n");
   strb.append("g 14 \n");
   strb.append("multi 5 0.888 \n");
   strb.append("   22.1  -14.9 1 \n");

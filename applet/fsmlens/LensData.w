@@ -4,7 +4,7 @@ into |leq|, and (i)~later check that these constraints are satisfied.
 The code for these two parts is interleaved.
 
 @(LensData.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   import java.text.*;
   public abstract class LensData extends LensPrior
@@ -13,6 +13,7 @@ The code for these two parts is interleaved.
       static final int MAXIMUM=3;
       @<Setting the data constraints@>
       @<Checking the model@>
+      @<Ray trace to source plane@>
     }
 
 @ @<Setting the data constraints@>=
@@ -35,9 +36,6 @@ The code for these two parts is interleaved.
           @<Set time-delay constraints@>
           @<Set $h$ constraint, if required@>
           @<Set magnification constraints@>
-          @<Set annular density constraint, if required@>
-          @<Set velocity-dispersion constraint, if required@>
-          @<Set point mass constraints@>
         }
     }
 
@@ -55,18 +53,10 @@ The code for these two parts is interleaved.
 
 
 @ @<Extract the data on one image system@>=
-  double[][] data = (double[][]) imsys.elementAt(s);  @/
+  double[][] data = imsys.get(s).data;
   int im,i,j,n,k; double[] row;
-  double zcap = data[0][0];
+  double zcap = imsys.get(s).zcap;
 
-@ @<Set point mass constraints@>=
-  for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-    { double[] row0 = new double[1+nunk];
-      double[] row1 = new double[1+nunk];
-      ptmass.setConstraints(n-npix-nex, n, row0, row1);
-      leq.addElement(row0);
-      geq.addElement(row1);
-    }
 
 @ @<Set image-position constraints@>=
   for (im=0; im<data.length; im++)
@@ -87,11 +77,7 @@ The code for these two parts is interleaved.
             { if (k==1)  row[n] -= shear.poten_x(n-npix,x,y);
               if (k==2)  row[n] -= shear.poten_y(n-npix,x,y);
             }
-          for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-            { if (k==1)  row[n] -= ptmass.poten_x(n-npix-nex,x,y);
-              if (k==2)  row[n] -= ptmass.poten_y(n-npix-nex,x,y);
-            }
-          int offs = npix+nex+nmass+2*s;
+          int offs = npix+nex+2*s;
           if (k==1) { row[offs+1] = -1; row[offs+2] =  0; }
           if (k==2) { row[offs+1] =  0; row[offs+2] = -1; }
           for (n=1; n<=2; n++)  row[offs+n] *= zcap;
@@ -107,44 +93,44 @@ The code for these two parts is interleaved.
 @ @<Set source-opposed constraint@>=
   row = new double[1+nunk];
   double x = data[0][1], y = data[0][2];
-  int offs = npix+nex+nmass+2*s;
+  int offs = npix+nex+2*s;
   row[offs+1] = x; row[offs+2] = y;
   row[0] = -sourceShiftConstant*(x+y);
   leq.addElement(row);
 
 @ @<Check image positions@>=
       for (im=0; im<data.length; im++)
-        { for (k=1; k<=2; k++)
-            { row = new double[1+nunk];
-              row[0] = (data[im][k] + sourceShiftConstant) * zcap;
+        { double[] sxy = src_plane(data[im],zcap);
+          for (k=1; k<=2; k++)
+            { double sum = sxy[k];
+	      sum -= zcap * (sol[npix+nex+2*s+k] - sourceShiftConstant);
+              Dual.message("sum is "+fmtsum.format(sum));
+            }
+        }
+
+@ @<Ray trace to source plane@>=
+  double[] src_plane(double[] xy, double zcap)
+    { double[] sxy = new double[3];
+      int i,j,k,n;
+          for (k=1; k<=2; k++)
+            { sxy[k] = xy[k] * zcap;
               for (i=-L; i<=L; i++)
                 for (j=-L; j<=L; j++)
                   if ((n=pmap[L+i][L+j]-1) != -1)
                     { double x,y;
-                      x = data[im][1] - i*a;
-                      y = data[im][2] - j*a;
-                      if (k==1)  row[1+n] -= Poten.poten_x(x,y,a);
-                      if (k==2)  row[1+n] -= Poten.poten_y(x,y,a);
+                      x = xy[1] - i*a;
+                      y = xy[2] - j*a;
+                      if (k==1) sxy[k] -= sol[1+n]*Poten.poten_x(x,y,a);
+                      if (k==2) sxy[k] -= sol[1+n]*Poten.poten_y(x,y,a);
                     }
               for (n=npix; n<npix+nex; n++)
-                { double x,y; x = data[im][1];  y = data[im][2];
-                  if (k==1)  row[1+n] -= shear.poten_x(1+n-npix,x,y);
-                  if (k==2)  row[1+n] -= shear.poten_y(1+n-npix,x,y);
+                { double x,y; x = xy[1];  y = xy[2];
+                  if (k==1) sxy[k] -= sol[1+n]*shear.poten_x(1+n-npix,x,y);
+                  if (k==2) sxy[k] -= sol[1+n]*shear.poten_y(1+n-npix,x,y);
                 }
-              for (n=npix+nex; n<npix+nex+nmass; n++)
-                { double x,y; x = data[im][1];  y = data[im][2];
-                  if (k==1)  row[1+n] -= ptmass.poten_x(1+n-npix-nex,x,y);
-                  if (k==2)  row[1+n] -= ptmass.poten_y(1+n-npix-nex,x,y);
-                }
-              int offs = npix+nex+nmass+2*s;
-              if (k==1) { row[offs+1] = -1; row[offs+2] =  0; }
-              if (k==2) { row[offs+1] =  0; row[offs+2] = -1; }
-              for (n=1; n<=2; n++)  row[offs+n] *= zcap;
-              double sum = row[0];
-              for (n=1; n<=nunk; n++)  sum += sol[n]*row[n];
-              Dual.message("sum is "+fmtsum.format(sum));
             }
-        }
+      return sxy;
+    }
 
 
 
@@ -152,7 +138,7 @@ The code for these two parts is interleaved.
   for (im=1; im<data.length; im++)
     { double x,y,del;  @/
       row = new double[1+nunk];
-      int offs = npix+nex+nmass+2*s;
+      int offs = npix+nex+2*s;
       x = data[im][1]; y =  data[im][2];
       row[0] = (x*x+y*y)/2 + (x + y) * sourceShiftConstant;
       row[offs+1] = -x;
@@ -177,20 +163,10 @@ The code for these two parts is interleaved.
           x = data[im-1][1]; y = data[im-1][2];
           row[n] += shear.poten(n-npix,x,y);
         }
-      for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-        { x = data[im][1];  y = data[im][2];
-          row[n] -= ptmass.poten(n-npix-nex,x,y);   @/
-          x = data[im-1][1]; y = data[im-1][2];
-          row[n] += ptmass.poten(n-npix-nex,x,y);
-        }
-      del = data[im][0];
+      del = 0;
       if (del == 0)
         { geq.addElement(row);
           Dual.message("inequality");
-        }
-      else if (del > 1000)
-        { row[nunk] = -del;
-          geq.addElement(row);
         }
       else
         { row[nunk] = -del;
@@ -210,7 +186,7 @@ The code for these two parts is interleaved.
   double[] tau = new double[data.length];
   for (im=0; im<data.length; im++)
     { double x,y;
-      int offs = npix+nex+nmass+2*s;
+      int offs = npix+nex+2*s;
       x = data[im][1]; y = data[im][2];
       tau[im] = (x*x+y*y)/2 + (x + y) * sourceShiftConstant;
       tau[im] -= x*sol[offs+1];
@@ -226,10 +202,6 @@ The code for these two parts is interleaved.
       for (n=npix+1; n<=npix+nex; n++)
         { x = data[im][1]; y = data[im][2];
           tau[im] -= sol[n]*shear.poten(n-npix,x,y);
-        }
-      for (n=npix+nex+1; n<=npix+nex+nmass; n++)
-        { x = data[im][1]; y = data[im][2];
-          tau[im] -= sol[n]*ptmass.poten(n-npix-nex,x,y);
         }
     }
   Dual.message("Time delays");
@@ -264,28 +236,13 @@ The code for these two parts is interleaved.
         { double[] mag = shear.maginv(n-npix,x,y,theta);
           @<Put inequalities in |rows[]|@>
         }
-      //
-      // Nothing to do for point masses
-      //
       for (k=0; k<6; k++)  leq.addElement(rows[k]);
     }
-
-@ @<Set annular density constraint, if required@>=
-  if (kann_spec>0 && s==0)
-    { @<Set |rlo,rhi| to image ring range@>
-      row = new double[1+nunk];
-      for (int r=rlo; r<=rhi; r++)
-        for (n=rings[r][0]; n<=rings[r][1]; n++)
-          { row[n] = -1; row[0] += kann_spec;
-          }
-      eq.addElement(row);
-    }
-
 
 @ @<Set |rlo,rhi| to image ring range@>=
   int rlo=1000,rhi=0;
   for (int ss=0; ss<imsys.size(); ss++)
-    { data = (double[][]) imsys.elementAt(ss);
+    { data = imsys.elementAt(ss).data;
       for (i=0; i<data.length; i++)
         { double x,y; x = data[i][1]; y = data[i][2];
           int r = (int)(Math.sqrt(x*x+y*y)/a+0.5);
@@ -293,33 +250,6 @@ The code for these two parts is interleaved.
           if (r > rhi) rhi = r;
         }
     }
-
-@ @<Set velocity-dispersion constraint, if required@>=
-  if (Rkin>0 && s==0)
-    { @<Set |r| to kinematic ring and |sigf| too@>
-      row = new double[1+nunk];
-      row[0] = siglo*siglo*sigf;
-      for (int l=0; l<=r; l++)
-        for (n=rings[l][0]; n<=rings[l][1]; n++)
-          if (symm && l>0) row[n] = -2;
-          else row[n] = -1;
-      leq.addElement(row);
-      row = new double[1+nunk];
-      row[0] = sighi*sighi*sigf;
-      for (int l=0; l<=r; l++)
-        for (n=rings[l][0]; n<=rings[l][1]; n++)
-          if (symm && l>0) row[n] = -2;
-          else row[n] = -1;
-      geq.addElement(row);
-    }
-
-@ @<Set |r| to kinematic ring and |sigf| too@>=
-  int r; double sigf;
-  r = (int) (Rkin/a);
-  sigf = 1/1.170e-3; sigf *= sigf;
-  sigf *= dlscale/(cdscale*a)*(r+0.5)*1.5;
-  System.out.println("vdisp row "+r);
-
 
 @ @<Put inequalities in |rows[]|@>=
   double xx,yy,xy;

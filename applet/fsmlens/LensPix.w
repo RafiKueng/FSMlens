@@ -3,12 +3,11 @@
 making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
 
 @(LensPix.java@>=
-  package _42pixelens;
+  package fsmlens;
   import qgd.util.*;
   public abstract class LensPix extends LensBase
     { @<Indexing the pixel map@>
       @<Setting up external shear@>
-      @<Setting up point masses@>
       @<Setting up the output grids@>
     }
 
@@ -98,7 +97,7 @@ making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
 
 @ @<Choose |a| from data@>=
   for (int s=0; s<imsys.size(); s++)
-    { double[][] data = (double[][]) imsys.elementAt(s);
+    { double[][] data = ((Tuple)imsys.get(s)).data;
       double rmin=infty, rmax=-infty, rad=infty;
       for (i=0; i<data.length; i++)
         { double x,y,r;
@@ -132,13 +131,6 @@ making contour plots (|Z,ZB,Q|, |mass_grid|, |lnr|, |poten_grid|).
     }
 
 
-@ @<Setting up point masses@>=
-  void add_ptmass(double x, double y, double M_min, double M_max) 
-    { nmass = ptmass.add(x, y, M_min, M_max);
-      System.err.println("nmass = " + nmass);
-    }
-
-                 
           
 @ @<Setting up the output grids@>=
   void init_grids()

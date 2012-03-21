@@ -1,7 +1,7 @@
 @* Shear.
 
 @(Shear.java@>=
-  package _42pixelens;
+  package fsmlens;
   public class Shear
     { @<Shear potential and derivatives@>
     }

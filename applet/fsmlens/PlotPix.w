@@ -3,7 +3,7 @@ pattern.  It knows about |LensBase|, but will actually interact with
 its descendant |Lens|.
 
 @(PlotPix.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |PlotPix|@>
   public class PlotPix extends Figure
     { @<Generic stuff in |PlotPix|@>
@@ -18,12 +18,10 @@ its descendant |Lens|.
   import java.text.*;
   import java.awt.Color;
 
-@ Most of the generic-stuff code will be repeated verbatim.  Only
-|obj_txt| needs individual attention here.
+
+@ Most of the generic-stuff code will be repeated verbatim.
 @<Generic stuff in |PlotPix|@>=
   LensBase lens;  @/
-  int nobj,obj;  InputField obj_txt;
-
 
 @ @<Generic stuff in |PlotPix|@>=
   public PlotPix()
@@ -41,7 +39,6 @@ its descendant |Lens|.
 
 @ @<Initialize fields in |PlotPix|@>=
   lens = null;
-  
 
 @ @<Generic stuff in |PlotPix|@>=
   public void update(LensBase lens)
@@ -70,7 +67,7 @@ its descendant |Lens|.
         }
       setColor(Color.red.getRGB()); setDotsize(6);
       for (int s=0; s<lens.imsys.size(); s++)
-        { double[][] data = (double[][]) lens.imsys.elementAt(s);
+        { double[][] data = lens.imsys.get(s).data;
           for (int i=0; i<data.length; i++)
             drawPoint(data[i][1],data[i][2]);
         }

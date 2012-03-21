@@ -1,15 +1,24 @@
-all:	PixeLens.java Illus.java \
+all:	Monster.java Illus.java Unicorn.java Synth.java Tuple.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
-        Poten.java PtMass.java Shear.java Cosm.java Simpwalk.java
-	$(JAVAC) PixeLens.java
+        Poten.java Shear.java Cosm.java Simpwalk.java
+	$(JAVAC) Monster.java
 
-PixeLens.java: PixeLens.w
-	javatangle PixeLens.w
+Monster.java: Monster.w
+	javatangle Monster.w
 
 Illus.java: Illus.w
 	javatangle Illus.w
+
+Unicorn.java: Unicorn.w
+	javatangle Unicorn.w
+
+Synth.java: Synth.w
+	javatangle Synth.w
+
+Tuple.java: Tuple.w
+	javatangle Tuple.w
 
 LensBase.java: LensBase.w
 	javatangle LensBase.w
@@ -46,9 +55,6 @@ PlotArriv.java: PlotArriv.w
 
 Poten.java: Poten.w
 	javatangle Poten.w
-
-PtMass.java: PtMass.w
-	javatangle PtMass.w
 
 Shear.java: Shear.w
 	javatangle Shear.w

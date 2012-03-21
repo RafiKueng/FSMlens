@@ -1,7 +1,7 @@
 @* Plotting arrival times.
 
 @(PlotArriv.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |PlotArriv|@>
   public class PlotArriv extends Figure implements ActionListener
     { @<Generic stuff in |PlotArriv|@>
@@ -79,8 +79,8 @@
     { int L = lens.L; double a = lens.a;
       int Z= lens.Z; int ZB = lens.ZB; int S=lens.S;
   double[][] grid = new double[Z][Z];
-  double[][] data = (double[][]) lens.imsys.elementAt(sour);
-  double zcap = data[0][0];
+  double[][] data = lens.imsys.get(sour).data;
+  double zcap = lens.imsys.get(sour).zcap;
   double tmin=1e9,tmax;
   double[] sxy = lens.spos(sour);
   for (int i=-ZB; i<=ZB; i++)

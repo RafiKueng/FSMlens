@@ -1,7 +1,7 @@
 @* Potential from square pixels.
 
 @(Poten.java@>=
-  package _42pixelens;
+  package fsmlens;
 public class Poten
   { @<Lens potential and derivatives@>
   }

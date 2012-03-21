@@ -1,7 +1,7 @@
 @* Lenses.
 
 @ @(Lenses.java@>=
-  package _42pixelens;
+  package fsmlens;
   @<Imports for |Lenses|@>
   public class Lenses
     { @<Fields and constructor for |Lenses|@>
@@ -72,7 +72,7 @@
 
 @ @<Interpreting the input@>=
   void read_input(String user_inp) throws ErrorMsg
-    { lens=null; double[][][] data = null;  @/
+    { lens=null; // double[][][] data = null;
       inptoks = new StringTokenizer(user_inp);
       int zflag = 0;
       try
@@ -103,9 +103,6 @@
     }
   else if (tok.compareTo("maprad")==0) lens.a = parse_double();
   else if (tok.compareTo("shear")==0) lens.allow_shear(parse_double());
-  else if (tok.compareTo("ptmass")==0)
-    { @<Allow a point mass in the range indicated@>
-    }
   else if (tok.compareTo("minsteep")==0) lens.minsteep = parse_double();
   else if (tok.compareTo("maxsteep")==0) lens.maxsteep = parse_double();
   else if (tok.compareTo("dgcone")==0)
@@ -114,15 +111,11 @@
   else if (tok.compareTo("zlens")==0)
     { @<Read $z_l$ and set scales in |lens|@>
     }
-  else if (tok.compareTo("redshifts")==0)
-    { @<Read $z_l,z_s$ and set scales in |lens|@>
-    }
   else if (tok.compareTo("cosm")==0)
     { double om,lam; om = parse_double(); lam = parse_double();
       cosm = new Cosm(om,lam);
     }
   else if (tok.compareTo("g")==0) lens.h_spec = 1/parse_double();
-  else if (tok.compareTo("kann")==0) lens.kann_spec = parse_double();
   else if (tok.compareTo("cmax")==0)
     { lens.cmax = parse_double();
       if (lens.cmax < 1)
@@ -160,48 +153,34 @@
   throw new ErrorMsg("need 0 < dgcone <= 90");
   lens.cen_ang = (90-deg)*Math.PI/180;
 
-@ @<Allow a point mass in the range indicated@>=
-  double xc,yc,mmin,mmax;  @/
-  xc = parse_double();  yc = parse_double();  @/
-  mmin = parse_double();  mmax = parse_double();  @/
-  lens.add_ptmass(xc,yc,mmin,mmax);
 
 @ @<Read $z_l$ and set scales in |lens|@>=
   zflag = 1; double zl = parse_double();
   if (cosm==null) cosm = new Cosm();
   lens.set_scales(cosm.scales(zl,0));
 
-@ @<Read $z_l,z_s$ and set scales in |lens|@>=
-  zflag = 2; double zl,zs; zl = parse_double(); zs = parse_double();
-  if (cosm==null) cosm = new Cosm();
-  lens.set_scales(cosm.scales(zl,zs));
-
 @ @<Read data for a multiple-image system@>=
   if (zflag==0) throw new ErrorMsg("need redshift or zlens");
   int nim = parse_int();
-  double[][] ndata = new double[nim][8];
+  Tuple ntuple = new Tuple(nim);
   if (zflag==1)
     { double zs = parse_double();
       if (cosm==null) cosm = new Cosm();
-      ndata[0][0] = cosm.angdist(0,zs)/cosm.angdist(lens.zlens,zs);
+      ntuple.zcap = cosm.angdist(0,zs)/cosm.angdist(lens.zlens,zs);
     }
-  else ndata[0][0] = 1;
+  else ntuple.zcap = 1;
   for (int i=0; i<nim; i++)
-    { ndata[i][1] = parse_double(); ndata[i][2] = parse_double();
-      if (tok.compareTo("multi")==0) ndata[i][3] = parse_int();
-      else
-        { if (i<nim/2) ndata[i][3] = 1;
-          else ndata[i][3] = 2;
-        }
-      if (zflag==2 && i>0) ndata[i][0] = parse_double();
-      ndata[i][4] = 180/Math.PI*Math.atan2(ndata[i][2],ndata[i][1]);  @/
-      if (i>0 && ndata[i-1][3]==2 && ndata[i][3]==3)
-        ndata[i-1][4] = 180/Math.PI*Math.atan2(ndata[i-1][2]-ndata[i][2],
-                                               ndata[i-1][1]-ndata[i][1]);  @/
-      ndata[i][5] = 0.1; ndata[i][6] = 10; ndata[i][7] = 0.9;
+    { ntuple.data[i][1] = parse_double(); ntuple.data[i][2] = parse_double();
+      ntuple.data[i][3] = parse_int();
+      ntuple.data[i][4] =
+        180/Math.PI*Math.atan2(ntuple.data[i][2],ntuple.data[i][1]);
+      if (i>0 && ntuple.data[i-1][3]==2 && ntuple.data[i][3]==3)
+        ntuple.data[i-1][4] =
+           180/Math.PI*Math.atan2(ntuple.data[i-1][2]-ntuple.data[i][2],
+                                  ntuple.data[i-1][1]-ntuple.data[i][1]);
+      ntuple.data[i][5] = 0.1; ntuple.data[i][6] = 10; ntuple.data[i][7] = 0.9;
     }
-  lens.imsys.addElement(ndata);  @/
-  lens.show_scales(ndata);
+  lens.imsys.addElement(ntuple);
 
 
 @ @<Packing the simplex@>=
