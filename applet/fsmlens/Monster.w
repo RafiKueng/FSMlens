@@ -9,7 +9,6 @@
       @<Managing the buttons in |Monster|@>
       @<The numerical thread@>
       @<Setting GUI states@>
-      @<Copy the squar from image@>
     }
 
 
@@ -21,6 +20,7 @@
   import java.io.*;
   import java.text.*;
   import java.awt.*;
+  import java.util.*;
 
 @ @<Layout for the |Monster| GUI@>=
   int threads=8;
@@ -91,12 +91,10 @@
 
 @ @<Put raw image in the middle@>=
   unicorn = new Unicorn(this);
-  synth = new Synth();
-  JButton copyButton = new JButton("Copy");  copyButton.addActionListener(this);
+  synth = new Synth(this,unicorn);
   JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
   ip.add("North",unicorn.getPanel());
   ip.add("South",synth.getPanel());
-  ip.add("Center",copyButton);
   mainPane.add("Center",ip);
   unicorn.repaint();
 
@@ -120,7 +118,6 @@
       unicorn.repaint();
       String str = event.getActionCommand();
       if (str.equals("resume")) resumeRun();
-      if (str.equals("Copy")) copyImg();
     }
 
 @ @<Managing the buttons in |Monster|@>=
@@ -158,12 +155,6 @@
         }
     }
 
-@ @<Copy the squar from image@>=
-  void copyImg()
-    {
-    synth.setPic(unicorn.getImage(),unicorn.getXpos(),unicorn.getYpos());
-    synth.repaint();
-    }
 
 @ @<The numerical thread@>=
   protected void stopRun()

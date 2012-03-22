@@ -9,8 +9,13 @@
       @<get the Picture out@>
       @<get the x pos@>
       @<get the y pos@>
+      @<get all the picture in a array@>
+      @<return all the coord in a array@>
+      @<Reset the array@>
       String quadrLine="Line"; 
       double x1N,y1N; 
+      ArrayList<BufferedImage> imgArr = new ArrayList<BufferedImage>();
+      ArrayList<Integer> coord = new ArrayList<Integer>();
     }
 
 @ @<Imports for |Unicorn|@>=
@@ -21,12 +26,13 @@
   import java.awt.image.*;
   import java.awt.Graphics.*;
   import java.lang.Object.*;
+  import java.util.*;
 
 
 
 @ @<Code to read and show raw lenses@>=
   public Unicorn(Monster home)
-    { super(280,280);
+    { super(300,300);
       this.home = home;
       choice = new JComboBox();
       rect = new JComboBox();
@@ -70,9 +76,6 @@
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
-      for (int nx=0; nx <50; nx++)
-        for (int ny=0; ny <50; ny++)
-          image.setRGB(nx,ny,Color.red.getRGB());
     }
 
 @ @<Drawing curves with the mouse@>=
@@ -89,29 +92,39 @@
     { 
       drawAxes(1);
       x1 = x(event.getX());
-      System.out.println(x1);
       y1 = y(event.getY());
-      System.out.println(y1);
-      x1N = ((1+x1)*280/2);
-      System.out.println(x1N);
-      y1N = ((1-y1)*280/2);
-      if(quadrLine.equals("Rectangle"))
+      x1N = ((1+x1)*300/2);
+      y1N = ((1-y1)*300/2);
+      if(quadrLine.equals("Rectangle")){
         g.drawRect((int)(x1N-25),(int)(y1N-25),50,50);
-      imgrect = image.getSubimage((int)(x1N-24),(int)(y1N-24),48,48);
-      repaint();
+        imgrect = image.getSubimage((int)(x1N-24),(int)(y1N-24),48,48);
+        imgArr.add(toBufferedImage(imgrect,48,48));
+        coord.add((int)x1N);
+        coord.add((int)y1N);
+        repaint();
+        }
     }
 
 @ @<Drawing curves with the mouse@>=
   public void mouseDragged(MouseEvent event)
     { erase();
       drawAxes(1);
-      setColor(Color.green.getRGB());
       x2 = x(event.getX());
       y2 = y(event.getY());
       if(quadrLine.equals("Line"))
         drawLine(x1,y1,x2,y2);
       repaint();
     }
+
+@ @<Reset the array@>=
+  public void reset()
+    {
+    imgArr.clear();
+    coord.clear();
+    showImage((String) choice.getSelectedItem());
+    repaint();
+    }
+
 
 @ @<get the Picture out@>=
   public BufferedImage getImage()
@@ -131,6 +144,17 @@
      return((int)y1N);
     }
 
+@ @<get all the picture in a array@>=
+  public ArrayList allImg()
+    {
+    return(imgArr);
+    }
+
+@ @<return all the coord in a array@>=
+  public ArrayList allCoord()
+    {
+    return(coord);
+    }
 
 
 
