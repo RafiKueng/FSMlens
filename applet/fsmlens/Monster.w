@@ -63,6 +63,7 @@
   JButton bresume;
   Unicorn unicorn;
   Synth synth;
+  Synthimg synthimg;
 
 @ @<Put control buttons to North@>=
   bresume = new JButton("resume");  bresume.addActionListener(this);
@@ -82,16 +83,18 @@
 
 
 @ @<Put plots to East@>=
+  unicorn = new Unicorn(this);
+  synthimg = new Synthimg(this,unicorn);
+  synth = new Synth(this,unicorn,synthimg);
   FigDeck pd = new FigDeck();  @/
   pd.addFigure("pixellation",lenses.plotPix);
   pd.addFigure("mass",lenses.plotMass);
   pd.addFigure("potential",lenses.plotPoten);
   pd.addFigure("arrival time",lenses.plotArriv);
+  pd.add("North",synthimg.getPanel()); 
   mainPane.add("East",pd);
 
 @ @<Put raw image in the middle@>=
-  unicorn = new Unicorn(this);
-  synth = new Synth(this,unicorn);
   JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
   ip.add("North",unicorn.getPanel());
   ip.add("South",synth.getPanel());
