@@ -38,7 +38,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg)
           copyButton = new JButton("Copy"); 
           copyButton.addActionListener(this);
 	  hook.add(copyButton);
-          reconstButton = new JButton("Reconstr");
+          reconstButton = new JButton("Get Source");
           reconstButton.addActionListener(this);
           hook.add(reconstButton);
           resetButton = new JButton("Reset");
@@ -56,7 +56,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg)
       String str = event.getActionCommand();
       if (str.equals("Copy")) setPic();
       if (str.equals("Reset")) reset();
-      if (str.equals("Reconstr")) igetRGB();
+      if (str.equals("Get Source")) igetRGB();
  
     }
 

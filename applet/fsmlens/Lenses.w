@@ -9,6 +9,7 @@
       @<Interpreting the input@>
       @<Packing the simplex@>
       @<Searching for models@>
+      @<get the source coord@>
     }
 
 @ @<Imports for |Lenses|@>=
@@ -255,4 +256,11 @@
       plotArriv.update(lens);
     }
 
+@ @<get the source coord@>=
+  public double[] sourceCoord(double[] coordS,double zcap)
+    {
+    double[] soCo = new double[3];
+    soCo = lens.src_plane(coordS,zcap);
+    return(soCo);
+    }
 

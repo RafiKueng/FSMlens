@@ -22,7 +22,7 @@
         Monster home;
 	Synth synth;
         int[] RGBin;
-        int[][][] pixCount = new int[48][48][1];
+        int[][][] pixCount = new int[300][300][1];
     }
 
 @ @<Code to generate synth pic@>=
@@ -34,8 +34,6 @@ public Synthimg(Monster home, Unicorn unicorn)
           g = image.getGraphics();
 	  drawAxes(1);
         }
-
-
 
 
 @ @<set somer picture@>=
@@ -50,9 +48,10 @@ ArrayList<int[]> allRGBout;
 	allRGBout = allRGB;
         imgArr = unicorn.allImg();
         coord = unicorn.allCoord();
-        for(int i=0; i < allRGBout.size();i++)
+        double[] sourcCoo = new double[3];
+        int[] RGBout = new int[48*48];
+        for(int i=0; i < imgArr.size();i++)
 	  { 
-	  int[] RGBout = new int[48*48];
 	  RGBout = allRGBout.get(i);
 	  int x = coord.get(2*i);
 	  int y = coord.get(2*i+1);
@@ -60,7 +59,15 @@ ArrayList<int[]> allRGBout;
  	    {
 	    for(int k=0; k<48;k++)
 	      {
-	      image.setRGB(x+k,y+j,(int)(RGBout[48*j+k]/1.5));
+              sourcCoo[1] = (2.0*(x+k)/300.0)-1.0;
+	      sourcCoo[2] = 1.0-(2.0*(y+j)/300.0);
+ 	      sourcCoo = home.sourCoord(sourcCoo,1.0);
+	      int xNew = (int)((1.5+sourcCoo[1])*200.0/2.0);
+	      int yNew = (int)((1.5-sourcCoo[2])*200.0/2.0);
+	      if(xNew>=0 && xNew<300 && yNew>=0 && yNew<300)
+		{ 
+	        image.setRGB(xNew,yNew,(RGBout[48*j+k]));
+		}
               repaint();
   	      }
    	    }
@@ -71,7 +78,7 @@ ArrayList<int[]> allRGBout;
 @ @<Pix counter@>=
   private void pixCounter(int xp,int yp)
     { 
-      pixCount[xp][yp][1] += 1;  
+      pixCount[xp][yp][0] += 1;  
     }
 
 

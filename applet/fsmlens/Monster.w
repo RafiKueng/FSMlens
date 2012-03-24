@@ -9,6 +9,7 @@
       @<Managing the buttons in |Monster|@>
       @<The numerical thread@>
       @<Setting GUI states@>
+      @<get the source coord@>
     }
 
 
@@ -206,4 +207,12 @@
     { bresume.setEnabled(resumef);
       inp.setEnabled(readf);
       completed = compf;
+    }
+
+@ @<get the source coord@>=
+  public double[] sourCoord(double[] coordS,double zcap)
+    {
+    double[] soCo = new double[3];
+    soCo = lenses.sourceCoord(coordS,zcap);
+    return(soCo);
     }
