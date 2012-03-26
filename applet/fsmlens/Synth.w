@@ -18,12 +18,12 @@
         @<Managing the button in |Synth|@>
         @<Reset the panel@>
         @<get RGB of the pixels@>
-        @<get the Array with the RGB@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
 	Synthimg synthimg;
         int[] RGBin;
+        int[][][] rgbPix = new int[300][300][2];
     }
 
 @ @<Code to generate synth pic@>=
@@ -56,57 +56,34 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg)
       String str = event.getActionCommand();
       if (str.equals("Copy")) setPic();
       if (str.equals("Reset")) reset();
-      if (str.equals("Get Source")) igetRGB();
+      if (str.equals("Get Source")) getSource();
  
     }
 
 @ @<set somer picture@>=
-ArrayList<Image> imgArr;
-ArrayList<Integer> coord;
   public void setPic()
     {
+	rgbPix = unicorn.getrgbMatrix();
 	Image img; 
-        imgArr = new ArrayList<Image>();
-        coord = new ArrayList<Integer>();
-        imgArr = unicorn.allImg();
-        coord = unicorn.allCoord();
-        for(int i=0; i < imgArr.size();i++)
-	{ img = imgArr.get(i);
-	  g.drawImage(img,coord.get(2*i),coord.get(2*i+1),this);
-          repaint();
-	}
-
-	
+         for(int i=0; i<300; i++) 
+           {
+            for(int j=0; j<300; j++)
+    	      {
+              image.setRGB(i,j,rgbPix[i][j][0]); 
+ 	      }
+           }
+        repaint();	
     }
 
 @ @<get RGB of the pixels@>=
-ArrayList<int[]> allRGB;
-  private void igetRGB()
+  private void getSource()
     {
-    allRGB = new ArrayList<int[]>();
-    for(int i=0; i < imgArr.size();i++)
-      {
-      Image img = imgArr.get(i);
-      BufferedImage imag = toBufferedImage(img,48,48);
-      int w = imag.getWidth();
-      int h = imag.getHeight();
-      RGBin = new int[w*h];
-      imag.getRGB(imag.getMinX(),imag.getMinY(),w,h,RGBin,0,w);
-      allRGB.add(RGBin);
-      }
-    synthimg.setPixPic(allRGB);
-    }
-
-@ @<get the Array with the RGB@>=
-  public ArrayList getRGBarray()
-    {
-    return(allRGB);
+    synthimg.setPixPic();
     }
 
 @ @<Reset the panel@>=
   public void reset()
     {
-    allRGB.clear();
     g.clearRect(0,0,300,300);
     unicorn.reset();
     synthimg.reset();

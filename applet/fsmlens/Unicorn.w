@@ -11,9 +11,12 @@
       @<get the y pos@>
       @<get all the picture in a array@>
       @<return all the coord in a array@>
+      @<init rgb matrix@>
       @<Reset the array@>
+      @<get the RGB matrix out@>
       String quadrLine="Line"; 
-      double x1N,y1N; 
+      int x1N,y1N; 
+      int[][][] rgbPix = new int[300][300][2];
       ArrayList<BufferedImage> imgArr = new ArrayList<BufferedImage>();
       ArrayList<Integer> coord = new ArrayList<Integer>();
     }
@@ -42,6 +45,7 @@
       hook.add(rect);
       addMouseListener(this);
       addMouseMotionListener(this);
+      rgbMatrix();
       @<Initialize fields in |Unicorn|@>
     }
 
@@ -93,14 +97,20 @@
       drawAxes(1);
       x1 = x(event.getX());
       y1 = y(event.getY());
-      x1N = ((1+x1)*300.0/2.0);
-      y1N = ((1-y1)*300.0/2.0);
+      x1N = (int)((1+x1)*300.0/2.0);
+      y1N = (int)((1-y1)*300.0/2.0);
       if(quadrLine.equals("Rectangle")){
-        g.drawRect((int)(x1N-25),(int)(y1N-25),50,50);
-        imgrect = image.getSubimage((int)(x1N-24),(int)(y1N-24),48,48);
-        imgArr.add(toBufferedImage(imgrect,48,48));
-        coord.add((int)x1N);
-        coord.add((int)y1N);
+        g.drawRect((x1N-25),(y1N-25),50,50);
+        imgrect = image.getSubimage((x1N-24),(y1N-24),48,48);
+        BufferedImage img = toBufferedImage(imgrect,48,48);
+	for(int i=0; i<48; i++)
+ 	  {
+	    for(int j=0; j<48; j++)
+	      {
+              if(rgbPix[x1N+i][y1N+j][0] == 0) 
+	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);
+ 	      }
+ 	  }
         repaint();
         }
     }
@@ -123,6 +133,25 @@
     coord.clear();
     showImage((String) choice.getSelectedItem());
     repaint();
+    rgbMatrix();
+    }
+
+@ @<init rgb matrix@>=
+  private void rgbMatrix()
+    {
+    for(int i=0; i<300; i++) 
+      {
+        for(int j=0; j<300; j++)
+    	  {
+          rgbPix[i][j][0] = 0;
+ 	  }
+      }
+    }
+
+@ @<get the RGB matrix out@>=
+  public int[][][] getrgbMatrix()
+    {
+      return(rgbPix);
     }
 
 
