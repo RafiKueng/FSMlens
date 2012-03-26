@@ -1,0 +1,2 @@
+# since we're doing literate programming we don't want the generated class files in the repro
+*.java
