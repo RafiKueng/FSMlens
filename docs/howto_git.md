@@ -23,16 +23,16 @@ working with git, step by step
 ------------------------------
 
 0. get a complete copy:
-$ cd [basedir] #go to any directory
-$ git clone git@github.com:RafiKueng/FSMlens.git [dir]
--> this creates a copy of the files at github in [basedir]/[dir]
+    $ cd [basedir] #go to any directory
+    $ git clone git@github.com:RafiKueng/FSMlens.git [dir]
+    -> this creates a copy of the files at github in [basedir]/[dir]
 
 
 1. get the latest data from server
-$ git pull
+    $ git pull
 
-note: this updates the master branch, if you want any other branch, use:
-$ git pull origin [branchname]
+    note: this updates the master branch, if you want any other branch, use:
+    $ git pull origin [branchname]
 
 TODO: note to myself: some additional commands; look, which one makes a local branch tracked...
 git pull = git fetch and git merge
