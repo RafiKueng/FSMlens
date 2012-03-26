@@ -47,6 +47,10 @@ $ git pull --all
 
 2. if you're doing not minor changes, or want to try something out, make a branch LOCALLY:
 $ git branch [branchname]
+$ git checkout [branchname]
+
+or use to create a new branch and change to it in one step:
+$ git checkout -b [branchname]
 
 note: if you want to see what branches you have, use:
 $ git branch
