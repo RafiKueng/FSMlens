@@ -85,7 +85,11 @@ working with git, step by step
     note: you can type as long as you wish, and even press enter, as long as you dont close the `""`.
 
 
-7. (repeat 4-7 until finished working, commit often!! don`t never ever make backups like `file1.java.backup`, thats why we use a version controll system. use branches and commits instead!!)
+7. repeat 4-7 until finished working, commit often!!
+    * don't never ever make backups like `file1.java.backup`
+    * keep all your data in the repro folder and don't copy paste from other places...  
+    thats why we use a version control system. use branches and commits instead!!
+    
 
 
 7. once finished with your changes, and everything compiles, runs correctly, put it back to the master branch. please keep the master branch clean, only finished / working / compiling stuff should be inside.  
