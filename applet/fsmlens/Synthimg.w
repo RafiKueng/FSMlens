@@ -40,6 +40,15 @@ public Synthimg(Monster home, Unicorn unicorn)
 
 
 @ @<set somer picture@>=
+  void print_src(double x, double y)
+    { double[] xy = new double[3];
+      xy[1] = x; xy[2] = y;
+      xy = home.sourCoord(xy);
+      System.out.println("source position "+xy[1]+" "+xy[2]);
+      System.out.println("source pixel "+xpix(xy[1])+" "+ypix(xy[2]));
+    }
+
+@ @<set somer picture@>=
   public void setPixPic()
     {    
         rgbPix = unicorn.getrgbMatrix();
@@ -49,13 +58,13 @@ public Synthimg(Monster home, Unicorn unicorn)
 	  for(int k=0; k<300;k++)
 	    {
               if(rgbPix[j][k][0] != 0){
-                sourcCoo[1] = 2.25*((2.0*(j)/300.0)-1.0);
-	        sourcCoo[2] = 2.25*(1.0-(2.0*(k)/300.0));
+                sourcCoo[1] = x(j); // 2.25*((2.0*(j)/300.0)-1.0);
+	        sourcCoo[2] = y(k); // 2.25*(1.0-(2.0*(k)/300.0));
 		int xNew,yNew;
 		try{
- 	          sourcCoo = home.sourCoord(sourcCoo,1.0);
-                  xNew = (int)(((1.5+sourcCoo[1])*200.0/2.0)/2.25);
-	          yNew = (int)(((1.5-sourcCoo[2])*200.0/2.0)/2.25);
+ 	          sourcCoo = home.sourCoord(sourcCoo);
+                  xNew = xpix(sourcCoo[1]); // (int)(((1.5+sourcCoo[1])*200.0/2.0)/2.25);
+	          yNew = ypix(sourcCoo[2]); // (int)(((1.5-sourcCoo[2])*200.0/2.0)/2.25);
 		}
 		catch(Exception e) {
 		  xNew = j;

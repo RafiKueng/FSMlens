@@ -85,9 +85,14 @@
 @ @<Drawing curves with the mouse@>=
   public void mouseEntered(MouseEvent event) { }
   public void mouseExited(MouseEvent event) { }
-  public void mouseClicked(MouseEvent event) { }
   public void mouseReleased(MouseEvent event) { }
   public void mouseMoved(MouseEvent event) { }
+
+
+@ @<Drawing curves with the mouse@>=
+  public void mouseClicked(MouseEvent event)
+    { System.out.println("click on "+x(event.getX())+" "+y(event.getY()));
+    }
 
 
 @ @<Drawing curves with the mouse@>=
