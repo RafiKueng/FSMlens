@@ -18,11 +18,11 @@ as applications and applets.
     }
 
 @ @<Choice of execution modes@>=
-  /** bjdoc There are three possible running modes,
-      and bpar mode() epar says which is current:
+  /** There are three possible running modes,
+      and mode() says which is current:
       zero means running as an application without GUI,
       one means running as an application with a GUI,
-      two means running as an applet. ejdoc */
+      two means running as an applet. */
   public static int mode()
     { return mode;
     }
@@ -36,19 +36,19 @@ as applications and applets.
   protected void printMessage(String arg) { }
 
 @ @<|Dual| constructor and basic GUI elements@>=
-  /** bjdoc Attach all GUI elements,
-      such as bpar runButton epar and bpar pauseButton epar when needed,
-      to bpar mainPane epar. ejdoc */
+  /** Attach all GUI elements,
+      such as runButton and pauseButton when needed,
+      to mainPane. */
   public JPanel mainPane;  @/
   JButton showButton; JFrame frame;
 
 @ @<|Dual| constructor and basic GUI elements@>=
-  /** bjdoc Starts the bpar run() epar thread. ejdoc */
+  /** Starts the run() thread. */
   public JButton runButton;
 
 @ @<|Dual| constructor and basic GUI elements@>=
-  /** bjdoc Does not itself pause,
-      only makes bpar isRunning() epar false. ejdoc */
+  /** Does not itself pause,
+      only makes isRunning() false. */
   public JButton pauseButton;
 
 
@@ -76,13 +76,13 @@ as applications and applets.
     }
 
 @ @<Choice of execution modes@>=
-  /** bjdoc In applet mode bpar main() epar is called automatically,
-      but in standalone mode bpar main(String) epar must call
-      bpar main() epar explicitly.  ejdoc */
+  /** In applet mode main() is called automatically,
+      but in standalone mode main(String) must call
+      main() explicitly.  */
   public void main() { }
 
 @ @<Choice of execution modes@>=
-  /** bjdoc Always called in the last line of bpar main(). epar ejdoc */
+  /** Always called in the last line of main(). */
   public void show(String title, String label)
     { frame = new JFrame();  @/
       frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -144,8 +144,8 @@ as applications and applets.
 
 
 @ @<The program state@>=
-  /** bjdoc A flag which bpar run() epar should check regularly,
-      and tidy up quickly and exit on a signal of false. ejdoc */
+  /** A flag which run() should check regularly,
+      and tidy up quickly and exit on a signal of false. */
   public static boolean isRunning()
     { if (mode()==0) return true;
       else return instance.pauseButton.isEnabled();
@@ -153,16 +153,16 @@ as applications and applets.
 
 
 @ @<The program state@>=
-  /** bjdoc A bpar run() epar method should finish by calling
-      bpar finishRun() epar to tidy up the internal state. ejdoc */
+  /** A run() method should finish by calling
+      finishRun() to tidy up the internal state. */
   public void finishRun()
     { pauseButton.setEnabled(false);
       runButton.setEnabled(true);
     }
 
 @ @<The program state@>=
-  /** bjdoc Intensive work should be done from a
-      bpar run() epar method.  ejdoc */
+  /** Intensive work should be done from a
+      run() method.  */
   public void run()
     { finishRun();
     }

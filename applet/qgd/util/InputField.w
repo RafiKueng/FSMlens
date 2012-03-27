@@ -3,8 +3,8 @@
 @(InputField.java@>=
   package qgd.util;
   import javax.swing.*;
-  /** bjdoc A text field used to read and bpar int epar or
-      bpar double epar within a specified range. ejdoc */
+  /** A text field used to read and int or
+      double within a specified range. */
   public class InputField extends JTextField
     { private static final long serialVersionUID = 42;
       @<Constructor for InputField@>
@@ -13,8 +13,8 @@
     }
  
 @ @<Constructor for InputField@>=
-  /** bjdoc Adding to a GUI is done in the constructor,
-      hence the bpar hold epar parameter. ejdoc */
+  /** Adding to a GUI is done in the constructor,
+      hence the hold parameter. */
   public InputField(String label, int wd, String str, JPanel hold)
     { super(wd);  @/
       sav = new String(str); setText(sav);
@@ -25,17 +25,17 @@
   String sav;
 
 @ @<Setting the value@>=
-  /** bjdoc Set an bpar int epar value. ejdoc */
+  /** Set an int value. */
   public void set(int n)
     { setText(Integer.toString(n));
     }
-  /** bjdoc Set a bpar double epar value. ejdoc */
+  /** Set a double value. */
   public void set(double r)
     { setText(Double.toString(r));
     }
 
 @ @<Reading from InputField@>=
-  /** bjdoc Like bpar readDouble() epar but to read integers. ejdoc */
+  /** Like readDouble() but to read integers. */
   public int readInt(int lo, int hi)
     { int n;
       try
@@ -54,8 +54,8 @@
     }
 
 @ @<Reading from InputField@>=
-  /** bjdoc Reads a bpar double epar within the specified range,
-      otherwise returns the mininum allowed. ejdoc */
+  /** Reads a double within the specified range,
+      otherwise returns the mininum allowed. */
   public double readDouble(double lo, double hi)
     { double r;
       try

@@ -19,7 +19,7 @@
       plotChoice = new JComboBox(); plotChoice.addActionListener(this);  @/
       JPanel pc = new JPanel(); pc.add(plotChoice);  @/
       setLayout(new BorderLayout());
-      add("North",pc); add("South",plotPanel);  @/
+      add("Center",pc); add("South",plotPanel);  @/
     }
 
 @ @<Optional GUI stuff@>=
