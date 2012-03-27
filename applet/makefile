@@ -1,5 +1,6 @@
 PUB = ..
 JAVAC="javac -source 1.5 -target 1.5 -classpath ..:../.."
+DIRS = fsmlens qgd/util simplex
 
 all: 
 	make  PKG=qgd/util    JAR=Monster compile jarcf
@@ -25,6 +26,9 @@ jarumf:
                  $(PKG)/makefile $(PKG)/manifest \
                  $(PKG)/images/* \
                  makefile README
+
+doc:
+	
 
 clean:
 	rm -f */*.class */*.java */*~ *~
