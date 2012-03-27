@@ -97,8 +97,8 @@
       drawAxes(1);
       x1 = x(event.getX());
       y1 = y(event.getY());
-      x1N = (int)((1+x1)*300.0/2.0);
-      y1N = (int)((1-y1)*300.0/2.0);
+      x1N = (int)(((1+x1)*300.0/2.0));
+      y1N = (int)(((1-y1)*300.0/2.0));
       if(quadrLine.equals("Rectangle")){
         g.drawRect((x1N-25),(y1N-25),50,50);
         imgrect = image.getSubimage((x1N-24),(y1N-24),48,48);
