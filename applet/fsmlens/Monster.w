@@ -210,9 +210,9 @@
     }
 
 @ @<get the source coord@>=
-  public double[] sourCoord(double[] coordS,double zcap)
+  public double[] sourCoord(double[] coordS)
     {
     double[] soCo = new double[3];
-    soCo = lenses.sourceCoord(coordS,zcap);
+    soCo = lenses.sourceCoord(coordS);
     return(soCo);
     }
