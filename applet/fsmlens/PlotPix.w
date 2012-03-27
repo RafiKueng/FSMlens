@@ -53,6 +53,7 @@ its descendant |Lens|.
     { int L = lens.L; double a = lens.a;  @/
       erase(); text = new StringBuffer();
       drawAxes((L+1)*a);
+      System.out.println("axes scale"+((L+1)*a));
       for (int l=0; l<=L; l++)
         { for (int n=lens.rings[l][0]; n<=lens.rings[l][1]; n++)
             { double x,y;
