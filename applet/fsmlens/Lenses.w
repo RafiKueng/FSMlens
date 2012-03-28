@@ -257,10 +257,10 @@
     }
 
 @ @<get the source coord@>=
-  public double[] sourceCoord(double[] coordS,double zcap)
+  public double[] sourceCoord(double[] coordS)
     {
     double[] soCo = new double[3];
-    soCo = lens.src_plane(coordS,zcap);
+    soCo = lens.src_plane(coordS,lens.imsys.get(0).zcap);
     return(soCo);
     }
 

@@ -82,14 +82,19 @@
 @ @<Example inputs@>=
   str = new String("B1115+080");  @/
   strb = new StringBuffer("object B1115+080 \n");  @/
-  strb.append("symm pixrad 8 \n");
+  strb.append("pixrad 8 \n");
   strb.append("zlens 0.311 \n");
   strb.append("g 14 \n");
   strb.append("multi 4 1.722 \n");
-  strb.append(" 0.3550 1.3220  1 \n");
-  strb.append("-0.9090 -0.7140 1 \n");
-  strb.append("-1.0930 -0.2600 2 \n");
-  strb.append(" 0.7170 -0.6270 2 \n\n");
+//  strb.append(" 0.3550 1.3220  1 \n");
+//  strb.append("-0.9090 -0.7140 1 \n");
+//  strb.append("-1.0930 -0.2600 2 \n");
+//  strb.append(" 0.7170 -0.6270 2 \n\n");
+  strb.append(" 0.221  0.507 1 \n");
+  strb.append("-0.271 -0.236 1 \n");
+  strb.append("-0.329 -0.071 2 \n");
+  strb.append(" 0.342 -0.214 2 \n");
+  strb.append("models 20 \n");
   choice.addItem(str); id.addElement(str); data.addElement(strb.toString());
 
 

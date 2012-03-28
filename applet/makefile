@@ -2,8 +2,10 @@ PUB = ..
 JAVAC="javac -source 1.5 -target 1.5 -classpath ..:../.."
 
 all: 
-	make  PKG=qgd/util    JAR=Monster compile jarcf
-	make  PKG=simplex  JAR=Monster compile jaruf
+	make  PKG=qgd/util JAR=Daemon compile jarcf
+	make  PKG=demon JAR=Daemon compile jarumf
+	make  PKG=qgd/util JAR=Monster compile jarcf
+	make  PKG=simplex JAR=Monster compile jaruf
 	make  PKG=fsmlens JAR=Monster compile jarumf
 
 compile:
@@ -24,7 +26,7 @@ jarumf:
                  $(PKG)/*.w $(PKG)/*.class \
                  $(PKG)/makefile $(PKG)/manifest \
                  $(PKG)/images/* \
-                 makefile README
+                 makefile
 
 clean:
 	rm -f */*.class */*.java */*~ *~

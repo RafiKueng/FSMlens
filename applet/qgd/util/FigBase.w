@@ -92,12 +92,12 @@ but absolute coordinates are stored times |scl| and reconverted while
 painting.
 
 @<Coordinate-pixel conversion@>=
-  final int scl=10;
-  final double rscl=10;
-  int xpix(double x)
+  final int scl=1;
+  final double rscl=1;
+  protected int xpix(double x)
     { return scl*lmar + (int)(scl*(x-xmin)/(xmax-xmin)*(wd-lmar-rmar)+0.5);
     }
-  int ypix(double y)
+  protected int ypix(double y)
     { return scl*bmar + (int)(scl*(y-ymin)/(ymax-ymin)*(ht-bmar-tmar)+0.5);
     }
   int unscl(int n)
