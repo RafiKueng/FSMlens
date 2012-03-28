@@ -23,15 +23,18 @@
         Monster home;
 	Synthimg synthimg;
         int[] RGBin;
-        int[][][] rgbPix = new int[300][300][2];
+        int[][][] rgbPix;
+        int picSize;
     }
 
 @ @<Code to generate synth pic@>=
 JButton copyButton;
 JButton resetButton;
 JButton reconstButton;
-public Synth(Monster home, Unicorn unicorn, Synthimg synthimg)
-        { super(300,300);
+public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
+        { super(picSize,picSize);
+          this.picSize = picSize;
+          rgbPix = new int[picSize][picSize][2];
           this.home = home;
           this.unicorn = unicorn;
 	  this.synthimg = synthimg;
@@ -65,9 +68,9 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg)
     {
 	rgbPix = unicorn.getrgbMatrix();
 	Image img; 
-         for(int i=0; i<300; i++) 
+         for(int i=0; i<picSize; i++) 
            {
-            for(int j=0; j<300; j++)
+            for(int j=0; j<picSize; j++)
     	      {
               image.setRGB(i,j,rgbPix[i][j][0]); 
  	      }
@@ -84,7 +87,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg)
 @ @<Reset the panel@>=
   public void reset()
     {
-    g.clearRect(0,0,300,300);
+    g.clearRect(0,0,picSize,picSize);
     unicorn.reset();
     synthimg.reset();
     repaint();

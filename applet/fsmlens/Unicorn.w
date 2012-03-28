@@ -9,16 +9,12 @@
       @<get the Picture out@>
       @<get the x pos@>
       @<get the y pos@>
-      @<get all the picture in a array@>
-      @<return all the coord in a array@>
       @<init rgb matrix@>
       @<Reset the array@>
       @<get the RGB matrix out@>
       String quadrLine="Line"; 
-      int x1N,y1N; 
-      int[][][] rgbPix = new int[300][300][2];
-      ArrayList<BufferedImage> imgArr = new ArrayList<BufferedImage>();
-      ArrayList<Integer> coord = new ArrayList<Integer>();
+      int x1N,y1N, picSize; 
+      int[][][] rgbPix;
     }
 
 @ @<Imports for |Unicorn|@>=
@@ -34,9 +30,11 @@
 
 
 @ @<Code to read and show raw lenses@>=
-  public Unicorn(Monster home)
-    { super(300,300);
+  public Unicorn(Monster home, int picSize)
+    { super(picSize,picSize);
       this.home = home;
+      this.picSize = picSize; 
+      rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
       rect = new JComboBox();
       choice.addActionListener(this);
@@ -99,18 +97,19 @@
   double x1,y1,x2,y2;
   public void mousePressed(MouseEvent event)
     { 
+      int subimageSize = 30;
       drawAxes(1);
       x1 = x(event.getX());
       y1 = y(event.getY());
-      x1N = (int)(((1+x1)*300.0/2.0));
-      y1N = (int)(((1-y1)*300.0/2.0));
+      x1N = (int)(((1+x1)*(double)(picSize)/2.0));
+      y1N = (int)(((1-y1)*(double)(picSize)/2.0));
       if(quadrLine.equals("Rectangle")){
-        g.drawRect((x1N-25),(y1N-25),50,50);
-        imgrect = image.getSubimage((x1N-24),(y1N-24),48,48);
-        BufferedImage img = toBufferedImage(imgrect,48,48);
-	for(int i=0; i<48; i++)
+        g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
+        imgrect = image.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
+        BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
+	for(int i=0; i<(subimageSize-2); i++)
  	  {
-	    for(int j=0; j<48; j++)
+	    for(int j=0; j<(subimageSize-2); j++)
 	      {
               if(rgbPix[x1N+i][y1N+j][0] == 0) 
 	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);
@@ -134,8 +133,6 @@
 @ @<Reset the array@>=
   public void reset()
     {
-    imgArr.clear();
-    coord.clear();
     showImage((String) choice.getSelectedItem());
     repaint();
     rgbMatrix();
@@ -144,9 +141,9 @@
 @ @<init rgb matrix@>=
   private void rgbMatrix()
     {
-    for(int i=0; i<300; i++) 
+    for(int i=0; i<picSize; i++) 
       {
-        for(int j=0; j<300; j++)
+        for(int j=0; j<picSize; j++)
     	  {
           rgbPix[i][j][0] = 0;
  	  }
@@ -178,17 +175,7 @@
      return((int)y1N);
     }
 
-@ @<get all the picture in a array@>=
-  public ArrayList allImg()
-    {
-    return(imgArr);
-    }
 
-@ @<return all the coord in a array@>=
-  public ArrayList allCoord()
-    {
-    return(coord);
-    }
 
 
 
