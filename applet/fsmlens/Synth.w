@@ -73,7 +73,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
             for(int j=0; j<picSize; j++)
     	      {
               image.setRGB(i,j,rgbPix[i][j][0]); 
- 	      System.out.println("hallo");
+ 	      System.out.println("hallo, this is test");
  	      }
            }
         repaint();	
