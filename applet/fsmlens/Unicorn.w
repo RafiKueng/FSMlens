@@ -130,8 +130,15 @@
       x2 = x(event.getX());
       y2 = y(event.getY());
       if(quadrLine.equals("Line"))
+	{
         drawLine(x1,y1,x2,y2);
+	CuveLines cuveLines=new CuveLines();
+	Complex complex=new Complex(x2,y2);
+	cuveLines.update(complex);
+	}
       repaint();
+	
+	
     }
 
 @ @<Drawing the source@>=
