@@ -19,6 +19,7 @@
         @<Reset the matrix@>
         @<Draw the source plane@>
         @<find maximum in the pix@>
+        @<make a average over the pix@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -63,7 +64,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 	  for(int k=0; k<picSize;k++)
 	    {
               if(rgbPix[j][k][0] != 0){
-                sourcCoo[1] = x(j); // 2.25*((2.0*(j)/picSize)-1.0);
+                sourcCoo[1] = x(j); // 2.25*((2.0*(j)/(double)(picSize))-1.0);
 	        sourcCoo[2] = y(k); // 2.25*(1.0-(2.0*(k)/(double)(picSize)));
 		int xNew,yNew;
 		try{
@@ -84,7 +85,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
    	    }
 	  }
         drawPic();
-        getMax();
+        makeAverage();
         repaint();	
     }
 
@@ -132,6 +133,28 @@ int max = 0;
       }
     g.fillOval(xMax,yMax,10,10);
     unicorn.drawSource(xMax,yMax);
+    }
+
+@ @<make a average over the pix@>=
+  private void makeAverage()
+    {
+    int xAver = 0, yAver = 0, totalCount = 1;
+    for(int i=0; i<picSize; i++) 
+      {
+        for(int j=0; j<picSize; j++)
+    	  {
+          if(pixCount[i][j][0]>0)
+            {
+            xAver += i * pixCount[i][j][0];
+            yAver += j * pixCount[i][j][0];
+            totalCount += pixCount[i][j][0];
+            }
+ 	  }
+      }
+    xAver = xAver/totalCount;
+    yAver = yAver/totalCount;
+    g.fillOval(xAver,yAver,10,10);
+    unicorn.drawSource(xAver,yAver);
     }
 
 
