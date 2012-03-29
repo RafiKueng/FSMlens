@@ -20,12 +20,15 @@ This file is not doing anything.
         @<Managing the button in |Synth|@>
         @<Reset the panel@>
         @<get RGB of the pixels@>
+        @<reconstruct the image plane@>   
+        @<Draw the reconstruction plane@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
 	Synthimg synthimg;
         int[] RGBin;
         int[][][] rgbPix;
+        int[][][] pixCount;
         int picSize;
     }
 
@@ -33,6 +36,7 @@ This file is not doing anything.
 JButton copyButton;
 JButton resetButton;
 JButton reconstButton;
+JButton synthButton;
 public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         { super(picSize,picSize);
           this.picSize = picSize;
@@ -43,12 +47,16 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           copyButton = new JButton("Copy"); 
           copyButton.addActionListener(this);
 	  hook.add(copyButton);
-          reconstButton = new JButton("Get Source");
+          reconstButton = new JButton("Source");
           reconstButton.addActionListener(this);
           hook.add(reconstButton);
           resetButton = new JButton("Reset");
           resetButton.addActionListener(this);
           hook.add(resetButton);
+          synthButton = new JButton("Synth");
+          synthButton.addActionListener(this);
+          hook.add(synthButton);
+          rgbPix = new int[picSize][picSize][1];
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
@@ -61,7 +69,8 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       String str = event.getActionCommand();
       if (str.equals("Copy")) setPic();
       if (str.equals("Reset")) reset();
-      if (str.equals("Get Source")) getSource();
+      if (str.equals("Source")) getSource();
+      if (str.equals("Synth")) getPixPic();
  
     }
 
@@ -80,10 +89,53 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         repaint();	
     }
 
+@ @<reconstruct the image plane@>=
+  public void getPixPic()
+    {    
+        g.clearRect(0,0,picSize,picSize);
+        pixCount = synthimg.getAveragePix();
+        double[] sourcCoo = new double[3];      
+        for(int j=0; j<picSize;j++)
+ 	  {
+	  for(int k=0; k<picSize;k++)
+	    {
+                sourcCoo[1] = x(j); // 2.25*((2.0*(j)/(double)(picSize))-1.0);
+	        sourcCoo[2] = y(k); // 2.25*(1.0-(2.0*(k)/(double)(picSize)));
+		int xNew,yNew;
+		try{
+ 	          sourcCoo = home.sourCoord(sourcCoo);
+                  xNew = xpix(sourcCoo[1]); // (int)(((1.0+sourcCoo[1])*picSize/2.0)/2.25);
+	          yNew = ypix(sourcCoo[2]); // (int)(((1.0-sourcCoo[2])*picSize/2.0)/2.25);
+		}
+		catch(Exception e) {
+		  xNew = j;
+	 	  yNew = k;
+		}
+	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
+		  {
+                  rgbPix[j][k][0] = pixCount[xNew][yNew][1];
+		  }
+   	    }
+	  }
+        drawPic();
+        repaint();	
+    }
+
+
 @ @<get RGB of the pixels@>=
   private void getSource()
     {
     synthimg.setPixPic();
+    }
+
+@ @<Draw the reconstruction plane@>=
+  private void drawPic()
+    {
+    for(int i=0; i<picSize; i++)
+      for(int j=0; j<picSize; j++)
+        { 
+          image.setRGB(i,j,rgbPix[i][j][0]);   
+        }
     }
 
 @ @<Reset the panel@>=

@@ -20,6 +20,7 @@
         @<Draw the source plane@>
         @<find maximum in the pix@>
         @<make a average over the pix@>
+        @<get the average pixel@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -28,6 +29,7 @@
         int[][][] pixCount;
         int[][][] rgbPix;
         int picSize;
+        int max,xMax,yMax;
     }
 
 @ @<Code to generate synth pic@>=
@@ -84,8 +86,8 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
               }
    	    }
 	  }
-        drawPic();
         makeAverage();
+        drawPic();
         repaint();	
     }
 
@@ -96,7 +98,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       for(int j=0; j<picSize; j++)
         { 
         if(pixCount[i][j][0] != 0)
-          image.setRGB(i,j,(pixCount[i][j][1])/(pixCount[i][j][0]));   
+          image.setRGB(i,j,pixCount[i][j][1]);   
         }
     }
 
@@ -116,10 +118,8 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     }
 
 @ @<find maximum in the pix@>=
-int max = 0;
   private void getMax()
     {
-    int xMax = 0,yMax = 0;
     for(int i=0; i<picSize; i++) 
       {
         for(int j=0; j<picSize; j++)
@@ -131,8 +131,6 @@ int max = 0;
             }
  	  }
       }
-    g.fillOval(xMax,yMax,10,10);
-    unicorn.drawSource(xMax,yMax);
     }
 
 @ @<make a average over the pix@>=
@@ -148,6 +146,7 @@ int max = 0;
             xAver += i * pixCount[i][j][0];
             yAver += j * pixCount[i][j][0];
             totalCount += pixCount[i][j][0];
+            pixCount[i][j][1] = pixCount[i][j][1]/pixCount[i][j][0];
             }
  	  }
       }
@@ -155,6 +154,12 @@ int max = 0;
     yAver = yAver/totalCount;
     g.fillOval(xAver,yAver,10,10);
     unicorn.drawSource(xAver,yAver);
+    }
+
+@ @<get the average pixel@>=
+  public int[][][] getAveragePix()
+    {
+    return(pixCount);
     }
 
 
