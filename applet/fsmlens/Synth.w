@@ -1,5 +1,7 @@
 @* Synthetic image.
 
+This file is not doing anything.
+
 @(Synth.java@>=
   package fsmlens;
   import qgd.util.*;
