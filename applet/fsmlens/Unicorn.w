@@ -12,6 +12,7 @@
       @<init rgb matrix@>
       @<Reset the array@>
       @<get the RGB matrix out@>
+      @<Drawing the source@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       int[][][] rgbPix;
@@ -70,11 +71,13 @@
   Graphics g;
   Image img;
   BufferedImage imgrect = null;
+  BufferedImage imageOrg;
   void showImage(String str)
     { str = "images/" + str;
       JApplet app = new JApplet();
       Image img = app.getToolkit().getImage(getClass().getResource(str));
       image = toBufferedImage(img,wd,ht);
+      imageOrg = image;
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
@@ -104,8 +107,9 @@
       x1N = (int)(((1+x1)*(double)(picSize)/2.0));
       y1N = (int)(((1-y1)*(double)(picSize)/2.0));
       if(quadrLine.equals("Rectangle")){
+        g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
-        imgrect = image.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
+        imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
 	for(int i=0; i<(subimageSize-2); i++)
  	  {
@@ -129,6 +133,15 @@
         drawLine(x1,y1,x2,y2);
       repaint();
     }
+
+@ @<Drawing the source@>=
+  public void drawSource(int xMax, int yMax)
+    {
+    g.setColor(Color.white);
+    g.fillOval(xMax,yMax,10,10);
+    repaint();
+    }
+
 
 @ @<Reset the array@>=
   public void reset()

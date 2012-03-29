@@ -18,6 +18,7 @@
         @<Reset the panel@>
         @<Reset the matrix@>
         @<Draw the source plane@>
+        @<find maximum in the pix@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -83,6 +84,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
    	    }
 	  }
         drawPic();
+        getMax();
         repaint();	
     }
 
@@ -93,7 +95,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       for(int j=0; j<picSize; j++)
         { 
         if(pixCount[i][j][0] != 0)
-          image.setRGB(i,j,(pixCount[i][j][1])/(pixCount[i][j][0]));
+          image.setRGB(i,j,(pixCount[i][j][1])/(pixCount[i][j][0]));   
         }
     }
 
@@ -112,11 +114,33 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       }
     }
 
+@ @<find maximum in the pix@>=
+int max = 0;
+  private void getMax()
+    {
+    int xMax = 0,yMax = 0;
+    for(int i=0; i<picSize; i++) 
+      {
+        for(int j=0; j<picSize; j++)
+    	  {
+          if(pixCount[i][j][0]>max)
+            {
+            max = pixCount[i][j][0];
+            xMax = i; yMax = j;
+            }
+ 	  }
+      }
+    g.fillOval(xMax,yMax,10,10);
+    unicorn.drawSource(xMax,yMax);
+    }
+
+
 @ @<Reset the panel@>=
   public void reset()
     {
     g.clearRect(0,0,picSize,picSize);
     unicorn.reset();
     resetMatrix();
+    max = 0;
     repaint();
     }
