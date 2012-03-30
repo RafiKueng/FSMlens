@@ -115,8 +115,8 @@
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
-              if(rgbPix[x1N+i][y1N+j][0] == 0) 
-	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);
+              if(rgbPix[x1N+i][y1N+j][0] == 0 && img.getRGB(i,j)>-11000000)
+       	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);              
  	      }
  	  }
         repaint();
@@ -180,7 +180,7 @@
 @ @<get the Picture out@>=
   public BufferedImage getImage()
     {
-    return(imgrect);
+    return(image);
     }
 
 @ @<get the x pos@>=
