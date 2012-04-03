@@ -17,53 +17,45 @@ import cv2 #using the new pure numpy python interface to opencv
 import os
 
 
+def debug(str):
+    print " | debug"+str
+
 class imgData:
     data = [] # original b/w image
     desc = ""
     filename = ""
     datasetnr = -1
     color = [] #using float values in entire project
-    colorfn = lambda x:[x,x,x] #maps grayscale value to rgb g -> [b,g,r]
+    colorfn = [0,0,0] #maps grayscale value to rgb g -> [b,g,r]
     transform = []
     hist = []
     histfn = lambda x:x
     mode = -1 #is this a regular picture (0) or a density map (1)
     
-    def __init__(self, _data):
+    def __init__(self):
+        debug("init imgData")
+        
+    def setData(self, _data):
+        debug("imgData.setData")
         self.data = _data.astype('float')
         
+    def setColorFn(self, _colorfn):
+        debug("imgData.setColorFn")
+        #print _colorfn
+        self.colorfn = _colorfn
+        
+        self.colorImg()
+        
     def colorImg(self):
-        self.coloring_done = False;
-        while not self.coloring_done:            
-            print "coloring image\n"
-            print "select option:"
-            print "1: bgr, start, end value, linear"
-            #print "2: hsv linear"
-            print "3: bgr, own formula"
-            print "0: DONE"
-
-            sel = int(raw_input("\n>"))
-
-            self.colorfn = [0,0,0]
-    
-            if sel == 1:
-                print "enter an array from [b, g, r] for the min values"
-                bgr_from = np.array(input("\n>"))
-                print "enter an array to [b, g, r] for the max values"
-                bgr_to = np.array(input("\n>"))
-                self.colorfn = lambda grey: bgr_to * grey + bgr_from
-    
-            #elif sel == 2:
-            #    pass
-            
-            elif sel == 3:
-                print "please enter a valid function, mapping one input value to 3 output values"
-                print "example: lambda gray: [1-gray, gray, 1-gray/2]"
-                self.colorfn = input("\n>")
-            else:
-                self.coloring_done = True
+        img = self.data
         
-        
+        #self.color = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+                
+        self.color = cv2.merge([self.colorfn[0](img),
+                                self.colorfn[1](img),
+                                self.colorfn[2](img)])
+
+        #self.coloring_done = False;
     
     def getColorImg(self):
         pass
@@ -78,8 +70,78 @@ class imgData:
         pass
 
 
-def colorImg(imgData):
-    pass
+
+#-----------------------------------------------------------------------------
+
+
+
+def colorImage(imgData):
+    
+    text1 = ("blue", "green", "red")
+    text2 = ("min", "max")
+    coloring_done = False
+    
+    
+    while not coloring_done:   
+        
+        print imgData.data
+        print np.max(imgData.data)
+        print np.shape(imgData.data)
+        #showImg(imgData.data)
+
+        
+        print "\ncoloring image: select option"
+        print "  1) bgr; linear; start, end value"
+        #print "2: hsv linear"
+        print "  3) bgr, own formula"
+        if coloring_done: print "  0) ABORT"
+        else: print "  0) DONE"
+
+        sel = int(raw_input("> "))
+
+        colorfn = [0,0,0]
+        
+        if sel == 1:
+            text1 = ("blue", "green", "red")
+            text2 = ("min", "max")
+            fromto = [[0,0,0],[0,0,0]] #start and endvalue of colorrange
+
+            print "enter the colorranges (color in float: 0..1)"
+
+            for i in range(len(text2)):
+                for j in range(len(text1)):
+                    fromto[i][j] = np.array(input("enter {0} {1} value: > ".format(text1[j], text2[i])))
+            
+            for i in range(3):
+                colorfn[i] = lambda grey: (fromto[1][i]-fromto[0][i]) * grey + fromto[0][i]
+            
+            coloring_done = True
+            
+
+        #elif sel == 2:
+        #    pass
+        
+        elif sel == 3:
+            print "please enter 3 valid function, mapping the gray input pixel value one of the three colors (in float)"
+            print "example: blue> lambda gray: 1-gray+3"
+            
+            for i in range(3):
+                colorfn[i] = input("{0}> ".format(text1[i]))
+            
+            coloring_done = True
+
+        elif sel == 0:
+            if coloring_done:
+                break
+            else:
+                return
+            
+        else:
+            print "no valid selection"
+    
+                
+    imgData.setColorFn(colorfn)
+    showImg(imgData.color)
     
 def adjHistogram(imgData):
     pass
@@ -89,35 +151,52 @@ def densityMap(imgData):
     
 
 
-def editFile(imgData):
-    print "edit file name {0}, datasetnr {1}".format(imgData.desc, imgData.datasetnr)
-    print "\n"
-    print "1: adjust histogram"
-    print "2: create Density map"
-    sel = int(raw_input("\n>"))
-    if sel == 1:
-        pass
-    elif sel == 2:
-        pass
+def editImage(imgData):
+
     
-    print "choose color"
-    col_r = int(raw_input("\nred>"))
-    col_g = int(raw_input("\ngreen>"))
-    col_b = int(raw_input("\nblue>"))
+    while True:
+        print "\n\nediting file name {0} [{1}]".format(imgData.filename, imgData.datasetnr)
+        print "  1) adjust histogram"
+        print "  2) Convert to Density map"
+        print "  3) Set color"
+        print "  0) DONE"
+        
+        sel = int(raw_input("> "))
+        
+        if sel == 1:
+            pass
+        elif sel == 2:
+            pass
+        elif sel == 3:
+            colorImage(imgData)
+        elif sel == 0:
+            break
+        else:
+            print "no valid option"
+    
 
 
-def showImg(imgData):
+def showImgData(imgData):
     windowname = "File: {0}".format(imgData.name)
     windownamehist = windowname + " Histogram"
 
     flags = 0
     cv2.namedWindow(windowname, flags)
-    cv2.imshow(windowname, imgData())
+    cv2.imshow(windowname, imgData.data)
 
     cv2.namedWindow(windownamehist, flags)
     cv2.imshow(windownamehist, imgData.getHist())
 
     cv2.waitKey(1)
+    
+def showImg(img):
+    print type(img)
+    print img
+    print np.shape(img)
+    print np.max(img), np.min(img)
+    cv2.namedWindow("some img", 0)
+    cv2.imshow("some img", img)
+    cv2.waitKey()
 
 
 def merge(listOfImgData):
@@ -135,15 +214,16 @@ def readfile():
     print "\nselect file:"    
     for i, file in enumerate(files):
         print "  {0}: {1}".format(i, file)
-    sel1 = int(raw_input(">"))
+    sel1 = int(raw_input("> "))
     
     hdulist = pyfits.open(files[sel1])
 
     print "\nThe file contains the following datasets, please select:\n(if unsure, use 1, resp the entry with name 'sci' and of type ImageHDU)\n"
     hdulist.info()
-    sel2 = int(raw_input("\n>"))
+    sel2 = int(raw_input("\n> "))
     
-    data = imgData(hdulist[sel2].data)
+    data = imgData()
+    data.setData(hdulist[sel2].data)
     data.filename = files[sel1]
     data.datasetnr = sel2
 
@@ -185,8 +265,7 @@ def readfile():
     
 def main():
     imagelist = []
-    selection_finished = False
-    while not selection_finished:  
+    while True:  
         print "\n\nCreate picture\n=============="
         if len(imagelist)>0:
             print "\noverview:"
@@ -200,31 +279,40 @@ def main():
             print "9) finish (merge and cut)"
         print "0) QUIT (without saving)"
         
-        sel = int(raw_input(">"))
+        sel = int(raw_input("> "))
         
         if sel==1:
-            imagelist.append(readfile())
+            #select image
+            img = readfile()
+            imagelist.append(img)
+            
+            #print type(img.data)
+            #showImg(img.data)
+            
+            #directly go to the edit image section with current
+            editImage(img)
 
 
         elif sel==2:
             print "\nenter image nr to edit:"
-            sel2 = int(raw_input(">"))
+            sel2 = int(raw_input("> "))
+            editImage(imagelist[sel2])
 
         elif sel==3:
             print "\nenter image nr to remove:"
-            sel2 = int(raw_input(">"))
+            sel2 = int(raw_input("> "))
             imagelist.pop(sel2)
             
         elif sel==9:
-            selection_finished=True
+            break #continue with program
             
         elif sel==0:
-            return 0
+            return -1 #abort program
 
         else:
-            pass
+            print "no valid selection"
     
-    
+    return 0
         
     
     #while not done
@@ -258,6 +346,7 @@ def mainclass():
 
     
 if __name__ == '__main__':
-    main()
+    os.sys.exit(main())
+
 else:
     mainclass()
