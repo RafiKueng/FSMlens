@@ -69,7 +69,7 @@ public class Complex {
 	
 	public Complex div(Complex w) {
         
-        Complex z=this.times(w);
+        Complex z=this.times(w.conj());
         
         return z.div(w.modSQR());
     }
@@ -79,23 +79,22 @@ public class Complex {
     }
 	public double modSQR()
 	{
-		return this.re * this.re+this.im*this.im;
+		return( this.re * this.re+this.im*this.im);
 	}
 	public double mod()//or also the radius of the complex number
 	{
-		return Math.sqrt(this.modSQR());
+		return (Math.sqrt(this.modSQR()));
 	}
 	public double arg()
 	{
-		return Math.atan(im/re);
+		return Math.atan2(im,re);
 	}
 	
 	public Complex pow(double a)
 	{
 		double rb=Math.pow(this.mod(), a);
-		double argb=Math.pow(this.arg(), a);
-		return new Complex(rb*Math.cos(argb),rb*Math.cos(argb));
-		
+                double argb = a*this.arg();
+                return( new Complex(rb*Math.cos(argb),rb*Math.sin(argb)) );
 	}
 	public void printNumber()
 	{

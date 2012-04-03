@@ -15,7 +15,9 @@
       @<Drawing the source@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
+      double x2N,y2N;
       int[][][] rgbPix;
+      Complex complex;
     }
 
 @ @<Imports for |Unicorn|@>=
@@ -31,9 +33,10 @@
 
 
 @ @<Code to read and show raw lenses@>=
-  public Unicorn(Monster home, int picSize)
+  public Unicorn(Monster home, CuveLines cuveLines, int picSize)
     { super(picSize,picSize);
       this.home = home;
+      this.cuveLines = cuveLines;
       this.picSize = picSize; 
       rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
@@ -69,6 +72,7 @@
 @ @<Code to read and show raw lenses@>=
   Monster home;
   Graphics g;
+  CuveLines cuveLines;
   Image img;
   BufferedImage imgrect = null;
   BufferedImage imageOrg;
@@ -102,10 +106,10 @@
     { 
       int subimageSize = 30;
       drawAxes(1);
-      x1 = x(event.getX());
-      y1 = y(event.getY());
-      x1N = (int)(((1+x1)*(double)(picSize)/2.0));
-      y1N = (int)(((1-y1)*(double)(picSize)/2.0));
+      x1N = event.getX();
+      y1N = event.getY();
+      x1 = x(x1N);
+      y1 = y(y1N);
       if(quadrLine.equals("Rectangle")){
         g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
@@ -115,7 +119,7 @@
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && img.getRGB(i,j)>-11000000)
+              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
        	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);              
  	      }
  	  }
@@ -125,20 +129,20 @@
 
 @ @<Drawing curves with the mouse@>=
   public void mouseDragged(MouseEvent event)
-    { erase();
+    { reset();
+      erase();
       drawAxes(1);
-      x2 = x(event.getX());
-      y2 = y(event.getY());
+      x2N = event.getX();
+      y2N = event.getY();
+      x2 = x(x2N);
+      y2 = y(y2N);
       if(quadrLine.equals("Line"))
 	{
-        drawLine(x1,y1,x2,y2);
-	CuveLines cuveLines=new CuveLines();
-	Complex complex=new Complex(x2,y2);
-	cuveLines.update(complex);
+        //drawLine(x1,y1,x2,y2);
+	complex=new Complex(x2N,y2N);
+	cuveLines.update(complex,g);
 	}
-      repaint();
-	
-	
+      repaint();	
     }
 
 @ @<Drawing the source@>=
