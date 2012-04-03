@@ -84,9 +84,10 @@
 
 
 @ @<Put plots to East@>=
-  unicorn = new Unicorn(this);
-  synthimg = new Synthimg(this,unicorn);
-  synth = new Synth(this,unicorn,synthimg);
+  int picSize = 300;
+  unicorn = new Unicorn(this,picSize);
+  synthimg = new Synthimg(this,unicorn,picSize);
+  synth = new Synth(this,unicorn,synthimg,picSize);
   FigDeck pd = new FigDeck();  @/
   pd.addFigure("pixellation",lenses.plotPix);
   pd.addFigure("mass",lenses.plotMass);
@@ -216,3 +217,4 @@
     soCo = lenses.sourceCoord(coordS);
     return(soCo);
     }
+
