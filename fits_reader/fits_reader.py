@@ -1,7 +1,7 @@
 """
 Fits file reader and extractor
 
-conventions: 
+conventions:
 - only use float values thouout the project for image / colordata
 - use wcs for image pos, map to pixel x/y (for transform)
 
