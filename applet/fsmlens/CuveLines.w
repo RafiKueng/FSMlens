@@ -3,10 +3,16 @@
 @(CuveLines.java@>=
   package fsmlens;
 
+/**
+ * 
+ */
 import java.util.Vector;
-
-public class CuveLines{
-	private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
+/**
+ * @author marion
+ *
+ */
+public class CuveLines{// extends Figure{
+	private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(115/*original 215*/,77)};
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
@@ -47,10 +53,13 @@ public class CuveLines{
 
 	public void draw()
 	{
+		System.out.println("will use points:");
 		inPoints[0].printNumber();
+		System.out.print(" ");
 		inPoints[1].printNumber();
+		System.out.print(" ");
 		inPoints[2].printNumber();
-		System.out.print("\n");
+		System.out.println();
 		
 		Complex temp1=new Complex();
 		Complex temp2=new Complex();
@@ -108,6 +117,8 @@ public class CuveLines{
 	public static Vector<Complex> bezier(Complex p1, Complex p2, Complex p3, Complex p4)
 	{
 		Complex wNext;
+		Complex temp1;
+		
 		//Complex wLast;
 		Vector<Complex> Lines = new Vector<Complex>();
 		double t;
@@ -115,21 +126,38 @@ public class CuveLines{
 		for(int n=0; n<101;n++)
 		{
 			 t = scale*n;
-	         wNext = p1.times(Math.pow(1-t,3)).add((p2.times(3*Math.pow(1-t,2)*t)).add(p3.times(3*(1-t)*Math.pow(t,2))));
-	         wNext = wNext.add(p4.add(Math.pow(t,3)));
+			 //w = pow(1-t,3)*p1 + 3*pow(1-t,2)*t*p2 + 3*(1-t)*pow(t,2)*p3
+	         //   w += pow(t,3)*p4;
+	         wNext = p1.times(Math.pow(1-t,3));
+	         temp1=p2.times(3*Math.pow(1-t,2)*t);
+	         wNext=wNext.add(temp1);
+	         temp1=p3.times(3*Math.pow(t,2)*(1-t));
+	         wNext=wNext.add(temp1);
+	         temp1 = p4.times(Math.pow(t,3));
+	         wNext=wNext.add(temp1);
+	         //System.out.print(" "+n+" ");
+	         //wNext.printNumber();
+	         
 	         Lines.add(wNext);
 		}
+		//System.out.println();
 		return Lines;
 	}
 	
 	public void update(Complex event)
 	{
+		
 		double ds=0;
 		double dsmin=0;
 		int q=0;
 		for(int p=0;p<3;p++)
 		{
 			ds=event.subtract(inPoints[p]).modSQR();
+			System.out.print(" ");
+			inPoints[p].printNumber();
+			System.out.print(" ");
+			
+			
 			if(p==0 || ds<dsmin)
 			{
 				dsmin=ds;

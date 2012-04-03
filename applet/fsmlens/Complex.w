@@ -15,12 +15,12 @@ public class Complex {
 		//Complex number has real and imaginary part zero!!!
 	}
 	
-	Complex(double re, double im)
+	public Complex(double re, double im)
 	{
 		this.re=re;
 		this.im=im;
 	}
-	Complex(double [] z)
+	public Complex(double [] z)
 	{
 		this.re=z[0];
 		this.im=z[1];
@@ -50,7 +50,7 @@ public class Complex {
 	
 	public Complex subtract(Complex z)
 	{
-		Complex zTot=new Complex(z.real()-this.re, z.imaginary()-this.im);
+		Complex zTot=new Complex(this.re-z.real(), this.im-z.imaginary());
 		return zTot;
 	}
 	
@@ -93,8 +93,8 @@ public class Complex {
 	public Complex pow(double a)
 	{
 		double rb=Math.pow(this.mod(), a);
-		double argb=Math.pow(this.arg(), a);
-		return new Complex(rb*Math.cos(argb),rb*Math.cos(argb));
+		double argb=this.arg()* a;
+		return new Complex(rb*Math.cos(argb),rb*Math.sin(argb));
 		
 	}
 	public void printNumber()
@@ -104,4 +104,5 @@ public class Complex {
 	
 
 }
+
 

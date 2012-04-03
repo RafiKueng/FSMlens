@@ -128,15 +128,39 @@
     { erase();
       drawAxes(1);
       x2 = x(event.getX());
-      y2 = y(event.getY());
+      y2 = y(event.getY());	
       if(quadrLine.equals("Line"))
 	{
-        drawLine(x1,y1,x2,y2);
+        //drawLine(x1,y1,x2,y2);
 	CuveLines cuveLines=new CuveLines();
 	Complex complex=new Complex(x2,y2);
+	Complex temp1;
+	Complex temp2;
 	cuveLines.update(complex);
-	}
-      repaint();
+	Vector<Complex> bezirLines0=cuveLines.getbezier0();
+	Vector<Complex> bezirLines1=cuveLines.getbezier0();
+	Vector<Complex> bezirLines2=cuveLines.getbezier0();
+	Vector<Complex> bezirLines3=cuveLines.getbezier0();
+	for(int i=0;i<bezirLines0.size()-1;i++)
+	{
+		
+		temp1=bezirLines0.get(i);
+		temp2=bezirLines0.get(i+1);
+		drawLine(temp1.real(),temp1.imaginary(),temp2.real(),temp2.imaginary());
+		temp1=bezirLines1.get(i);
+		temp2=bezirLines1.get(i+1);
+		drawLine(temp1.real(),temp1.imaginary(),temp2.real(),temp2.imaginary());
+		temp1=bezirLines2.get(i);
+		temp2=bezirLines2.get(i+1);
+		drawLine(temp1.real(),temp1.imaginary(),temp2.real(),temp2.imaginary());
+		temp1=bezirLines3.get(i);
+		temp2=bezirLines3.get(i+1);
+		drawLine(temp1.real(),temp1.imaginary(),temp2.real(),temp2.imaginary());
+		
+      }
+	repaint();
+      }
+      
 	
 	
     }
