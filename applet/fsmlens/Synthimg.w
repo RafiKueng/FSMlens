@@ -40,7 +40,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
           pixCount = new int[picSize][picSize][2];
           this.home = home;
           this.unicorn = unicorn;
-          image = new BufferedImage(wd,ht,1);
+          image = new BufferedImage(picSize,picSize,1);
           g = image.getGraphics();
 	  drawAxes(1);
           resetMatrix();
@@ -60,19 +60,20 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
   public void setPixPic()
     {    
         rgbPix = unicorn.getrgbMatrix();
-        double[] sourcCoo = new double[3];      
+        double[] sourcCoo = new double[3];     
+        System.out.println("synthimg: " + x(150) + " " + y(150)); 
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
               if(rgbPix[j][k][0] != 0){
-                sourcCoo[1] = x(j); // 2.25*((2.0*(j)/(double)(picSize))-1.0);
-	        sourcCoo[2] = y(k); // 2.25*(1.0-(2.0*(k)/(double)(picSize)));
+                sourcCoo[1] = x(j);
+	        sourcCoo[2] = y(k);
 		int xNew,yNew;
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);
-                  xNew = xpix(sourcCoo[1]); // (int)(((1.0+sourcCoo[1])*picSize/2.0)/2.25);
-	          yNew = ypix(sourcCoo[2]); // (int)(((1.0-sourcCoo[2])*picSize/2.0)/2.25);
+                  xNew = xpix(sourcCoo[1]);
+	          yNew = ypix(sourcCoo[2]);
 		}
 		catch(Exception e) {
 		  xNew = j;

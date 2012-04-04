@@ -37,7 +37,7 @@ public class Complex {
 	
 	public Complex add(double x)
 	{
-		Complex zTot=new Complex(re+x,im);
+		Complex zTot=new Complex(this.re+x,this.im);
 		return zTot;
 	}
 	
@@ -47,10 +47,16 @@ public class Complex {
 		return zTot;
 		
 	}
+
+        public Complex substact(double x)
+        {
+           	Complex zTot = new Complex(this.re-x,this.im);
+ 		return zTot;
+        }
 	
 	public Complex subtract(Complex z)
 	{
-		Complex zTot=new Complex(z.real()-this.re, z.imaginary()-this.im);
+		Complex zTot=new Complex(this.re-z.real(), this.im -z.imaginary());
 		return zTot;
 	}
 	
@@ -59,12 +65,12 @@ public class Complex {
     }
 	public Complex times(double a)
 	{
-		return new Complex(re*a,im*a);
+		return new Complex(this.re*a,this.im*a);
 	}
 	public Complex div(double a)
 	{
 		assert(a!=0);
-		return new Complex(re/a,im/a);
+		return new Complex(this.re/a,this.im/a);
 	}
 	
 	public Complex div(Complex w) {
@@ -79,22 +85,22 @@ public class Complex {
     }
 	public double modSQR()
 	{
-		return( this.re * this.re+this.im*this.im);
+		return this.re * this.re+this.im*this.im;
 	}
 	public double mod()//or also the radius of the complex number
 	{
-		return (Math.sqrt(this.modSQR()));
+		return Math.sqrt(this.modSQR());
 	}
 	public double arg()
 	{
-		return Math.atan2(im,re);
+		return Math.atan2(this.im,this.re);
 	}
 	
 	public Complex pow(double a)
 	{
 		double rb=Math.pow(this.mod(), a);
                 double argb = a*this.arg();
-                return( new Complex(rb*Math.cos(argb),rb*Math.sin(argb)) );
+                return new Complex(rb*Math.cos(argb),rb*Math.sin(argb)) ;
 	}
 	public void printNumber()
 	{

@@ -105,6 +105,7 @@
   public void mousePressed(MouseEvent event)
     { 
       int subimageSize = 30;
+      System.out.println("derp: " + x(150) + " " + y(150)); 
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
@@ -119,7 +120,8 @@
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
+              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
+              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-8000000)) 
        	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);              
  	      }
  	  }
