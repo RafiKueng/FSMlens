@@ -28,6 +28,7 @@
         int[] RGBin;
         int[][][] pixCount;
         int[][][] rgbPix;
+        double[][][] rgbDouble;
         int picSize;
         int max,xMax,yMax;
     }
@@ -38,6 +39,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
           this.picSize = picSize;
           rgbPix = new int[picSize][picSize][2];
           pixCount = new int[picSize][picSize][2];
+          rgbDouble = new double[picSize][picSize][1];
           this.home = home;
           this.unicorn = unicorn;
           image = new BufferedImage(picSize,picSize,1);
@@ -59,9 +61,10 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 @ @<set somer picture@>=
   public void setPixPic()
     {    
+        resetMatrix();
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
-        System.out.println("synthimg: " + x(150) + " " + y(150)); 
+        System.out.println("synthimg: " + x(160) + " " + y(160)); 
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
@@ -81,8 +84,15 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 		}
 	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
 		  {
-		  pixCount[xNew][yNew][0] += 1;
-                  pixCount[xNew][yNew][1] += rgbPix[j][k][0];
+                  if(rgbPix[j][k][0]>-1000000){
+                    pixCount[xNew][yNew][0] += 1000;
+                    pixCount[xNew][yNew][1] += 1000*rgbPix[j][k][0];
+                    }
+                  else{
+		    pixCount[xNew][yNew][0] += 1;
+                    pixCount[xNew][yNew][1] += rgbPix[j][k][0];
+                    }
+                  rgbDouble[xNew][yNew][0] += 1.0/(double)rgbPix[j][k][0];
 		  }
               }
    	    }
@@ -147,13 +157,15 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
             xAver += i * pixCount[i][j][0];
             yAver += j * pixCount[i][j][0];
             totalCount += pixCount[i][j][0];
+            rgbDouble[i][j][0] = (1.0/rgbDouble[i][j][0]) / (double)pixCount[i][j][0];
             pixCount[i][j][1] = pixCount[i][j][1]/pixCount[i][j][0];
+            //pixCount[i][j][1] = (int)rgbDouble[i][j][0];
             }
  	  }
       }
     xAver = xAver/totalCount;
     yAver = yAver/totalCount;
-    g.fillOval(xAver,yAver,10,10);
+    //g.fillOval(xAver,yAver,10,10);
     unicorn.drawSource(xAver,yAver);
     }
 
