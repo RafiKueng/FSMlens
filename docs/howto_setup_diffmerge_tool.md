@@ -27,10 +27,10 @@ Set up the Diff tool
         os.system('meld "%s" "%s"' % (sys.argv[2], sys.argv[5]))
     
 3.  make it executable: 
-    `chmod +x diffmeld.py`
+    `$ chmod +x diffmeld.py`
     
 4.  set up the diff tool in git:
-    `git config --global diff.external diffmeld.py`
+    `$ git config --global diff.external diffmeld.py`
     
 Set up the merge tools
 ----------------------
@@ -68,9 +68,9 @@ With this setup you'll get a 5 way display, to compare `base` - `local` - `merge
         meld $2 $4 $3
     
 3.  make it executable: 
-    `chmod +x mergemeld`
+    `$ chmod +x mergemeld`
     
-4.  set up the git config: (`gedit ~/.gitconfig`)
+4.  set up the git config: (`$ gedit ~/.gitconfig`)
         
         [merge]
             tool = mymeld
@@ -78,4 +78,4 @@ With this setup you'll get a 5 way display, to compare `base` - `local` - `merge
             cmd = $HOME/local/bin/mergemeld $BASE $LOCAL $REMOTE $MERGED
         
 5.  finished. the next time a merge fails, you can call the tool to resolve the conflicts in GUI using
-    `git mergetool`
+    `$ git mergetool`
