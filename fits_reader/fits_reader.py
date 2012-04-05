@@ -22,6 +22,7 @@ def debug(str):
 
 class imgData:
     data = [] # original b/w image
+    norm = [] #normalised data
     desc = ""
     filename = ""
     datasetnr = -1
@@ -30,7 +31,7 @@ class imgData:
     transform = []
     hist = []
     histfn = lambda x:x
-    mode = -1 #is this a regular picture (0) or a density map (1)
+    #mode = -1 #is this a regular picture (0) or a density map (1)
     
     def __init__(self):
         debug("init imgData")
@@ -38,6 +39,7 @@ class imgData:
     def setData(self, _data):
         debug("imgData.setData")
         self.data = _data.astype('float')
+        self.norm = cv2.normalize(self.data, alpha=0, beta=1)
         
     def setColorFn(self, _colorfn):
         debug("imgData.setColorFn")
@@ -47,7 +49,7 @@ class imgData:
         self.colorImg()
         
     def colorImg(self):
-        img = self.data
+        img = self.norm
         
         #self.color = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                 
@@ -144,7 +146,26 @@ def colorImage(imgData):
     showImg(imgData.color)
     
 def adjHistogram(imgData):
-    pass
+    while True:
+        print "\n\najdusting histogram of file name {0} [{1}]".format(imgData.filename, imgData.datasetnr)
+        print "  1) display histgram"
+        print "  2) auto adjust"
+        print "  3) set adjust function"
+        print "  0) DONE"
+        
+        sel = int(raw_input("> "))
+        
+        if sel == 1:
+            pass
+        
+        elif sel == 2:
+            pass
+        elif sel == 3:
+            colorImage(imgData)
+        elif sel == 0:
+            break
+        else:
+            print "no valid option"
     
 def densityMap(imgData):
     pass
@@ -157,20 +178,24 @@ def editImage(imgData):
     while True:
         print "\n\nediting file name {0} [{1}]".format(imgData.filename, imgData.datasetnr)
         print "  1) adjust histogram"
-        print "  2) Convert to Density map"
-        print "  3) Set color"
+        print "  2) Set color"
+        #print "  3) Convert to Density map"
         print "  0) DONE"
         
         sel = int(raw_input("> "))
         
         if sel == 1:
             pass
+        
         elif sel == 2:
-            pass
-        elif sel == 3:
             colorImage(imgData)
+
+        elif sel == 3:
+            pass
+        
         elif sel == 0:
             break
+        
         else:
             print "no valid option"
     
