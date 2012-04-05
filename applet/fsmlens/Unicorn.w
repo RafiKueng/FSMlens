@@ -125,6 +125,13 @@
  	  }
         repaint();
         }
+// if mouse is clicke a new cuveLine is drawn
+	else if(quadrLine.equals("Line")){
+		Complex complex1=new Complex(x2N,y2N);
+		CuveLines cuveLines2=new CuveLines();
+		cuveLines2.update(complex1,g);
+      	repaint();
+	}
     }
 
 @ @<Drawing curves with the mouse@>=
@@ -144,6 +151,11 @@
 	}
       repaint();	
     }
+//@ @<Creating a new instance of Cuve lines and draw new curves@>=
+//  public void newDraw()
+//  {
+//	component.getAction
+//  }
 
 @ @<Drawing the source@>=
   public void drawSource(int xMax, int yMax)

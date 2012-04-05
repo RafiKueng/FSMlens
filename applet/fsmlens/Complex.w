@@ -50,11 +50,12 @@ public class Complex {
 	
 	public Complex subtract(Complex z)
 	{
-		Complex zTot=new Complex(z.real()-this.re, z.imaginary()-this.im);
+		Complex zTot=new Complex(this.re-z.real(),this.im-z.imaginary());
 		return zTot;
 	}
 	
 	public Complex times(Complex w) {
+
         return new Complex(this.re*w.real()-this.im*w.imaginary(),this.re*w.imaginary()+this.im*w.real());
     }
 	public Complex times(double a)
@@ -98,7 +99,7 @@ public class Complex {
 	}
 	public void printNumber()
 	{
-		System.out.print(this.re+"+i"+this.im);
+		System.out.print(this.re+"+i"+this.im+" ");
 	}
 	
 
