@@ -36,3 +36,5 @@ Thumbs.db
 .spyderproject
 
 # for individual stuff create your own .gitignore file in your folder..
+
+compile
