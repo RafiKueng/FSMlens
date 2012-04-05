@@ -44,7 +44,7 @@ There are 4 versions that are interesting:
 *   your version (`[filename].LOCAL.[version].txt`, short `local`)
 *   the other branch versions (`[filename].REMOTE.[version].txt`, short `remote`)
 *   the latest common parent, root of the branch (`[filename].BASE.[version].txt`, short `base`)
-*   the resulting, final merged file, with the file markers ([filename], short `merge`)
+*   the resulting, final merged file, with the file markers (`[filename]`, short `merge`)
 
 With this setup you'll get a 5 way display, to compare `base` - `local` - `merge` - `remote` - `base` split up in 3 windows:
 
@@ -52,7 +52,7 @@ With this setup you'll get a 5 way display, to compare `base` - `local` - `merge
 *   one showing the differences between `remote` - `base` (just for you information)
 *   one showing `local` - `merge` - `remote` to ACTUALLY DO the merge
 
-(please note, if you don't want 3 windows, but only a 3 way merge in one window with `local` - `merge` - `remote`, just edit the script in point 2. should be obvious what to change..)
+(please note, if you don't want a 5 way merge with 3 windows, but only a 3 way merge in one window with `local` - `merge` - `remote`, just edit the script in point 2. should be obvious what to change..)
 
 ### Lets get started ###
 
