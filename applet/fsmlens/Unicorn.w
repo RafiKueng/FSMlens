@@ -102,6 +102,8 @@
 
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
+  Complex complex1;
+  CuveLines cuveLines2;
   public void mousePressed(MouseEvent event)
     { 
       int subimageSize = 30;
@@ -126,6 +128,13 @@
  	  }
         repaint();
         }
+// if mouse is clicke a new cuveLine is drawn
+	else if(quadrLine.equals("Line")){
+		complex1=new Complex(x2N,y2N);
+		cuveLines2=new CuveLines();
+		cuveLines2.update(complex1,g);
+      	repaint();
+	}
     }
 
 @ @<Drawing curves with the mouse@>=
@@ -142,9 +151,15 @@
         //drawLine(x1,y1,x2,y2);
 	complex=new Complex(x2N,y2N);
 	cuveLines.update(complex,g);
+        cuveLines2.update(complex1,g);
 	}
       repaint();	
     }
+//@ @<Creating a new instance of Cuve lines and draw new curves@>=
+//  public void newDraw()
+//  {
+//	component.getAction
+//  }
 
 @ @<Drawing the source@>=
   public void drawSource(int xMax, int yMax)

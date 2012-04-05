@@ -78,34 +78,52 @@ public class CuveLines{
 	    temp1=B.times(C2);
 	    temp2=C.times(B2);
 	    temp1=temp1.subtract(temp2);
-	    temp1=(temp1.div(D)).times(Complex.I);
-	    temp1=temp1.add(A);
-	    Complex cen=temp1;
+
+	    temp1=temp1.div(D).times(Complex.I);
+	    Complex cen=temp1.add(A);
+
 	    
 	    Complex a = inPoints[0].subtract(cen);
 	    Complex b = inPoints[1].subtract(cen);//first other point minima (H) or minima (L)
 	    Complex c = inPoints[2].subtract(cen);//seccond other point minima (H) or minima (L)
 	    
 	    
-	    b = (a.times((b.div(a)).pow(1.5))).add(cen);
-	    c = (a.times((c.div(a)).pow(1.5))).add(cen);
+
+	    temp1=b.div(a);
+	    temp1=temp1.pow(1.5);
+	    temp1=a.times(temp1);
+	    b = temp1.add(cen);
+
+    	    temp1=c.div(a);
+	    temp1=temp1.pow(1.5);
+	    temp1=a.times(temp1);
+	    c = temp1.add(cen);
 	    a = inPoints[0];
-	       
+	        
+	        ///*#create three "ovals" in the initially given place z
+	        //self.pnt[0]=self.point(z[0])
+	        //self.pnt[1]=self.point(z[1])
+	        //self.pnt[2]=self.point(z[2])*/
+
             
             //draw Point the three points inPoints 0-2
             g.setColor(Color.red);
             point(inPoints[0]);	    
             point(inPoints[1]);
             point(inPoints[2]);
-        
-	    double r = (a.subtract(cen)).mod(); //some sort of radius??
-	    double bl = (b.subtract(a)).mod(); //an other radius?? CORRECTUR
-	    Complex db = ((b.subtract(cen)).times(0.25*bl)).div(r);
-	    Complex dzb = ((inPoints[1].subtract(cen)).times(bl).times(0.5)).div(r);
-	    
 
-    
-	    double cl = c.subtract(a).mod();
+	
+	    temp1=a.subtract(cen);
+	    double r = temp1.mod(); //some sort of radius??
+	    temp2=b.subtract(a);
+	    double bl = temp2.mod(); //an other radius??
+
+	    Complex db = (b.subtract(cen)).times(0.25*bl).div(r);
+	    Complex dzb = ((inPoints[1].subtract(cen)).times(0.5*bl)).div(r);
+	    
+	    temp1=c.subtract(a);
+	    double cl = temp1.mod();
+
 	    Complex dc = (c.subtract(cen)).times(0.25*cl).div(r);
 	    Complex dzc = ((inPoints[2].subtract(cen)).times(cl).times(0.5)).div(r);
    
@@ -126,11 +144,13 @@ public class CuveLines{
 		Vector<Complex> Lines = new Vector<Complex>();
 		double t;
 		double scale=0.01;
-		for(int n=0; n<(101-1);n++)
+
+		for(int n=0; n<100;n++)
 		{
 	           t = scale*n;
 	           wNext = p1.times(Math.pow(1-t,3)).add((p2.times(3*Math.pow(1-t,2)*t)).add(p3.times(3*(1-t)*Math.pow(t,2))));
-	           wNext = wNext.add(p4.times(Math.pow(t,3))); //CORRECTUR
+	           wNext = wNext.add(p4.times(Math.pow(t,3)));
+
 	           Lines.add(wNext);
 		}
 		return Lines;
