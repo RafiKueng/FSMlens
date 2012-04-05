@@ -105,7 +105,6 @@
   public void mousePressed(MouseEvent event)
     { 
       int subimageSize = 30;
-      System.out.println("derp: " + x(150) + " " + y(150)); 
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
