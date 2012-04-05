@@ -21,10 +21,10 @@ Set up the Diff tool
     
 2.  create a starter script, name if `diffmeld.py` and save it somewhere the system finds it (eg. you local bin directory created for rambutan would be nice: `~/local/bin`)
 
-    #!/usr/bin/python
-    import sys
-    import os
-    os.system('meld "%s" "%s"' % (sys.argv[2], sys.argv[5]))
+    `#!/usr/bin/python`  
+    `import sys`  
+    `import os`  
+    `os.system('meld "%s" "%s"' % (sys.argv[2], sys.argv[5]))`
     
 3.  make it executable: 
     `chmod +x diffmeld.py`
@@ -40,31 +40,32 @@ so once you merge two branches, and get conflicts, you'll have a nice view to ev
 (to get the full story go to http://blog.wuwon.id.au/2010/09/painless-merge-conflict-resolution-in.html)
 
 There are 4 versions that are interesting:
-* your version (`[filename].LOCAL.[version].txt`, short `local`)
-* the other branch versions (`[filename].REMOTE.[version].txt`, short `remote`)
-* the latest common parent, root of the branch (`[filename].BASE.[version].txt`, short `base`)
-* the resulting, final merged file, with the file markers ([filename], short `merge`)
+
+*   your version (`[filename].LOCAL.[version].txt`, short `local`)
+*   the other branch versions (`[filename].REMOTE.[version].txt`, short `remote`)
+*   the latest common parent, root of the branch (`[filename].BASE.[version].txt`, short `base`)
+*   the resulting, final merged file, with the file markers ([filename], short `merge`)
 
 With this setup you'll get a 5 way display, to compare `base` - `local` - `merge` - `remote` - `base` split up in 3 windows:
-* one showing the differences between `base` - `local` (just for you information)
-* one showing the differences between `remote` - `base` (just for you information)
-* one showing `local` - `merge` - `remote` to ACTUALLY DO the merge
 
-(please note, if you don't want 3 windows, but only a 3 way merge in one window with `local` - `merge` - `remote`, just edit the script in point XX
+*   one showing the differences between `base` - `local` (just for you information)
+*   one showing the differences between `remote` - `base` (just for you information)
+*   one showing `local` - `merge` - `remote` to ACTUALLY DO the merge
+
+(please note, if you don't want 3 windows, but only a 3 way merge in one window with `local` - `merge` - `remote`, just edit the script in point 2. should be obvious what to change..)
 
 ### Lets get started ###
 
-1.  get the tool: 
+1.  get the tool:  
     `$ sudo apt-get install meld` 
 
 2.  create a starter script, name if `mergemeld` and save it somewhere the system finds it (eg. you local `bin` directory created for rambutan would be nice: `~/local/bin`)
-
-    #!/bin/sh
-    meld $2 $1 &
-    sleep 0.1
-    meld $1 $3 &
-    sleep 0.1
-    meld $2 $4 $3
+    `#!/bin/sh` 
+    `meld $2 $1 &` 
+    `sleep 0.1` 
+    `meld $1 $3 &` 
+    `sleep 0.1` 
+    `meld $2 $4 $3`
     
 3.  make it executable: 
     `chmod +x mergemeld`
