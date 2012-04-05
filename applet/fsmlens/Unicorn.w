@@ -3,7 +3,7 @@
 @(Unicorn.java@>=
   package fsmlens;
   @<Imports for |Unicorn|@>
-  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener
+  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener//, KeyListener
     { @<Code to read and show raw lenses@>
       @<Drawing curves with the mouse@>
       @<get the Picture out@>
@@ -16,8 +16,11 @@
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
+      //double x1N,y1N;
       int[][][] rgbPix;
       Complex complex;
+      Complex complex1;
+      Complex complex2;
     }
 
 @ @<Imports for |Unicorn|@>=
@@ -33,10 +36,10 @@
 
 
 @ @<Code to read and show raw lenses@>=
-  public Unicorn(Monster home, CuveLines cuveLines, int picSize)
+  public Unicorn(Monster home, int picSize)
     { super(picSize,picSize);
       this.home = home;
-      this.cuveLines = cuveLines;
+      //this.cuveLines = cuveLines;
       this.picSize = picSize; 
       rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
@@ -72,7 +75,8 @@
 @ @<Code to read and show raw lenses@>=
   Monster home;
   Graphics g;
-  CuveLines cuveLines;
+  CuveLines cuveLines; //Global cuveLine
+  CuveLines cuveLines2;
   Image img;
   BufferedImage imgrect = null;
   BufferedImage imageOrg;
@@ -102,6 +106,7 @@
 
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
+  boolean state=true;
   public void mousePressed(MouseEvent event)
     { 
       int subimageSize = 30;
@@ -110,6 +115,7 @@
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
+
       if(quadrLine.equals("Rectangle")){
         g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
@@ -127,12 +133,41 @@
         }
 // if mouse is clicke a new cuveLine is drawn
 	else if(quadrLine.equals("Line")){
-		Complex complex1=new Complex(x2N,y2N);
-		CuveLines cuveLines2=new CuveLines();
-		cuveLines2.update(complex1,g);
+		if(event.getButton()==MouseEvent.BUTTON3){
+			System.out.println("in Mous Event Button 3 pressed");
+			state=!state;
+		}
+		if(CuveLines.COUNT==0){
+		complex1=new Complex(x2N,y2N);
+		cuveLines=new CuveLines();  //***********************
+		cuveLines.update(complex1,g);	
+		}
+		
+		else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 ){
+		complex1=new Complex(x2N,y2N);
+		cuveLines2=new CuveLines();  //***********************
+		cuveLines2.update(complex1,g);}
       	repaint();
 	}
     }
+
+//@ @<Drawing curves with the mouse@>=
+//
+/*  public void keyTyped(KeyEvent e)
+{
+	System.out.println("in Key Event");
+
+	if(e.getKeyChar()=='n')
+	{
+		System.out.println("in Key Event if");
+		state=!state;	
+	} 
+}
+  public void keyReleased(KeyEvent e)
+{System.out.println("in Key Event Pressed");}
+ public void keyPressed(KeyEvent e)
+{System.out.println("in Key Event Pressed");}
+*/
 
 @ @<Drawing curves with the mouse@>=
   public void mouseDragged(MouseEvent event)
@@ -144,10 +179,18 @@
       x2 = x(x2N);
       y2 = y(y2N);
       if(quadrLine.equals("Line"))
+	if(state)
 	{
         //drawLine(x1,y1,x2,y2);
-	complex=new Complex(x2N,y2N);
-	cuveLines.update(complex,g);
+		complex=new Complex(x2N,y2N);
+		cuveLines.update(complex,g);
+        	cuveLines2.update(complex1,g);
+	}
+	else
+	{
+		complex1=new Complex(x2N,y2N); //*******************************
+		cuveLines.update(complex,g);
+        	cuveLines2.update(complex1,g);
 	}
       repaint();	
     }

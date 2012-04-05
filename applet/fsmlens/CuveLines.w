@@ -14,6 +14,7 @@
 import java.util.Vector;
 
 public class CuveLines{
+	public static int COUNT=0;
 	//private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
         private Complex[] inPoints={new Complex(182,72),new Complex(100,162),new Complex(200,183)};
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
@@ -24,11 +25,14 @@ public class CuveLines{
 	
 	CuveLines(Complex[] pnt)
 	{
+		CuveLines.COUNT+=1;
+		System.out.println(CuveLines.COUNT);
 		this.inPoints=pnt;
 	}
 	CuveLines()
 	{
-		
+		CuveLines.COUNT+=1;
+		System.out.println(CuveLines.COUNT);
 	}
 
 	

@@ -86,8 +86,8 @@
 
 @ @<Put plots to East@>=
   int picSize = 300;
-  cuveLines = new CuveLines();
-  unicorn = new Unicorn(this,cuveLines,picSize);
+  //cuveLines = new CuveLines();
+  unicorn = new Unicorn(this,picSize);
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
   FigDeck pd = new FigDeck();  @/
