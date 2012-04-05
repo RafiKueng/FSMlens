@@ -111,7 +111,7 @@ public class CuveLines{
 	
 	    temp1=a.subtract(cen);
 	    double r = temp1.mod(); //some sort of radius??
-	    temp2=a.subtract(b);
+	    temp2=b.subtract(a);
 	    double bl = temp2.mod(); //an other radius??
 
 	    Complex db = (b.subtract(cen)).times(0.25*bl).div(r);
@@ -126,9 +126,9 @@ public class CuveLines{
             drawLine(bezirLines0);
 	    this.bezirLines1=CuveLines.bezier(a,inPoints[1].subtract(dzb),b.subtract(db),b);
             drawLine(bezirLines1);
-	    this.bezirLines2=CuveLines.bezier(a,inPoints[1].add(dzc),c.add(dc),c);
+	    this.bezirLines2=CuveLines.bezier(a,inPoints[2].add(dzc),c.add(dc),c);
             drawLine(bezirLines2);
-	    this.bezirLines3=CuveLines.bezier(a,inPoints[1].subtract(dzc),c.subtract(dc),c);
+	    this.bezirLines3=CuveLines.bezier(a,inPoints[2].subtract(dzc),c.subtract(dc),c);
             drawLine(bezirLines3);
 	}
 	
@@ -139,11 +139,11 @@ public class CuveLines{
 		Vector<Complex> Lines = new Vector<Complex>();
 		double t;
 		double scale=0.01;
-		for(int n=0; n<101;n++)
+		for(int n=0; n<100;n++)
 		{
 	           t = scale*n;
 	           wNext = p1.times(Math.pow(1-t,3)).add((p2.times(3*Math.pow(1-t,2)*t)).add(p3.times(3*(1-t)*Math.pow(t,2))));
-	           wNext = wNext.add(p4.add(Math.pow(t,3)));
+	           wNext = wNext.add(p4.times(Math.pow(t,3)));
 	           Lines.add(wNext);
 		}
 		return Lines;
