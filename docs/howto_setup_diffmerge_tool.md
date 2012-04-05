@@ -14,24 +14,39 @@ v1 2012-04-05 17:30
 
 Set up the Diff tool
 --------------------
-(to be able to see differences in two versions of a file using `git diff`)
+to be able to see differences in two versions of a file using `$ git diff`
     
 1.  get the tool: 
     `$ sudo apt-get install meld`
     
 2.  create a starter script, name if `diffmeld.py` and save it somewhere the system finds it (eg. you local bin directory created for rambutan would be nice: `~/local/bin`)
 
+    * using python
+    
         #!/usr/bin/python
         import sys
         import os
         os.system('meld "%s" "%s"' % (sys.argv[2], sys.argv[5]))
-    
+        
+    * or using bash script (name it `diffmeld`):
+        
+        #!/bin/sh
+        meld $2 $5
+        
 3.  make it executable: 
     `$ chmod +x diffmeld.py`
+    resp 
+    `$ chmod +x diffmeld`
     
 4.  set up the diff tool in git:
     `$ git config --global diff.external diffmeld.py`
-    
+    resp.
+    `$ git config --global diff.external diffmeld`
+
+5. use it with
+    `git diff `
+
+
 Set up the merge tools
 ----------------------
 so once you merge two branches, and get conflicts, you'll have a nice view to everything that happend.
@@ -59,7 +74,9 @@ With this setup you'll get a 5 way display, to compare `base` - `local` - `merge
 1.  get the tool:  
     `$ sudo apt-get install meld` 
 
-2.  create a starter script, name if `mergemeld` and save it somewhere the system finds it (eg. you local `bin` directory created for rambutan would be nice: `~/local/bin`)
+2.  create a starter script, name if `mergemeld` and save it somewhere the system finds it (eg. you local `bin` directory created for rambutan would be nice: `~/local/bin`) 
+    `$ gedit mergemeld`
+        
         #!/bin/sh
         meld $2 $1 &
         sleep 0.1
@@ -70,12 +87,15 @@ With this setup you'll get a 5 way display, to compare `base` - `local` - `merge
 3.  make it executable: 
     `$ chmod +x mergemeld`
     
-4.  set up the git config: (`$ gedit ~/.gitconfig`)
+4.  set up the git config: 
+    `$ gedit ~/.gitconfig`
         
+        ...
         [merge]
             tool = mymeld
         [mergetool "mymeld"]
             cmd = $HOME/local/bin/mergemeld $BASE $LOCAL $REMOTE $MERGED
+        ...
         
-5.  finished. the next time a merge fails, you can call the tool to resolve the conflicts in GUI using
+5.  finished. the next time a merge fails, you can call the tool to resolve the conflicts in GUI using 
     `$ git mergetool`
