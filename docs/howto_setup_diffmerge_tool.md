@@ -6,10 +6,10 @@ rafikueng
 v1 2012-04-05 17:30
 
 *   based on the following blog entries:
-    *   http://nathanhoad.net/how-to-meld-for-git-diffs-in-ubuntu-hardy
-    *   http://blog.wuwon.id.au/2010/09/painless-merge-conflict-resolution-in.html
+    *   <http://nathanhoad.net/how-to-meld-for-git-diffs-in-ubuntu-hardy>
+    *   <http://blog.wuwon.id.au/2010/09/painless-merge-conflict-resolution-in.html>
 *   and the prorgam:
-    *   http://meldmerge.org
+    *   <http://meldmerge.org>
     
 
 Set up the Diff tool
@@ -37,7 +37,7 @@ Set up the merge tools
 so once you merge two branches, and get conflicts, you'll have a nice view to everything that happend.
 
 ### Some theory: ###
-(to get the full story go to http://blog.wuwon.id.au/2010/09/painless-merge-conflict-resolution-in.html)
+(to get the full story go to <http://blog.wuwon.id.au/2010/09/painless-merge-conflict-resolution-in.html>)
 
 There are 4 versions that are interesting:
 
