@@ -113,7 +113,8 @@ public class CuveLines{
 
             
             //draw Point the three points inPoints 0-2
-            g.setColor(Color.red);
+            if(activeStat) g.setColor(Color.red);
+            else g.setColor(Color.blue);
             point(inPoints[0]);	    
             point(inPoints[1]);
             point(inPoints[2]);
@@ -183,10 +184,15 @@ public class CuveLines{
 		this.draw();
 		
 	}
+       
+        public void update()
+	{
+		this.draw();		
+	}
 
         public void point(Complex z)
         {
-        g.setColor(Color.red);
+        //g.setColor(Color.red);
         int x = (int)(z.real());
         int y = (int)(z.imaginary());
         g.fillOval(x-5,y-5,10,10);
@@ -202,6 +208,17 @@ public class CuveLines{
           pnt2 = vector.get(i+1);
           g.drawLine((int)(pnt1.real()),(int)(pnt1.imaginary()),(int)(pnt2.real()),(int)(pnt2.imaginary()));
           }
+        }
+        
+        boolean activeStat = true;
+        public void setActive()
+        {
+        activeStat = true;
+        }
+    
+        public void setInactive()
+        {
+        activeStat = false;
         }
 	
 }

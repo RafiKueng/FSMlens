@@ -150,6 +150,13 @@
 		complex1=new Complex(x2N,y2N);
 		cuveLines2=new CuveLines();  //***********************
 		cuveLines2.update(complex1,g);}
+                
+                if(CuveLines.COUNT==2){
+                if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
+                else {cuveLines2.setActive(); cuveLines.setInactive();}
+                cuveLines.update();	
+                cuveLines2.update();
+                }
 
       	repaint();
 	}
