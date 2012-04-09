@@ -18,7 +18,7 @@ import os
 
 
 def debug(str):
-    print " | debug"+str
+    print " | debug "+str
 
 class imgData:
     data = [] # original b/w image
@@ -78,12 +78,15 @@ class imgData:
         print 'max:', np.max(data), 'min:', np.min(data)
 
     def printImgInfo(self):
+        debug('imginfo:')
         self.printInfo(self.data)
 
     def printNormInfo(self):
+        debug('norminfo:')
         self.printInfo(self.norm)
 
     def printColorInfo(self):
+        debug('colorinfo:')
         self.printInfo(self.color)
         
 
@@ -185,16 +188,25 @@ def adjHistogram(imgData):
     
     
 def dispHistogram(imgData):
-    
-    imgData.printNormInfo()
-    
-    hist = cv2.calcHist( imgData.norm, [0], None, [256], [0, 1] )
-    cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
-    #print hist
-    bin_count = hist.shape[0]
+
+    n_bins = 256
     bin_w = 2
     bin_max_h = 200
-    img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*[70,255,255]*255 #last list is background color
+    bg_col = [70,255,255]
+    
+    
+    imgData.printNormInfo()
+    img = imgData.norm    
+    
+    hist = cv2.calcHist(    [img.astype('float32')],
+                            channels=[0],
+                            mask=None,#mask=np.ones(img.size).astype('uint8'),
+                            histSize=[n_bins], 
+                            ranges=[0,1] )
+    cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
+    print hist
+    bin_count = hist.shape[0]
+    img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*bg_col*255 #last list is background color
 
     #print hist
     for i in xrange(bin_count):
@@ -305,6 +317,18 @@ def readfile():
     return data
     
     
+def readdemofile(nr):
+    files = filter(lambda _:_.startswith('demo'), os.listdir('.'))
+    img = cv2.imread(files[nr])
+    if len(np.shape(img))==3:
+        img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    print "demo: fn: ", files[nr], "type", type(img)    
+    data = imgData()
+    data.setData(img)
+    data.filename = 'demo.file'
+    data.datasetnr = nr
+    return data
+    
 """    
 def readfile():
 
@@ -350,6 +374,7 @@ def main():
             print "2) edit image"
             print "3) remove image"
             print "9) finish (merge and cut)"
+        print "99) DEBUG: load DEMO image"
         print "0) QUIT (without saving)"
         
         sel = int(raw_input("> "))
@@ -382,6 +407,10 @@ def main():
         elif sel==0:
             return -1 #abort program
 
+        elif sel==99:
+            img = readdemofile(1)
+            imagelist.append(img)
+            editImage(img)            
         else:
             print "no valid selection"
     
