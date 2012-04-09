@@ -22,6 +22,7 @@ def debug(str):
 
 class imgData:
     data = [] # original b/w image
+    clipped = [] #data with clipped value range 
     norm = [] # normalised data
     dim = [0,0] #dimension of picture
     nPix = 0
@@ -239,7 +240,7 @@ def autoAdjHist(imgData):
     whiteCutoffP = 0.001    # how many pixels (in %) in picture are white    
     blackCutoffP = 0.1      # how many pixels (in %) in picture are black
     
-    nBins = 1000#imgData.nPix
+    nBins = imgData.nPix / 10
     
     img = imgData.data   
     drange = np.array([np.nanmin(img), np.nanmax(img)], dtype='float')
@@ -256,7 +257,7 @@ def autoAdjHist(imgData):
     count = 0
     for i in reversed(range(len(hist))):
         count += hist[i][0]
-        print 'wht: cnt', count, 'hist', hist[i],'value',values[i], 'i', i
+        #print 'wht: cnt', count, 'hist', hist[i],'value',values[i], 'i', i
         if count > imgData.nPix * whiteCutoffP:
             whileLevel = values[i]
             break
@@ -265,26 +266,28 @@ def autoAdjHist(imgData):
     count=0
     for i in range(len(hist)):
         count += hist[i]
-        print 'blk: cnt', count, 'hist', hist[i],'value',values[i], 'i', i        
+        #print 'blk: cnt', count, 'hist', hist[i],'value',values[i], 'i', i        
         if count > imgData.nPix * blackCutoffP:
             blackLevel = values[i]
             break
     
     print 'blacklvl:', blackLevel, 'whitelvl:',whileLevel
+
+    imgData.clipped = np.clip(img, blackLevel, whileLevel)   
     
     
 def dispHistogram(imgData):
     
     autoAdjHist(imgData)
 
-    n_bins = 100
+    n_bins = 1024
     bin_w = 2
     bin_max_h = 200
     bg_col = [70,255,255]
     
     
     imgData.printNormInfo()
-    img = imgData.data   
+    img = imgData.clipped
     #img = pow(img, 0.333)
     print '#nullelem:', sum( (img==0).astype('int'))
     drange = np.array([np.nanmin(img), np.nanmax(img)], dtype='float')
@@ -300,6 +303,7 @@ def dispHistogram(imgData):
     for i in xrange(len(hist)):
         print int(hist[i][0]),
         if i%10==9: print '\n'
+    print '\n'
     #maxs = np.argmax(hist)
     #hist[maxs] = -1*hist[maxs]//10
     #cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
@@ -327,9 +331,11 @@ def dispHistogram(imgData):
           
     #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
     cv2.imshow('hist', img)       
-
-    
     print 'display histogram'
+
+    cv2.imshow('hist', imgData.clipped)       
+    print 'display clipped'
+
     cv2.waitKey()
         
         
