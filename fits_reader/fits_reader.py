@@ -39,7 +39,7 @@ class imgData:
     def setData(self, _data):
         debug("imgData.setData")
         self.data = _data.astype('float')
-        self.norm = cv2.normalize(self.data, alpha=0, beta=1)
+        self.norm = cv2.normalize(self.data, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
         
     def setColorFn(self, _colorfn):
         debug("imgData.setColorFn")
@@ -70,9 +70,25 @@ class imgData:
 
     def getHist(self):
         pass
+    
+    def printInfo(self, data):
+        print data
+        print 'type:', type(data)
+        print 'shape:', np.shape(data)
+        print 'max:', np.max(data), 'min:', np.min(data)
 
+    def printImgInfo(self):
+        self.printInfo(self.data)
 
+    def printNormInfo(self):
+        self.printInfo(self.norm)
 
+    def printColorInfo(self):
+        self.printInfo(self.color)
+        
+
+        
+        
 #-----------------------------------------------------------------------------
 
 
@@ -156,7 +172,7 @@ def adjHistogram(imgData):
         sel = int(raw_input("> "))
         
         if sel == 1:
-            pass
+            dispHistogram(imgData)
         
         elif sel == 2:
             pass
@@ -167,6 +183,33 @@ def adjHistogram(imgData):
         else:
             print "no valid option"
     
+    
+def dispHistogram(imgData):
+    
+    imgData.printNormInfo()
+    
+    hist = cv2.calcHist( imgData.norm, [0], None, [256], [0, 1] )
+    cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
+    #print hist
+    bin_count = hist.shape[0]
+    bin_w = 2
+    bin_max_h = 200
+    img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*[70,255,255]*255 #last list is background color
+
+    #print hist
+    for i in xrange(bin_count):
+        val = hist[i]
+        h = int(val*bin_max_h)
+        #print h
+        cv2.rectangle(img, (i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
+    #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+    cv2.imshow('hist', img)       
+
+    
+    print 'display histogram'
+    cv2.waitKey()
+        
+        
 def densityMap(imgData):
     pass
     
@@ -185,7 +228,7 @@ def editImage(imgData):
         sel = int(raw_input("> "))
         
         if sel == 1:
-            pass
+            adjHistogram(imgData)
         
         elif sel == 2:
             colorImage(imgData)
@@ -253,6 +296,11 @@ def readfile():
     data.datasetnr = sel2
 
     hdulist.close()
+
+    print 'read file.\ndata infos:'
+    data.printImgInfo()
+    print '\nnorm infos:'
+    data.printNormInfo()    
     
     return data
     
