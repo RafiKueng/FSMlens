@@ -12,8 +12,8 @@ v2 2012-04-02 12:00 advanced options, multiple fitsfiles edit and merge
 
 
 import numpy as np
-import pyfits
 import cv2 #using the new pure numpy python interface to opencv
+import pyfits #load after opencv, else runtime error
 import os
 
 
@@ -189,31 +189,55 @@ def adjHistogram(imgData):
     
 def dispHistogram(imgData):
 
-    n_bins = 256
+    n_bins = 1024
     bin_w = 2
     bin_max_h = 200
     bg_col = [70,255,255]
     
     
     imgData.printNormInfo()
-    img = imgData.norm    
+    img = imgData.data   
     
     hist = cv2.calcHist(    [img.astype('float32')],
                             channels=[0],
                             mask=None,#mask=np.ones(img.size).astype('uint8'),
                             histSize=[n_bins], 
                             ranges=[0,1] )
-    cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
-    print hist
+    for i in xrange(len(hist)):
+        print int(hist[i][0]),
+        if i%10==9: print '\n'
+    #maxs = np.argmax(hist)
+    #hist[maxs] = -1*hist[maxs]//10
+    #cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
+    hist = cv2.normalize(hist, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
+    #for i in xrange(len(hist)):
+    #    print hist[i]
+    print np.min(hist)
     bin_count = hist.shape[0]
-    img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*bg_col*255 #last list is background color
+    #img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*bg_col*255 #last list is background color
+    img = np.ones((int(bin_max_h), bin_count, 3), np.uint8)*bg_col*255 #last list is background color
 
     #print hist
     for i in xrange(bin_count):
         val = hist[i]
         h = int(val*bin_max_h)
         #print h
-        cv2.rectangle(img, (i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
+        if h >=0:
+            cv2.rectangle(  img, 
+                        (i, int(bin_max_h)),
+                        ((i+1), int(bin_max_h)-h),
+                        color=[0]*3,
+                        thickness=-1)  
+        else:
+            h*=-1
+            cv2.rectangle(  img, 
+                        (i, int(bin_max_h)),
+                        ((i+1), int(bin_max_h)-h),
+                        color=[0,0,255*255],
+                        thickness=-1)              
+                      
+          #(i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
+          
     #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
     cv2.imshow('hist', img)       
 
@@ -374,7 +398,7 @@ def main():
             print "2) edit image"
             print "3) remove image"
             print "9) finish (merge and cut)"
-        print "99) DEBUG: load DEMO image"
+        print "9x) DEBUG: load DEMO image nr x"
         print "0) QUIT (without saving)"
         
         sel = int(raw_input("> "))
@@ -407,8 +431,8 @@ def main():
         elif sel==0:
             return -1 #abort program
 
-        elif sel==99:
-            img = readdemofile(1)
+        elif sel//10==9:
+            img = readdemofile(sel%10)
             imagelist.append(img)
             editImage(img)            
         else:
@@ -449,6 +473,6 @@ def mainclass():
     
 if __name__ == '__main__':
     os.sys.exit(main())
-
+    #pass
 else:
     mainclass()
