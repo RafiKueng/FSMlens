@@ -22,7 +22,9 @@ def debug(str):
 
 class imgData:
     data = [] # original b/w image
-    norm = [] #normalised data
+    norm = [] # normalised data
+    dim = [0,0] #dimension of picture
+    nPix = 0
     desc = ""
     filename = ""
     datasetnr = -1
@@ -38,8 +40,10 @@ class imgData:
         
     def setData(self, _data):
         debug("imgData.setData")
-        self.data = _data.astype('float')
+        self.data = _data.astype('float32')
         self.norm = cv2.normalize(self.data, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
+        self.dim = np.shape(self.data)
+        self.nPix = self.dim[0] * self.dim[1]
         
     def setColorFn(self, _colorfn):
         debug("imgData.setColorFn")
@@ -89,7 +93,50 @@ class imgData:
         debug('colorinfo:')
         self.printInfo(self.color)
         
+    def dispHist(self):
+        n_bins = 1024
+        bin_max_h = 200
+        bg_col = [70,255,255]
+        
+        img = self.data   
+        
+        hist = cv2.calcHist(    [img.astype('float32')],
+                                channels=[0],
+                                mask=None,#mask=np.ones(img.size).astype('uint8'),
+                                histSize=[n_bins], 
+                                ranges=[0,1] )
 
+        #maxs = np.argmax(hist)
+        #hist[maxs] = -1*hist[maxs]//10
+        #cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
+        hist = cv2.normalize(hist, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
+        #for i in xrange(len(hist)):
+        #    print hist[i]
+        print np.min(hist)
+        bin_count = hist.shape[0]
+        #img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*bg_col*255 #last list is background color
+        img = np.ones((int(bin_max_h), bin_count, 3), np.uint8)*bg_col*255 #last list is background color
+    
+        #print hist
+        for i in xrange(bin_count):
+            val = hist[i]
+            h = int(val*bin_max_h)
+            #print h
+            if h >=0:
+                cv2.rectangle(  img, 
+                            (i, int(bin_max_h)),
+                            ((i+1), int(bin_max_h)-h),
+                            color=[0]*3,
+                            thickness=-1)  
+                         
+              #(i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
+              
+        #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+        cv2.imshow('hist', img)       
+    
+        
+        print 'display histogram'
+        cv2.waitKey()
         
         
 #-----------------------------------------------------------------------------
@@ -185,11 +232,52 @@ def adjHistogram(imgData):
             break
         else:
             print "no valid option"
+
+
+def autoAdjHist(imgData):
+    #settings
+    whiteCutoffP = 0.001    # how many pixels (in %) in picture are white    
+    blackCutoffP = 0.1      # how many pixels (in %) in picture are black
+    
+    nBins = 1000#imgData.nPix
+    
+    img = imgData.data   
+    drange = np.array([np.nanmin(img), np.nanmax(img)], dtype='float')
+    print "range:",drange
+    hist = cv2.calcHist(    [img.astype('float32') ],
+                            channels=[0],
+                            mask=None,#mask=np.ones(img.size).astype('uint8'),
+                            histSize=[nBins], 
+                            ranges=drange )
+    
+    values = np.linspace(drange[0], drange[1], nBins+1)
+                            
+    #find white level cutoff
+    count = 0
+    for i in reversed(range(len(hist))):
+        count += hist[i][0]
+        print 'wht: cnt', count, 'hist', hist[i],'value',values[i], 'i', i
+        if count > imgData.nPix * whiteCutoffP:
+            whileLevel = values[i]
+            break
+
+    #find black level cutoff
+    count=0
+    for i in range(len(hist)):
+        count += hist[i]
+        print 'blk: cnt', count, 'hist', hist[i],'value',values[i], 'i', i        
+        if count > imgData.nPix * blackCutoffP:
+            blackLevel = values[i]
+            break
+    
+    print 'blacklvl:', blackLevel, 'whitelvl:',whileLevel
     
     
 def dispHistogram(imgData):
+    
+    autoAdjHist(imgData)
 
-    n_bins = 1024
+    n_bins = 100
     bin_w = 2
     bin_max_h = 200
     bg_col = [70,255,255]
@@ -197,12 +285,18 @@ def dispHistogram(imgData):
     
     imgData.printNormInfo()
     img = imgData.data   
-    
+    #img = pow(img, 0.333)
+    print '#nullelem:', sum( (img==0).astype('int'))
+    drange = np.array([np.nanmin(img), np.nanmax(img)], dtype='float')
+    #drange = [-0.2, float(np.max(img))]
+    print "range:",drange
     hist = cv2.calcHist(    [img.astype('float32')],
                             channels=[0],
                             mask=None,#mask=np.ones(img.size).astype('uint8'),
                             histSize=[n_bins], 
-                            ranges=[0,1] )
+                            ranges=drange )
+    print "sum:",np.sum(hist)
+    print "len", len(hist)
     for i in xrange(len(hist)):
         print int(hist[i][0]),
         if i%10==9: print '\n'
@@ -228,14 +322,7 @@ def dispHistogram(imgData):
                         ((i+1), int(bin_max_h)-h),
                         color=[0]*3,
                         thickness=-1)  
-        else:
-            h*=-1
-            cv2.rectangle(  img, 
-                        (i, int(bin_max_h)),
-                        ((i+1), int(bin_max_h)-h),
-                        color=[0,0,255*255],
-                        thickness=-1)              
-                      
+                     
           #(i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
           
     #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
