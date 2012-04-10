@@ -333,7 +333,7 @@ def dispHistogram(imgData):
     cv2.imshow('hist', img)       
     print 'display histogram'
 
-    cv2.imshow('hist', imgData.clipped)       
+    cv2.imshow('img', imgData.clipped)       
     print 'display clipped'
 
     cv2.waitKey()
