@@ -12,16 +12,20 @@ v2 2012-04-02 12:00 advanced options, multiple fitsfiles edit and merge
 
 
 import numpy as np
-import pyfits
 import cv2 #using the new pure numpy python interface to opencv
+import pyfits #load after opencv, else runtime error
 import os
 
 
 def debug(str):
-    print " | debug"+str
+    print " | debug "+str
 
 class imgData:
     data = [] # original b/w image
+    clipped = [] #data with clipped value range 
+    norm = [] # normalised data
+    dim = [0,0] #dimension of picture
+    nPix = 0
     desc = ""
     filename = ""
     datasetnr = -1
@@ -30,14 +34,17 @@ class imgData:
     transform = []
     hist = []
     histfn = lambda x:x
-    mode = -1 #is this a regular picture (0) or a density map (1)
+    #mode = -1 #is this a regular picture (0) or a density map (1)
     
     def __init__(self):
         debug("init imgData")
         
     def setData(self, _data):
         debug("imgData.setData")
-        self.data = _data.astype('float')
+        self.data = _data.astype('float32')
+        self.norm = cv2.normalize(self.data, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
+        self.dim = np.shape(self.data)
+        self.nPix = self.dim[0] * self.dim[1]
         
     def setColorFn(self, _colorfn):
         debug("imgData.setColorFn")
@@ -47,7 +54,7 @@ class imgData:
         self.colorImg()
         
     def colorImg(self):
-        img = self.data
+        img = self.norm
         
         #self.color = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
                 
@@ -68,9 +75,71 @@ class imgData:
 
     def getHist(self):
         pass
+    
+    def printInfo(self, data):
+        print data
+        print 'type:', type(data)
+        print 'shape:', np.shape(data)
+        print 'max:', np.max(data), 'min:', np.min(data)
 
+    def printImgInfo(self):
+        debug('imginfo:')
+        self.printInfo(self.data)
 
+    def printNormInfo(self):
+        debug('norminfo:')
+        self.printInfo(self.norm)
 
+    def printColorInfo(self):
+        debug('colorinfo:')
+        self.printInfo(self.color)
+        
+    def dispHist(self):
+        n_bins = 1024
+        bin_max_h = 200
+        bg_col = [70,255,255]
+        
+        img = self.data   
+        
+        hist = cv2.calcHist(    [img.astype('float32')],
+                                channels=[0],
+                                mask=None,#mask=np.ones(img.size).astype('uint8'),
+                                histSize=[n_bins], 
+                                ranges=[0,1] )
+
+        #maxs = np.argmax(hist)
+        #hist[maxs] = -1*hist[maxs]//10
+        #cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
+        hist = cv2.normalize(hist, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
+        #for i in xrange(len(hist)):
+        #    print hist[i]
+        print np.min(hist)
+        bin_count = hist.shape[0]
+        #img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*bg_col*255 #last list is background color
+        img = np.ones((int(bin_max_h), bin_count, 3), np.uint8)*bg_col*255 #last list is background color
+    
+        #print hist
+        for i in xrange(bin_count):
+            val = hist[i]
+            h = int(val*bin_max_h)
+            #print h
+            if h >=0:
+                cv2.rectangle(  img, 
+                            (i, int(bin_max_h)),
+                            ((i+1), int(bin_max_h)-h),
+                            color=[0]*3,
+                            thickness=-1)  
+                         
+              #(i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
+              
+        #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+        cv2.imshow('hist', img)       
+    
+        
+        print 'display histogram'
+        cv2.waitKey()
+        
+        
 #-----------------------------------------------------------------------------
 
 
@@ -144,8 +213,132 @@ def colorImage(imgData):
     showImg(imgData.color)
     
 def adjHistogram(imgData):
-    pass
+    while True:
+        print "\n\najdusting histogram of file name {0} [{1}]".format(imgData.filename, imgData.datasetnr)
+        print "  1) display histgram"
+        print "  2) auto adjust"
+        print "  3) set adjust function"
+        print "  0) DONE"
+        
+        sel = int(raw_input("> "))
+        
+        if sel == 1:
+            dispHistogram(imgData)
+        
+        elif sel == 2:
+            pass
+        elif sel == 3:
+            colorImage(imgData)
+        elif sel == 0:
+            break
+        else:
+            print "no valid option"
+
+
+def autoAdjHist(imgData):
+    #settings
+    whiteCutoffP = 0.001    # how many pixels (in %) in picture are white    
+    blackCutoffP = 0.1      # how many pixels (in %) in picture are black
     
+    nBins = imgData.nPix / 10
+    
+    img = imgData.data   
+    drange = np.array([np.nanmin(img), np.nanmax(img)], dtype='float')
+    print "range:",drange
+    hist = cv2.calcHist(    [img.astype('float32') ],
+                            channels=[0],
+                            mask=None,#mask=np.ones(img.size).astype('uint8'),
+                            histSize=[nBins], 
+                            ranges=drange )
+    
+    values = np.linspace(drange[0], drange[1], nBins+1)
+                            
+    #find white level cutoff
+    count = 0
+    for i in reversed(range(len(hist))):
+        count += hist[i][0]
+        #print 'wht: cnt', count, 'hist', hist[i],'value',values[i], 'i', i
+        if count > imgData.nPix * whiteCutoffP:
+            whileLevel = values[i]
+            break
+
+    #find black level cutoff
+    count=0
+    for i in range(len(hist)):
+        count += hist[i]
+        #print 'blk: cnt', count, 'hist', hist[i],'value',values[i], 'i', i        
+        if count > imgData.nPix * blackCutoffP:
+            blackLevel = values[i]
+            break
+    
+    print 'blacklvl:', blackLevel, 'whitelvl:',whileLevel
+
+    imgData.clipped = np.clip(img, blackLevel, whileLevel)   
+    
+    
+def dispHistogram(imgData):
+    
+    autoAdjHist(imgData)
+
+    n_bins = 1024
+    bin_w = 2
+    bin_max_h = 200
+    bg_col = [70,255,255]
+    
+    
+    imgData.printNormInfo()
+    img = imgData.clipped
+    #img = pow(img, 0.333)
+    print '#nullelem:', sum( (img==0).astype('int'))
+    drange = np.array([np.nanmin(img), np.nanmax(img)], dtype='float')
+    #drange = [-0.2, float(np.max(img))]
+    print "range:",drange
+    hist = cv2.calcHist(    [img.astype('float32')],
+                            channels=[0],
+                            mask=None,#mask=np.ones(img.size).astype('uint8'),
+                            histSize=[n_bins], 
+                            ranges=drange )
+    print "sum:",np.sum(hist)
+    print "len", len(hist)
+    for i in xrange(len(hist)):
+        print int(hist[i][0]),
+        if i%10==9: print '\n'
+    print '\n'
+    #maxs = np.argmax(hist)
+    #hist[maxs] = -1*hist[maxs]//10
+    #cv2.normalize(hist, hist, 0, 1, cv2.NORM_MINMAX);
+    hist = cv2.normalize(hist, alpha=0.0, beta=1.0, norm_type=cv2.NORM_MINMAX)
+    #for i in xrange(len(hist)):
+    #    print hist[i]
+    print np.min(hist)
+    bin_count = hist.shape[0]
+    #img = np.ones((int(bin_max_h*1.1), bin_count*bin_w, 3), np.uint8)*bg_col*255 #last list is background color
+    img = np.ones((int(bin_max_h), bin_count, 3), np.uint8)*bg_col*255 #last list is background color
+
+    #print hist
+    for i in xrange(bin_count):
+        val = hist[i]
+        h = int(val*bin_max_h)
+        #print h
+        if h >=0:
+            cv2.rectangle(  img, 
+                        (i, int(bin_max_h)),
+                        ((i+1), int(bin_max_h)-h),
+                        color=[0]*3,
+                        thickness=-1)  
+                     
+          #(i*bin_w+2, int(bin_max_h*1.1)), ((i+1)*bin_w-2, int(bin_max_h*1.1)-h), [int(255*255.0*i/bin_count)]*3, -1)
+          
+    #img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+    cv2.imshow('hist', img)       
+    print 'display histogram'
+
+    cv2.imshow('img', imgData.clipped)       
+    print 'display clipped'
+
+    cv2.waitKey()
+        
+        
 def densityMap(imgData):
     pass
     
@@ -157,20 +350,24 @@ def editImage(imgData):
     while True:
         print "\n\nediting file name {0} [{1}]".format(imgData.filename, imgData.datasetnr)
         print "  1) adjust histogram"
-        print "  2) Convert to Density map"
-        print "  3) Set color"
+        print "  2) Set color"
+        #print "  3) Convert to Density map"
         print "  0) DONE"
         
         sel = int(raw_input("> "))
         
         if sel == 1:
-            pass
+            adjHistogram(imgData)
+        
         elif sel == 2:
-            pass
-        elif sel == 3:
             colorImage(imgData)
+
+        elif sel == 3:
+            pass
+        
         elif sel == 0:
             break
+        
         else:
             print "no valid option"
     
@@ -228,9 +425,26 @@ def readfile():
     data.datasetnr = sel2
 
     hdulist.close()
+
+    print 'read file.\ndata infos:'
+    data.printImgInfo()
+    print '\nnorm infos:'
+    data.printNormInfo()    
     
     return data
     
+    
+def readdemofile(nr):
+    files = filter(lambda _:_.startswith('demo'), os.listdir('.'))
+    img = cv2.imread(files[nr])
+    if len(np.shape(img))==3:
+        img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    print "demo: fn: ", files[nr], "type", type(img)    
+    data = imgData()
+    data.setData(img)
+    data.filename = 'demo.file'
+    data.datasetnr = nr
+    return data
     
 """    
 def readfile():
@@ -277,6 +491,7 @@ def main():
             print "2) edit image"
             print "3) remove image"
             print "9) finish (merge and cut)"
+        print "9x) DEBUG: load DEMO image nr x"
         print "0) QUIT (without saving)"
         
         sel = int(raw_input("> "))
@@ -309,6 +524,10 @@ def main():
         elif sel==0:
             return -1 #abort program
 
+        elif sel//10==9:
+            img = readdemofile(sel%10)
+            imagelist.append(img)
+            editImage(img)            
         else:
             print "no valid selection"
     
@@ -347,6 +566,6 @@ def mainclass():
     
 if __name__ == '__main__':
     os.sys.exit(main())
-
+    #pass
 else:
     mainclass()
