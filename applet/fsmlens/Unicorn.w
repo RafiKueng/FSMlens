@@ -68,6 +68,7 @@
 @ @<Initialize fields in |Unicorn|@>=
   choice.addItem("PG1115V.gif");
   choice.addItem("Q0047V.gif");
+  choice.addItem("EinsteinCross.png");
   rect.addItem("Line");
   rect.addItem("Rectangle");
 
@@ -86,10 +87,21 @@
       Image img = app.getToolkit().getImage(getClass().getResource(str));
       image = toBufferedImage(img,wd,ht);
       imageOrg = image;
+      @<Split up png file to rgb and alpha channel@>
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
     }
+    
+    
+@ @<Split up png file to rgb and alpha channel@>=
+      /* splits up a png with alpha channel (rgba) to a regular rgb pic
+         and a grayscale intensity image (using alpha channel) */
+      if (image.getColorModel().hasAlpha()) {
+        int[] bandList = {3};
+        image.getRaster().createChild(0,0,wd,ht,0,0,bandList);
+      }
+
 
 @ @<Drawing curves with the mouse@>=
   public void mouseEntered(MouseEvent event) { }
