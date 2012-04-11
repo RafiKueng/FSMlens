@@ -7,7 +7,7 @@
       extends Figure
       implements ActionListener, MouseListener, MouseMotionListener//, KeyListener
   { 
-    @<Init variables for |Unicorn|@>=
+    @<Init variables for |Unicorn|@>
     @<Code to read and show raw lenses@>
     @<Drawing curves with the mouse@>
     @<get the Picture out@>
@@ -89,27 +89,29 @@
   Image img;
   BufferedImage imgrect = null;
   BufferedImage imageOrg;
+  BufferedImage intensity = null;
+  
   void showImage(String str)
-    { str = "images/" + str;
-      JApplet app = new JApplet();
-      Image img = app.getToolkit().getImage(getClass().getResource(str));
-      image = toBufferedImageRGB(img,wd,ht);
-      @<check if there is alpha channel with intensity@>
-      imageOrg = image;
-      g = image.getGraphics();
-      g.setColor(Color.blue);
-      drawAxes(1);
-    }
+  {
+    str = "images/" + str;
+    JApplet app = new JApplet();
+    Image img = app.getToolkit().getImage(getClass().getResource(str));
+    image = toBufferedImageRGB(img,wd,ht);
+    @<check if there is alpha channel with intensity@>
+    imageOrg = image;
+    g = image.getGraphics();
+    g.setColor(Color.blue);
+    drawAxes(1);
+  }
     
     
 @ @<check if there is alpha channel with intensity@>=
-      /* splits up a png with alpha channel (rgba) to a regular rgb pic
-         and a grayscale intensity image (using alpha channel) */
+      /* if this img has an alpha channel, extract it and save it under */
       /* author: rk */
 
       if (hasAlpha(img)) {
         System.out.println("this has alpha channel");
-        image = extractAlpha(img,wd,ht);
+        intensity = extractAlpha(img,wd,ht);
       }
 
 
