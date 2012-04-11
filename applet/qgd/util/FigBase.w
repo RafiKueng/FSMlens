@@ -11,6 +11,9 @@ packages itself with various interactive things inside a |JPanel|.
       @<Plotting methods@>
       @<Screen output from |FigBase|@>
       @<|Image| to |BufferedImage|@>
+      @<|Image| to |BufferedImageRGB|@>
+      @<Extract Alpha channel from |Image| as Grayscale@>
+      @<Does |Image| have alpha channel@>
     }
 
 @ @<Imports for |FigBase|@>=
@@ -193,6 +196,7 @@ painting.
 
 
 @ @<|Image| to |BufferedImage|@>=
+  /* this fnc keeps/uses alpha channel info*/
   public static BufferedImage toBufferedImage(Image image, int wd, int ht)
     { image = new ImageIcon(image).getImage();
       PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
@@ -221,4 +225,82 @@ painting.
       return bimage;
     }
 
+@ @<|Image| to |BufferedImageRGB|@>=
+    /* this fnc neglects alphachannel information, that means, strips it off
+    if it has one, otherwise does the same as toBufferedImage */
+    /* author: rk */
+    public static BufferedImage toBufferedImageRGB(Image image, int wd, int ht) {
+        image = new ImageIcon(image).getImage();
+        PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+
+        try {
+            pg.grabPixels();
+        } 
+        catch (InterruptedException e)  {}
+
+        boolean hasAlpha = pg.getColorModel().hasAlpha();
+        BufferedImage bimage = null;
+        GraphicsEnvironment ge;
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        try {
+            GraphicsDevice gs = ge.getDefaultScreenDevice();
+            GraphicsConfiguration gc = gs.getDefaultConfiguration();
+            bimage = gc.createCompatibleImage(wd,ht,Transparency.OPAQUE);
+        }
+        catch (HeadlessException e) { }
+
+        if (bimage == null) {
+            int type = BufferedImage.TYPE_INT_RGB;
+            bimage = new BufferedImage(wd, ht, type);
+        }
+        bimage.createGraphics().drawImage(image, 0, 0, wd, ht, null);
+        return bimage;
+    }
+
+
+@ @<Extract Alpha channel from |Image| as Grayscale@>=
+    /* author: rk */
+    public static BufferedImage extractAlpha(Image image, int wd, int ht) {
+        image = new ImageIcon(image).getImage();
+        PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+
+        try {
+            pg.grabPixels();
+        } 
+        catch (InterruptedException e)  {}
+
+        boolean hasAlpha = pg.getColorModel().hasAlpha();
+        BufferedImage bimage = null;
+        GraphicsEnvironment ge;
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        try {
+            GraphicsDevice gs = ge.getDefaultScreenDevice();
+            GraphicsConfiguration gc = gs.getDefaultConfiguration();
+            bimage = gc.createCompatibleImage(wd,ht,Transparency.OPAQUE);
+        }
+        catch (HeadlessException e) { }
+
+        int type = BufferedImage.TYPE_USHORT_GRAY ;
+        bimage = new BufferedImage(wd, ht, type);
+
+        bimage.createGraphics().drawImage(image, 0, 0, wd, ht, null);
+        return bimage;
+    }
+
+      
+@ @<Does |Image| have alpha channel@>=
+    /* author: rk */
+    public static boolean hasAlpha(Image image) {
+        image = new ImageIcon(image).getImage();
+        PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+
+        try {
+            pg.grabPixels();
+        } 
+        catch (InterruptedException e)  {}
+
+        return  pg.getColorModel().hasAlpha();
+    }
 

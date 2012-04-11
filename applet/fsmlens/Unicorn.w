@@ -3,25 +3,22 @@
 @(Unicorn.java@>=
   package fsmlens;
   @<Imports for |Unicorn|@>
-  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener//, KeyListener
-    { @<Code to read and show raw lenses@>
-      @<Drawing curves with the mouse@>
-      @<get the Picture out@>
-      @<get the x pos@>
-      @<get the y pos@>
-      @<init rgb matrix@>
-      @<Reset the array@>
-      @<get the RGB matrix out@>
-      @<Drawing the source@>
-      String quadrLine="Line"; 
-      int x1N,y1N, picSize; 
-      double x2N,y2N;
-      //double x1N,y1N;
-      int[][][] rgbPix;
-      Complex complex;
-      Complex complex1;
-      Complex complex2;
-    }
+  public class Unicorn
+      extends Figure
+      implements ActionListener, MouseListener, MouseMotionListener//, KeyListener
+  { 
+    @<Init variables for |Unicorn|@>=
+    @<Code to read and show raw lenses@>
+    @<Drawing curves with the mouse@>
+    @<get the Picture out@>
+    @<get the x pos@>
+    @<get the y pos@>
+    @<init rgb matrix@>
+    @<Reset the array@>
+    @<get the RGB matrix out@>
+    @<Drawing the source@>
+  }
+
 
 @ @<Imports for |Unicorn|@>=
   import qgd.util.*;
@@ -33,6 +30,16 @@
   import java.lang.Object.*;
   import java.util.*;
 
+
+@ @<Init variables for |Unicorn|@>=
+    String quadrLine="Line"; 
+    int x1N,y1N, picSize; 
+    double x2N,y2N;
+    //double x1N,y1N;
+    int[][][] rgbPix;
+    Complex complex;
+    Complex complex1;
+    Complex complex2;
 
 
 @ @<Code to read and show raw lenses@>=
@@ -69,6 +76,7 @@
   choice.addItem("PG1115V.gif");
   choice.addItem("Q0047V.gif");
   choice.addItem("EinsteinCross.png");
+  choice.addItem("pngTranspDemo.png");
   rect.addItem("Line");
   rect.addItem("Rectangle");
 
@@ -85,21 +93,23 @@
     { str = "images/" + str;
       JApplet app = new JApplet();
       Image img = app.getToolkit().getImage(getClass().getResource(str));
-      image = toBufferedImage(img,wd,ht);
+      image = toBufferedImageRGB(img,wd,ht);
+      @<check if there is alpha channel with intensity@>
       imageOrg = image;
-      @<Split up png file to rgb and alpha channel@>
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
     }
     
     
-@ @<Split up png file to rgb and alpha channel@>=
+@ @<check if there is alpha channel with intensity@>=
       /* splits up a png with alpha channel (rgba) to a regular rgb pic
          and a grayscale intensity image (using alpha channel) */
-      if (image.getColorModel().hasAlpha()) {
-        int[] bandList = {3};
-        image.getRaster().createChild(0,0,wd,ht,0,0,bandList);
+      /* author: rk */
+
+      if (hasAlpha(img)) {
+        System.out.println("this has alpha channel");
+        image = extractAlpha(img,wd,ht);
       }
 
 
