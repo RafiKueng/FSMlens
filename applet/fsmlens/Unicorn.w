@@ -13,6 +13,7 @@
       @<Reset the array@>
       @<get the RGB matrix out@>
       @<Drawing the source@>
+      @<check rgb@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
@@ -21,6 +22,7 @@
       Complex complex1;
       Complex complex2;
     }
+
 
 @ @<Imports for |Unicorn|@>=
   import qgd.util.*;
@@ -38,6 +40,16 @@
 
 
 
+
+@ @<Init variables for |Unicorn|@>=
+    String quadrLine="Line"; 
+    int x1N,y1N, picSize; 
+    double x2N,y2N;
+    //double x1N,y1N;
+    int[][][] rgbPix;
+    Complex complex;
+    Complex complex1;
+    Complex complex2;
 
 
 @ @<Code to read and show raw lenses@>=
@@ -75,6 +87,8 @@
   choice.addItem("Q0047V.gif");
   choice.addItem("PG1115V_gray.gif");
   choice.addItem("PG1115V_gray.jpg");
+  choice.addItem("EinsteinCross.png");
+  choice.addItem("pngTranspDemo.png");
   rect.addItem("Line");
   rect.addItem("Rectangle");
 
@@ -87,36 +101,34 @@
   Image img;
   BufferedImage imgrect = null;
   BufferedImage imageOrg;
+  BufferedImage intensity = null;
+  
   void showImage(String str)
     { str = "images/" + str;
       JApplet app = new JApplet();
       Image img = app.getToolkit().getImage(getClass().getResource(str));
-
-      File fileImg = new File("images/PG1115V_gray.jpg");
-      try{
-        //File file = new File("images/PG1115V_gray.jpg");
-        ImageInputStream iis = ImageIO.createImageInputStream(fileImg);
-       
-        //Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
-        Iterator<ImageReader> readers = ImageIO.getImageReaders("images/PG1115V_gray.jpg");
-        System.out.println(readers.length);
-        //ImageReader reader = readers.next();
-        //reader.setInput(iis, true);
-        //IIOMetadata metadata=reader.getImageMetadata(0);
-        //String[] name = metadata.getMetadataFormatNames();
-        //System.out.println(name[0]);
-        System.out.println("ende");
-      }
-      catch (Exception e) {
-      System.out.println("kommt immer noch nicht rein");
-      }
-
       image = toBufferedImage(img,wd,ht);
+      @<check if there is alpha channel with intensity@>
       imageOrg = image;
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
+      checkRGB();
     }
+
+    
+    
+@ @<check if there is alpha channel with intensity@>=
+      /* if this img has an alpha channel, extract it and save it under */
+      /* author: rk */
+
+      if (hasAlpha(img)) {
+        System.out.println("this has alpha channel");
+        intensity = extractAlpha(img,wd,ht);
+        image = intensity;
+      }
+
+
 
 @ @<Drawing curves with the mouse@>=
   public void mouseEntered(MouseEvent event) { }
@@ -136,7 +148,7 @@
   boolean state=true;
   public void mousePressed(MouseEvent event)
     { 
-      int subimageSize = 5;
+      int subimageSize = 15;
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
@@ -152,7 +164,7 @@
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
               //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-900000)) 
+              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1500000)) 
               //if(rgbPix[x1N+i][y1N+j][0] == 0)
        	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
                         
@@ -294,7 +306,19 @@
      return((int)y1N);
     }
 
-
+@ @<check rgb@>=
+  public void checkRGB()
+    { 
+    int rgbMin=0, rgbMax=-100000000;
+    for(int i = 0; i<300 ; i++)
+      for(int j = 0; j<300 ; j++)
+      {
+      if(image.getRGB(i,j)<rgbMin) rgbMin = image.getRGB(i,j);
+      if(image.getRGB(i,j)>rgbMax) rgbMax = image.getRGB(i,j);
+      }
+    System.out.println("RGB min ist: " + rgbMin);
+    System.out.println("RGB max ist: " + rgbMax);
+    }
 
 
 
