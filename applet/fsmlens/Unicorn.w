@@ -16,7 +16,6 @@
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
-      //double x1N,y1N;
       int[][][] rgbPix;
       Complex complex;
       Complex complex1;
@@ -32,6 +31,12 @@
   import java.awt.Graphics.*;
   import java.lang.Object.*;
   import java.util.*;
+  import java.io.*;
+  import javax.imageio.*; 
+  import javax.imageio.stream.*;
+  import javax.imageio.metadata.*;
+
+
 
 
 
@@ -68,6 +73,8 @@
 @ @<Initialize fields in |Unicorn|@>=
   choice.addItem("PG1115V.gif");
   choice.addItem("Q0047V.gif");
+  choice.addItem("PG1115V_gray.gif");
+  choice.addItem("PG1115V_gray.jpg");
   rect.addItem("Line");
   rect.addItem("Rectangle");
 
@@ -84,6 +91,26 @@
     { str = "images/" + str;
       JApplet app = new JApplet();
       Image img = app.getToolkit().getImage(getClass().getResource(str));
+
+      File fileImg = new File("images/PG1115V_gray.jpg");
+      try{
+        //File file = new File("images/PG1115V_gray.jpg");
+        ImageInputStream iis = ImageIO.createImageInputStream(fileImg);
+       
+        //Iterator<ImageReader> readers = ImageIO.getImageReaders(iis);
+        Iterator<ImageReader> readers = ImageIO.getImageReaders("images/PG1115V_gray.jpg");
+        System.out.println(readers.length);
+        //ImageReader reader = readers.next();
+        //reader.setInput(iis, true);
+        //IIOMetadata metadata=reader.getImageMetadata(0);
+        //String[] name = metadata.getMetadataFormatNames();
+        //System.out.println(name[0]);
+        System.out.println("ende");
+      }
+      catch (Exception e) {
+      System.out.println("kommt immer noch nicht rein");
+      }
+
       image = toBufferedImage(img,wd,ht);
       imageOrg = image;
       g = image.getGraphics();
@@ -107,16 +134,14 @@
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
   boolean state=true;
-
   public void mousePressed(MouseEvent event)
     { 
-      int subimageSize = 30;
+      int subimageSize = 5;
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
-
       if(quadrLine.equals("Rectangle")){
         g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
@@ -127,14 +152,16 @@
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
               //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-8000000)) 
-       	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);              
+              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-900000)) 
+              //if(rgbPix[x1N+i][y1N+j][0] == 0)
+       	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
+                        
  	      }
  	  }
         repaint();
         }
 // if mouse is clicke a new cuveLine is drawn
-	else if(quadrLine.equals("Line")){
+	if(quadrLine.equals("Line")){
 
 		if(event.getButton()==MouseEvent.BUTTON3){
 			System.out.println("in Mous Event Button 3 pressed");
@@ -151,7 +178,7 @@
 		cuveLines2=new CuveLines();  //***********************
 		cuveLines2.update(complex1,g);}
                 
-                if(CuveLines.COUNT==2){
+                else if(CuveLines.COUNT==2){
                 if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
                 else {cuveLines2.setActive(); cuveLines.setInactive();}
                 cuveLines.update();	

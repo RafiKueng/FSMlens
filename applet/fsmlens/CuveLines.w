@@ -111,15 +111,7 @@ public class CuveLines{
 	        //self.pnt[1]=self.point(z[1])
 	        //self.pnt[2]=self.point(z[2])*/
 
-            
-            //draw Point the three points inPoints 0-2
-            if(activeStat) g.setColor(Color.red);
-            else g.setColor(Color.blue);
-            point(inPoints[0]);	    
-            point(inPoints[1]);
-            point(inPoints[2]);
-
-	
+         
 	    temp1=a.subtract(cen);
 	    double r = temp1.mod(); //some sort of radius??
 	    temp2=b.subtract(a);
@@ -142,6 +134,13 @@ public class CuveLines{
             drawLine(bezirLines2);
 	    this.bezirLines3=CuveLines.bezier(a,inPoints[2].subtract(dzc),c.subtract(dc),c);
             drawLine(bezirLines3);
+
+            //draw Point the three points inPoints 0-2
+            if(activeStat) g.setColor(Color.red);
+            else g.setColor(Color.blue);
+            point(inPoints[0]);	    
+            point(inPoints[1]);
+            point(inPoints[2]);
 	}
 	
 	public static Vector<Complex> bezier(Complex p1, Complex p2, Complex p3, Complex p4)

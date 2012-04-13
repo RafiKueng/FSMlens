@@ -39,10 +39,9 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
           this.picSize = picSize;
           rgbPix = new int[picSize][picSize][2];
           pixCount = new int[picSize][picSize][2];
-          rgbDouble = new double[picSize][picSize][1];
           this.home = home;
           this.unicorn = unicorn;
-          image = new BufferedImage(picSize,picSize,1);
+          image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
           resetMatrix();
@@ -61,15 +60,13 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 @ @<set somer picture@>=
   public void setPixPic()
     {    
-        resetMatrix();
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
-        System.out.println("synthimg: " + x(160) + " " + y(160)); 
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
-              if(rgbPix[j][k][0] != 0){
+              if(rgbPix[j][k][0] != 0){              
                 sourcCoo[1] = x(j);
 	        sourcCoo[2] = y(k);
 		int xNew,yNew;
@@ -92,9 +89,9 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 		    pixCount[xNew][yNew][0] += 1;
                     pixCount[xNew][yNew][1] += rgbPix[j][k][0];
                     }
-                  rgbDouble[xNew][yNew][0] += 1.0/(double)rgbPix[j][k][0];
-		  }
-              }
+		 }
+                
+               } 
    	    }
 	  }
         makeAverage();
@@ -109,7 +106,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       for(int j=0; j<picSize; j++)
         { 
         if(pixCount[i][j][0] != 0)
-          image.setRGB(i,j,pixCount[i][j][1]);   
+          image.setRGB(i,j,pixCount[i][j][1]);  
         }
     }
 
@@ -156,10 +153,9 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
             {
             xAver += i * pixCount[i][j][0];
             yAver += j * pixCount[i][j][0];
-            totalCount += pixCount[i][j][0];
-            rgbDouble[i][j][0] = (1.0/rgbDouble[i][j][0]) / (double)pixCount[i][j][0];
+            totalCount += pixCount[i][j][0];        
             pixCount[i][j][1] = pixCount[i][j][1]/pixCount[i][j][0];
-            //pixCount[i][j][1] = (int)rgbDouble[i][j][0];
+            
             }
  	  }
       }
