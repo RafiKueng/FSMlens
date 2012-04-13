@@ -113,7 +113,6 @@
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
-      checkRGB();
     }
 
     
@@ -146,25 +145,28 @@
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
   boolean state=true;
+  int subimageSize;
   public void mousePressed(MouseEvent event)
     { 
-      int subimageSize = 15;
+      subimageSize = 15;
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
+      double[] maxVal2 = new double[2];
       if(quadrLine.equals("Rectangle")){
         g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
         imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
+        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
 	for(int i=0; i<(subimageSize-2); i++)
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
               //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1500000)) 
+              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1350000)) 
               //if(rgbPix[x1N+i][y1N+j][0] == 0)
        	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
                         
@@ -307,19 +309,25 @@
     }
 
 @ @<check rgb@>=
-  public void checkRGB()
+  public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
     { 
     int rgbMin=0, rgbMax=-100000000;
-    for(int i = 0; i<300 ; i++)
-      for(int j = 0; j<300 ; j++)
+    double xMax = 0,yMax = 0;
+    for(int i = 0; i<subimageSize-2 ; i++)
+      for(int j = 0; j<subimageSize-2 ; j++)
       {
-      if(image.getRGB(i,j)<rgbMin) rgbMin = image.getRGB(i,j);
-      if(image.getRGB(i,j)>rgbMax) rgbMax = image.getRGB(i,j);
+      if(pixIm.getRGB(i,j)<rgbMin) rgbMin = pixIm.getRGB(i,j);
+      if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = x(i+xPos); yMax = y(j+yPos); }
       }
     System.out.println("RGB min ist: " + rgbMin);
     System.out.println("RGB max ist: " + rgbMax);
+    System.out.println("x max ist: " + xMax);
+    System.out.println("y max ist: " + yMax);
+    double[] maxVal = new double[2];
+    maxVal[0] = xMax; maxVal[1] = yMax;
+    return maxVal;
     }
-
+±±
 
 
 
