@@ -142,13 +142,13 @@
 		}
 		if(CuveLines.COUNT==0){
 		complex1=new Complex(x2N,y2N);
-		cuveLines=new CuveLines();  //***********************
+		cuveLines=new CuveLines(home);  //***********************
 		cuveLines.update(complex1,g);	
 		}
 		
 		else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 ){
 		complex1=new Complex(x2N,y2N);
-		cuveLines2=new CuveLines();  //***********************
+		cuveLines2=new CuveLines(home);  //***********************
 		cuveLines2.update(complex1,g);}
 
       	repaint();
@@ -189,13 +189,15 @@
 
 		complex=new Complex(x2N,y2N);
 		cuveLines.update(complex,g);
-        	cuveLines2.update(complex1,g);
+		if (cuveLines2 != null)
+          	  cuveLines2.update(complex1,g);
 	}
 	else
 	{
 		complex1=new Complex(x2N,y2N); //*******************************
 		cuveLines.update(complex,g);
-        	cuveLines2.update(complex1,g);
+		if (cuveLines2 != null)
+        	  cuveLines2.update(complex1,g);
 
 	}
       repaint();	

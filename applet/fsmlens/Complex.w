@@ -8,8 +8,8 @@ public class Complex {
 	public static Complex R=new Complex(1,0);
 	
 	
-	private double re=0;
-	private double im=0;
+	double re=0;
+	double im=0;
 	Complex()
 	{
 		//Complex number has real and imaginary part zero!!!
