@@ -162,7 +162,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     xAver = xAver/totalCount;
     yAver = yAver/totalCount;
     //g.fillOval(xAver,yAver,10,10);
-    unicorn.drawSource(xAver,yAver);
+    //unicorn.drawSource(xAver,yAver);
     }
 
 @ @<get the average pixel@>=

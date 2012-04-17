@@ -148,7 +148,7 @@
   int subimageSize;
   public void mousePressed(MouseEvent event)
     { 
-      subimageSize = 15;
+      subimageSize = 25;
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
@@ -166,9 +166,9 @@
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
               //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1350000)) 
+              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1350000)) 
               //if(rgbPix[x1N+i][y1N+j][0] == 0)
-       	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
+       	        //rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
                         
  	      }
  	  }
@@ -311,23 +311,24 @@
 @ @<check rgb@>=
   public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
     { 
-    int rgbMin=0, rgbMax=-100000000;
-    double xMax = 0,yMax = 0;
+    int rgbMin=0; int rgbMax=-100000000;
+    int xMax = 0; int yMax = 0;
     for(int i = 0; i<subimageSize-2 ; i++)
       for(int j = 0; j<subimageSize-2 ; j++)
       {
       if(pixIm.getRGB(i,j)<rgbMin) rgbMin = pixIm.getRGB(i,j);
-      if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = x(i+xPos); yMax = y(j+yPos); }
+      if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = i; yMax = j; }
       }
-    System.out.println("RGB min ist: " + rgbMin);
-    System.out.println("RGB max ist: " + rgbMax);
-    System.out.println("x max ist: " + xMax);
-    System.out.println("y max ist: " + yMax);
+    //System.out.println("RGB min ist: " + rgbMin);
+    //System.out.println("RGB max ist: " + rgbMax);
+    //System.out.println("x max ist: " + xMax);
+    //System.out.println("y max ist: " + yMax);
+    rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
     double[] maxVal = new double[2];
-    maxVal[0] = xMax; maxVal[1] = yMax;
+    maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
     return maxVal;
     }
-±±
+
 
 
 

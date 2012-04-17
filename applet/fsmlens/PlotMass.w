@@ -27,7 +27,7 @@
 
 @ @<Generic stuff in |PlotMass|@>=
   public PlotMass()
-    { super(320,320);
+    { super(300,300);
       @<Set up input fields in |PlotMass|@>
       @<Initialize fields in |PlotMass|@>
     }
