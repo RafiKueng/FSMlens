@@ -37,4 +37,5 @@ Thumbs.db
 
 # for individual stuff create your own .gitignore file in your folder..
 
-compile
+# list personal run / build / make scripts here; try to use existing names.
+/compile

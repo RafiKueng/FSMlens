@@ -1,0 +1,7 @@
+#!/bin/bash
+cd applet
+make
+cd ..
+
+echo -e "\nstarting jar\n"
+java -jar Monster.jar
