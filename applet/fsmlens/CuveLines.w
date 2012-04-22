@@ -16,12 +16,15 @@ import java.util.Vector;
 public class CuveLines{
 	public static int COUNT=0;
 	//private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
-        private Complex[] inPoints={new Complex(182,72),new Complex(100,162),new Complex(200,183)};
+        public Complex[] inPoints={new Complex(182,72),new Complex(100,162),new Complex(200,183)};
 
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
 	private Vector<Complex> bezirLines3=new Vector<Complex>();
+
+	private CuveLines cuveLines;
+	public boolean isLink=false;
 	Graphics g;	
 
 	CuveLines(Complex[] pnt)
@@ -36,7 +39,25 @@ public class CuveLines{
 		System.out.println(CuveLines.COUNT);
 	}
 
-	
+	public CuveLines getcuveLines()
+	{
+		return cuveLines;
+	}
+
+	public void setcuveLines(Complex minima1, Complex minima2)
+	{
+		Complex[] initPnt={minima1,minima2,inPoints[2]};
+		cuveLines=new CuveLines(initPnt);
+		//cuveLines.isLink=true;
+	}
+
+	public void setcuveLines()
+	{
+		Complex[] initPnt={new Complex(80,72),new Complex(50,162),inPoints[2]};
+		cuveLines=new CuveLines(initPnt);
+		//cuveLines.isLink=true;
+	}
+
 	public Vector<Complex> getbezier0()
 	{
 		assert(!bezirLines0.isEmpty());
@@ -183,11 +204,39 @@ public class CuveLines{
 		this.draw();
 		
 	}
+	public void update(Complex event, Graphics g, Complex pnt)
+	{		
+		this.g = g;
+		double ds=0;
+
+		double dsmin=(event.subtract(inPoints[0])).modSQR();
+		int q=0;
+		for(int p=0;p<3;p++)
+		{
+			ds=(event.subtract(inPoints[p])).modSQR();
+			if(p==0 || ds<dsmin)
+			{
+				dsmin=ds;
+				q=p;
+			}
+		//inPoints[q]=event;
+		//this.draw();
+		}
+                inPoints[q]=event;
+		inPoints[2]=pnt;
+		this.draw();
+	}
        
         public void update()
 	{
-		this.draw();		
+		this.draw();
 	}
+
+	public void update(Complex pnt)
+	{
+		inPoints[2]=pnt;		
+		this.draw();		
+	}	
 
         public void point(Complex z)
         {
