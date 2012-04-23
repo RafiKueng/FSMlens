@@ -14,6 +14,9 @@
       @<get the RGB matrix out@>
       @<Drawing the source@>
       @<check rgb@>
+      @<get max Koordinate@>
+      @<get choosen picture@>
+      @<set points@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
@@ -21,6 +24,9 @@
       Complex complex;
       Complex complex1;
       Complex complex2;
+      BufferedImage imgInt;
+      BufferedImage imageOrg = null;
+      Illus illus;
     }
 
 
@@ -51,13 +57,13 @@
     Complex complex1;
     Complex complex2;
 
-
 @ @<Code to read and show raw lenses@>=
-  public Unicorn(Monster home, int picSize)
+  public Unicorn(Monster home, int picSize, Illus illus)
     { super(picSize,picSize);
       this.home = home;
       //this.cuveLines = cuveLines;
       this.picSize = picSize; 
+      this.illus = illus;
       rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
       rect = new JComboBox();
@@ -65,6 +71,7 @@
       rect.addActionListener(this);
       hook.add(choice);
       hook.add(rect);
+      hook.setBackground(Color.black);
       addMouseListener(this);
       addMouseMotionListener(this);
       rgbMatrix();
@@ -100,7 +107,6 @@
   CuveLines cuveLines2;
   Image img;
   BufferedImage imgrect = null;
-  BufferedImage imageOrg;
   BufferedImage intensity = null;
   
   void showImage(String str)
@@ -120,12 +126,12 @@
 @ @<check if there is alpha channel with intensity@>=
       /* if this img has an alpha channel, extract it and save it under */
       /* author: rk */
-
       if (hasAlpha(img)) {
-        System.out.println("this has alpha channel");
         intensity = extractAlpha(img,wd,ht);
-        image = intensity;
+        imgInt = toBufferedImage(intensity,picSize,picSize);
       }
+      else imgInt = null;
+
 
 
 
@@ -145,9 +151,11 @@
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
   boolean state=true;
+  boolean oneortwo;
   int subimageSize;
   public void mousePressed(MouseEvent event)
     { 
+      oneortwo = true;
       subimageSize = 25;
       drawAxes(1);
       x1N = event.getX();
@@ -156,9 +164,11 @@
       y1 = y(y1N);
       double[] maxVal2 = new double[2];
       if(quadrLine.equals("Rectangle")){
-        g.setColor(Color.blue);
+        if(event.getButton()==MouseEvent.BUTTON3){ g.setColor(Color.red); oneortwo=false;}
+        else g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
-        imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
+        if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
+        else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
 	for(int i=0; i<(subimageSize-2); i++)
@@ -269,6 +279,8 @@
     showImage((String) choice.getSelectedItem());
     repaint();
     rgbMatrix();
+    maxKoord.clear();
+    //imageOrg = null;
     }
 
 @ @<init rgb matrix@>=
@@ -309,6 +321,7 @@
     }
 
 @ @<check rgb@>=
+  ArrayList<double[]> maxKoord = new ArrayList<double[]>();
   public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
     { 
     int rgbMin=0; int rgbMax=-100000000;
@@ -324,10 +337,33 @@
     //System.out.println("x max ist: " + xMax);
     //System.out.println("y max ist: " + yMax);
     rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
-    double[] maxVal = new double[2];
+    double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
+    if(oneortwo) maxVal[2] = 1;
+    else maxVal[2] = 2;
+    maxKoord.add(maxVal);
     return maxVal;
     }
+
+@ @<get max Koordinate@>=
+  public ArrayList<double[]> getPointKoord()
+    {
+    return(maxKoord);
+    }
+
+@ @<get choosen picture@>=
+  public String getChoose()
+    {
+    String choo = ((String) choice.getSelectedItem());
+    return(choo);
+    }
+
+@ @<set points@>=
+  public void setPoints()
+    {
+     illus.setKoord(maxKoord);
+    }
+    
 
 
 

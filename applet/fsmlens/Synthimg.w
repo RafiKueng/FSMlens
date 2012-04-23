@@ -58,7 +58,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     }
 
 @ @<set somer picture@>=
-  public void setPixPic()
+  public int[][][] setPixPic()
     {    
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
@@ -95,8 +95,9 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
    	    }
 	  }
         makeAverage();
-        drawPic();
-        repaint();	
+        //drawPic();
+        //repaint();
+        return(pixCount);	
     }
 
 @ @<Draw the source plane@>=

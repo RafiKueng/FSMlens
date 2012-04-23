@@ -7,10 +7,15 @@
   import javax.swing.*;
   import java.awt.BorderLayout;
   import java.awt.event.*;
+  import java.awt.*;
+  import java.lang.Object.*;
+  import java.util.*;
+
   public class Illus extends JPanel implements ActionListener
     { @<Constructor for |Illus|, including data@>
       @<Setting read-only flags in |Illus|@>
       @<Event handler for |Illus|@>
+      @<Unicorn inputs@>
     }
 
 @ @<Constructor for |Illus|, including data@>=
@@ -25,7 +30,8 @@
       choice.addActionListener(this);
       JPanel p = new JPanel();  p.add(choice);  @/
       setLayout(new BorderLayout());
-      add("South",txt.getPanel());  add("North",p);
+      add("South",txt.getPanel());  
+      add("North",p);
     }
 
 @ @<Setting read-only flags in |Illus|@>=
@@ -52,17 +58,21 @@
 @ @<Event handler for |Illus|@>=
   public void actionPerformed(ActionEvent event)
     { String str = (String) choice.getSelectedItem();
+      System.out.println(str);
       for (int i=0; i<id.size(); i++)
         { if (str.compareTo(id.get(i))==0)
             { efl = false;
               if (i == 0)
                 { txt.setEditable(true); efl = true;
                 }
-              else if (i == id.size()-1)
+              //else if (i == id.size()-1)
+              else if(str.compareTo("clear")==1)
                 { txt.setText(""); txt.setEditable(false);
                 }
               else
                 { txt.setText(data.get(i));
+                  System.out.println(data.get(i));
+                  System.out.println(data.size());
                   txt.setEditable(false);
                 }
             }
@@ -78,10 +88,36 @@
 @ @<Clear input@>=
   str = new String("clear"); strb = new StringBuffer();
   choice.addItem(str); id.add(str); data.add(strb.toString());
+ 
+@ @<Unicorn inputs@>=
+  ArrayList<double[]> maxKoord = new ArrayList<double[]>();
+  public void setKoord(ArrayList<double[]> maxKoord)
+    {
+    //@<Edit-input mode@>;
+    String str;  StringBuffer strb;
+    this.maxKoord = maxKoord;
+    double[] maxVal = new double[3];
+    str = new String("Unicorn Input");
+    strb = new StringBuffer("object UnicornInput \n");
+    strb.append("pixrad 8 \n");
+    strb.append("zlens 0.311 \n");
+    strb.append("g 14 \n");
+    int size = maxKoord.size();
+    strb.append("multi " + size + " 1.722  \n");
+    for(int i=0;i<size;i++)
+      {
+      maxVal = maxKoord.get(i);
+      strb.append(" " + maxVal[0] + " " + maxVal[1] + " " + (int)maxVal[2] + " \n");
+      } 
+    strb.append("models 20 \n"); 
+    choice.addItem(str); id.addElement(str); data.addElement(strb.toString());
+    }
 
 @ @<Example inputs@>=
-  str = new String("B1115+080");  @/
-  strb = new StringBuffer("object B1115+080 \n");  @/
+  //str = new String("B1115+080");  @/
+  //strb = new StringBuffer("object B1115+080 \n");  @/
+  str = new String("PG1115V.gif");  @/
+  strb = new StringBuffer("object PG1115V.gif \n");  @/
   strb.append("pixrad 8 \n");
   strb.append("zlens 0.311 \n");
   strb.append("g 14 \n");

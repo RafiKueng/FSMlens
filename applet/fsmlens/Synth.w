@@ -56,6 +56,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           synthButton = new JButton("Synth");
           synthButton.addActionListener(this);
           hook.add(synthButton);
+          hook.setBackground(Color.black);
           rgbPix = new int[picSize][picSize][1];
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
@@ -85,6 +86,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
               image.setRGB(i,j,rgbPix[i][j][0]); 
  	      }
            }
+        unicorn.setPoints();
         repaint();	
     }
 
@@ -124,7 +126,10 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<get RGB of the pixels@>=
   private void getSource()
     {
-    synthimg.setPixPic();
+    rgbPix = synthimg.setPixPic();
+    g.setColor(Color.white);
+    drawPic();
+    repaint();
     }
 
 @ @<Draw the reconstruction plane@>=
