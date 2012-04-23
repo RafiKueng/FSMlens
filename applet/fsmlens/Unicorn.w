@@ -7,8 +7,6 @@
     { @<Code to read and show raw lenses@>
       @<Drawing curves with the mouse@>
       @<get the Picture out@>
-      @<get the x pos@>
-      @<get the y pos@>
       @<init rgb matrix@>
       @<Reset the array@>
       @<get the RGB matrix out@>
@@ -165,6 +163,7 @@
       double[] maxVal2 = new double[2];
       if(quadrLine.equals("Rectangle")){
         if(event.getButton()==MouseEvent.BUTTON3){ g.setColor(Color.red); oneortwo=false;}
+        else if(event.getButton()==MouseEvent.BUTTON2){ g.setColor(Color.green); oneortwo=false;}
         else g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
         if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
@@ -308,18 +307,6 @@
     return(image);
     }
 
-@ @<get the x pos@>=
-  public int getXpos()
-    {
-     return((int)x1N);
-    }
-
-@ @<get the y pos@>=
-  public int getYpos()
-    {
-     return((int)y1N);
-    }
-
 @ @<check rgb@>=
   ArrayList<double[]> maxKoord = new ArrayList<double[]>();
   public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
@@ -332,10 +319,6 @@
       if(pixIm.getRGB(i,j)<rgbMin) rgbMin = pixIm.getRGB(i,j);
       if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = i; yMax = j; }
       }
-    //System.out.println("RGB min ist: " + rgbMin);
-    //System.out.println("RGB max ist: " + rgbMax);
-    //System.out.println("x max ist: " + xMax);
-    //System.out.println("y max ist: " + yMax);
     rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
     double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));

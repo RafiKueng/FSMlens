@@ -93,7 +93,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
-        g.clearRect(0,0,picSize,picSize);
+        int xNew=0,yNew=0;
         pixCount = synthimg.getAveragePix();
         double[] sourcCoo = new double[3];      
         for(int j=0; j<picSize;j++)
@@ -102,11 +102,15 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	    {
                 sourcCoo[1] = x(j); 
 	        sourcCoo[2] = y(k); 
-		int xNew,yNew;
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);
                   xNew = xpix(sourcCoo[1]); 
 	          yNew = ypix(sourcCoo[2]); 
+                  if(pixCount[xNew][yNew][0]!=0){
+                    System.out.println(xNew + " " + sourcCoo[1] +  "      " + yNew + " " + sourcCoo[2]);
+                    System.out.println(j + "  " + k); 
+                    }
+                    
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -114,7 +118,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 		}
 	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
 		  {
-                  rgbPix[j][k][0] = pixCount[xNew][yNew][1];
+                  rgbPix[j][k][0] = pixCount[xNew][yNew][0];
 		  }
    	    }
 	  }
@@ -127,7 +131,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   private void getSource()
     {
     rgbPix = synthimg.setPixPic();
-    g.setColor(Color.white);
     drawPic();
     repaint();
     }
@@ -135,11 +138,11 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<Draw the reconstruction plane@>=
   private void drawPic()
     {
+    g.clearRect(0,0,picSize,picSize);
     for(int i=0; i<picSize; i++)
       for(int j=0; j<picSize; j++)
         { 
-          image.setRGB(i,j,rgbPix[i][j][0]);
-          //g.drawImage(unicorn.getImage(),0,0,null);   
+          image.setRGB(i,j,rgbPix[i][j][0]); 
         }
     }
 

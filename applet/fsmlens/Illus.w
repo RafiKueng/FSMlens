@@ -72,7 +72,6 @@
               else
                 { txt.setText(data.get(i));
                   System.out.println(data.get(i));
-                  System.out.println(data.size());
                   txt.setEditable(false);
                 }
             }
@@ -93,7 +92,6 @@
   ArrayList<double[]> maxKoord = new ArrayList<double[]>();
   public void setKoord(ArrayList<double[]> maxKoord)
     {
-    //@<Edit-input mode@>;
     String str;  StringBuffer strb;
     this.maxKoord = maxKoord;
     double[] maxVal = new double[3];
@@ -110,7 +108,10 @@
       strb.append(" " + maxVal[0] + " " + maxVal[1] + " " + (int)maxVal[2] + " \n");
       } 
     strb.append("models 20 \n"); 
-    choice.addItem(str); id.addElement(str); data.addElement(strb.toString());
+    int sizeId = id.size()-1;
+    String check = id.get(sizeId);
+    txt.setText(strb.toString());
+    System.out.println(strb);
     }
 
 @ @<Example inputs@>=
