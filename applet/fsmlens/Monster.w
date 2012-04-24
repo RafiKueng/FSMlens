@@ -90,7 +90,7 @@
   txt.setBackground(Color.black);
   txt.add("North",inp);  @/
   txt.add("South",err.getPanel());  @/
-  //mainPane.add("West",txt);
+  mainPane.add("West",txt);
 
 
 @ @<Put plots to East@>=

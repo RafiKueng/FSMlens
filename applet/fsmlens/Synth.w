@@ -24,6 +24,7 @@ This file is not doing anything.
         @<Draw the reconstruction plane@>
         @<make a average over the pix@>
         @<Reset the matrix@>
+        @<create max and min value of the coordinate@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -43,7 +44,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         { super(picSize,picSize);
           this.picSize = picSize;
           rgbPix = new int[picSize][picSize][2];
-          pixCount = new int[picSize][picSize][2];
+          //pixCount = new int[picSize][picSize][2];
           this.home = home;
           this.unicorn = unicorn;
 	  this.synthimg = synthimg;
@@ -60,7 +61,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           synthButton.addActionListener(this);
           hook.add(synthButton);
           hook.setBackground(Color.black);
-          //rgbPix = new int[picSize][picSize][1];
+          rgbPix = new int[picSize][picSize][1];
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
@@ -90,17 +91,21 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
  	      }
            }
         unicorn.setPoints();
-        repaint();	
+        repaint();
     }
 
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
+        createMaxMin();
         int xNew=0,yNew=0;
+        pixCount = synthimg.getAveragePix();
         double[] sourcCoo = new double[3];      
-        for(int j=0; j<picSize;j++)
+        //for(int j=0; j<picSize;j++)
+        for(int j=xMin; j<xMax;j++)
  	  {
-	  for(int k=0; k<picSize;k++)
+	  //for(int k=0; k<picSize;k++)
+          for(int k=yMin; k<yMax;k++)
 	    {
                 sourcCoo[1] = x(j); 
 	        sourcCoo[2] = y(k); 
@@ -132,7 +137,9 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<get RGB of the pixels@>=
   private void getSource()
     {
-    synthimg.setPixPic();
+    rgbPix = synthimg.setPixPic();
+    drawPic();
+    repaint();
     }
 
 @ @<make a average over the pix@>=
@@ -178,6 +185,31 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
  	  }
       }
     }
+
+@ @<create max and min value of the coordinate@>=
+  int xMax=0,yMax=0,xMin=0,yMin=0;
+  public void createMaxMin()
+    {
+    double nxmax=0,nymax=0,nxmin=0,nymin=0;
+    double xmax=x(picSize),ymax=y(0),xmin=x(0),ymin=y(picSize);
+    double[] koord = new double[3];
+    ArrayList<double[]> maxKoord = new ArrayList<double[]>();
+    maxKoord = unicorn.getPointKoord();
+    for(int i=0 ; i<maxKoord.size() ; i++)
+      {
+      koord = maxKoord.get(i);
+      nxmax = koord[0]; nxmin = koord[0]; nymax = koord[1]; nymin = koord[1];
+      if(nxmax>=xmin) xmin = nxmax;
+      if(nxmin<=xmax) xmax = nxmin;
+      if(nymax>=ymin) ymin = nymax;
+      if(nymin<=ymax) ymax = nymin;      
+      }
+    int outcast = 10;
+    xMax = xpix(xmin)+outcast; xMin = xpix(xmax)-outcast; yMax = ypix(ymin)+outcast; yMin = ypix(ymax)-outcast;
+    //System.out.println("xmax: " + xmax + "  xmin: " + xmin + "      ymax: " + ymax + "   ymin: " + ymin);
+    //System.out.println("xmax: " + xMax + "  xmin: " + xMin + "      ymax: " + yMax + "   ymin: " + yMin);
+    }
+
 
 
 @ @<Reset the panel@>=
