@@ -149,11 +149,11 @@
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
   boolean state=true;
-  boolean oneortwo;
+  double oneortwo;
   int subimageSize;
   public void mousePressed(MouseEvent event)
     { 
-      oneortwo = true;
+      oneortwo = 1;
       subimageSize = 25;
       drawAxes(1);
       x1N = event.getX();
@@ -162,9 +162,9 @@
       y1 = y(y1N);
       double[] maxVal2 = new double[2];
       if(quadrLine.equals("Rectangle")){
-        if(event.getButton()==MouseEvent.BUTTON3){ g.setColor(Color.red); oneortwo=false;}
-        else if(event.getButton()==MouseEvent.BUTTON2){ g.setColor(Color.green); oneortwo=false;}
-        else g.setColor(Color.blue);
+        if(event.getButton()==MouseEvent.BUTTON3){ g.setColor(Color.red); oneortwo=2;}
+        else if(event.getButton()==MouseEvent.BUTTON2){ g.setColor(Color.green); oneortwo=3;}
+        else{ g.setColor(Color.blue); oneortwo = 1;}
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
         if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
@@ -322,8 +322,7 @@
     rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
     double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
-    if(oneortwo) maxVal[2] = 1;
-    else maxVal[2] = 2;
+    maxVal[2] = oneortwo;
     maxKoord.add(maxVal);
     return maxVal;
     }
