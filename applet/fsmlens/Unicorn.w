@@ -290,6 +290,7 @@
         for(int j=0; j<picSize; j++)
     	  {
           rgbPix[i][j][0] = 0;
+          rgbPix[i][j][1] = 0;
  	  }
       }
     }

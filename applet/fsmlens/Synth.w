@@ -22,6 +22,8 @@ This file is not doing anything.
         @<get RGB of the pixels@>
         @<reconstruct the image plane@>   
         @<Draw the reconstruction plane@>
+        @<make a average over the pix@>
+        @<Reset the matrix@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -41,6 +43,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         { super(picSize,picSize);
           this.picSize = picSize;
           rgbPix = new int[picSize][picSize][2];
+          pixCount = new int[picSize][picSize][2];
           this.home = home;
           this.unicorn = unicorn;
 	  this.synthimg = synthimg;
@@ -57,10 +60,11 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           synthButton.addActionListener(this);
           hook.add(synthButton);
           hook.setBackground(Color.black);
-          rgbPix = new int[picSize][picSize][1];
+          //rgbPix = new int[picSize][picSize][1];
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
+          resetMatrix();
         }
 
 
@@ -94,7 +98,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   public void getPixPic()
     {    
         int xNew=0,yNew=0;
-        pixCount = synthimg.getAveragePix();
         double[] sourcCoo = new double[3];      
         for(int j=0; j<picSize;j++)
  	  {
@@ -130,10 +133,58 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<get RGB of the pixels@>=
   private void getSource()
     {
-    rgbPix = synthimg.setPixPic();
+    resetMatrix();
+    int xNew=0,yNew=0;
+        pixCount = unicorn.getrgbMatrix();
+        double[] sourcCoo = new double[3];     
+        for(int j=0; j<picSize;j++)
+ 	  {
+	  for(int k=0; k<picSize;k++)
+	    {
+              if(pixCount[j][k][0] != 0){  
+                System.out.println(j + " " + k + " \n");          
+                sourcCoo[1] = x(j);
+	        sourcCoo[2] = y(k);
+		try{
+ 	          sourcCoo = home.sourCoord(sourcCoo);                  
+                  xNew = xpix(sourcCoo[1]);
+	          yNew = ypix(sourcCoo[2]);
+		}
+		catch(Exception e) {
+		  xNew = j;
+	 	  yNew = k;
+		}
+	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
+		  {
+      		    rgbPix[xNew][yNew][1] += 1;
+                    System.out.println(xNew + " " + yNew + " \n");
+                    rgbPix[xNew][yNew][0] += pixCount[j][k][0];
+		  }                
+               } 
+   	    }
+	  }
+    makeAverage();
     drawPic();
     repaint();
     }
+
+@ @<make a average over the pix@>=
+  private void makeAverage()
+    {
+    for(int i=0; i<picSize; i++) 
+      {
+        for(int j=0; j<picSize; j++)
+    	  {
+          if(rgbPix[i][j][1]>0)
+            {       
+            rgbPix[i][j][0] = rgbPix[i][j][0]/rgbPix[i][j][1];           
+            }
+ 	  }
+      }
+    }
+
+
+
 
 @ @<Draw the reconstruction plane@>=
   private void drawPic()
@@ -146,10 +197,27 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         }
     }
 
+@ @<Reset the matrix@>=
+  public void resetMatrix()
+    {
+    for(int i=0; i<picSize; i++) 
+      {
+        for(int j=0; j<picSize; j++)
+    	  {
+          rgbPix[i][j][0] = 0;
+          rgbPix[i][j][1] = 0;
+	  pixCount[i][j][0] = 0;
+          pixCount[i][j][1] = 0;
+ 	  }
+      }
+    }
+
+
 @ @<Reset the panel@>=
   public void reset()
     {
     g.clearRect(0,0,picSize,picSize);
+    resetMatrix();
     unicorn.reset();
     synthimg.reset();
     repaint();
