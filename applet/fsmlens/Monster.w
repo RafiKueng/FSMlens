@@ -99,7 +99,7 @@
   unicorn = new Unicorn(this,picSize,inp);
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
-  FigDeck pd = new FigDeck(); 
+  FigDeck pd = new FigDeck(); @/
   pd.setBackground(Color.black);
   //pd.addFigure("pixellation",lenses.plotPix);
   //pd.addFigure("mass",lenses.plotMass);

@@ -109,6 +109,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	    {
                 sourcCoo[1] = x(j); 
 	        sourcCoo[2] = y(k); 
+                //System.out.println("X: " + j + " " + x(j) + "  Y: " + k + " " + y(k));
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);
                   xNew = xpix(sourcCoo[1]); 
