@@ -15,47 +15,25 @@ import java.util.Vector;
 
 public class CuveLines{
 	public static int COUNT=0;
-	//private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
-        public Complex[] inPoints={new Complex(182,72),new Complex(100,162),new Complex(200,183)};
-
+	private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
+        private LinkCuve[] linkCuve={new Point(new Complex(182,72)),new Point(new Complex(100,162)),new Point(new Complex(200,183))};
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
 	private Vector<Complex> bezirLines3=new Vector<Complex>();
 
-	private CuveLines cuveLines;
-	public boolean isLink=false;
 	Graphics g;	
 
-	CuveLines(Complex[] pnt)
+	CuveLines(Point[] pnt)
 	{
 		CuveLines.COUNT+=1;
-		System.out.println(CuveLines.COUNT);
+		//System.out.println(CuveLines.COUNT);
 		this.inPoints=pnt;
 	}
 	CuveLines()
 	{
 		CuveLines.COUNT+=1;
-		System.out.println(CuveLines.COUNT);
-	}
-
-	public CuveLines getcuveLines()
-	{
-		return cuveLines;
-	}
-
-	public void setcuveLines(Complex minima1, Complex minima2)
-	{
-		Complex[] initPnt={minima1,minima2,inPoints[2]};
-		cuveLines=new CuveLines(initPnt);
-		//cuveLines.isLink=true;
-	}
-
-	public void setcuveLines()
-	{
-		Complex[] initPnt={new Complex(80,72),new Complex(50,162),inPoints[2]};
-		cuveLines=new CuveLines(initPnt);
-		//cuveLines.isLink=true;
+		//System.out.println(CuveLines.COUNT);
 	}
 
 	public Vector<Complex> getbezier0()
@@ -82,7 +60,8 @@ public class CuveLines{
 
 	public void draw()
 	{            
-            inPoints[0].printNumber();
+            Complex[] inPoints={inPoints[0].getPoint(),inPoints[1].getPoint(),inPoints[2].getPoint()};
+	    inPoints[0].printNumber();
             inPoints[1].printNumber();
 	    inPoints[2].printNumber();
 	    System.out.print("\n");
@@ -184,47 +163,58 @@ public class CuveLines{
 	}
 	
 	public void update(Complex event, Graphics g)
-	{
-                this.g = g;
-		double ds=0;
-		double dsmin=(event.subtract(inPoints[0])).modSQR();
-		int q=0;
-		for(int p=0;p<3;p++)
-		{
-			ds=(event.subtract(inPoints[p])).modSQR();
-			if(p==0 || ds<dsmin)
-			{
-				dsmin=ds;
-				q=p;
-			}
-		//inPoints[q]=event;
-		//this.draw();
-		}
-                inPoints[q]=event;
-		this.draw();
-		
-	}
-	public void update(Complex event, Graphics g, Complex pnt)
 	{		
-		this.g = g;
-		double ds=0;
 
-		double dsmin=(event.subtract(inPoints[0])).modSQR();
-		int q=0;
-		for(int p=0;p<3;p++)
-		{
-			ds=(event.subtract(inPoints[p])).modSQR();
-			if(p==0 || ds<dsmin)
+		Class [] clObj={inPoints[0].getClass(), inPoints[1].getClass(),inPoints[2].getClass()};
+
+		if((clObj[0].equals(clObj[1])) && (clObj[1].equals(clObj[2])))//might be a bug if all elements are a of the type ArrPnt this will not work
+		{							//lets hope this is newer the case before I manage to fix it.
+			this.g = g;
+			double ds=0;
+	
+			double dsmin=(event.subtract(inPoints[0].getpnt())).modSQR();
+			int q=0;
+			for(int p=0;p<3;p++)
 			{
-				dsmin=ds;
-				q=p;
+				ds=(event.subtract(inPoints[p])).modSQR();
+				if(p==0 || ds<dsmin)
+				{
+					dsmin=ds;
+					q=p;
+				}
+			//inPoints[q]=event;
+			//this.draw();
 			}
-		//inPoints[q]=event;
-		//this.draw();
+        	        inPoints[q].update(event);
+			this.draw();
+		}else
+		{
+			//Point temp;
+			Complex[] temp;
+			Point pntTemp;			
+			if((clObj[0].equals(clObj[1])))
+			{
+				temp=inPoints[2].getPoint(); //is theoreticaly of Type ArrPoint
+				pntTemp=new Point(temp[2]);
+				inPoint[2]=pntTemp;
+			}
+			if((clObj[0].equals(clObj[2)))
+			{
+				temp=inPoints[1].getPoint(); //is theoreticaly of Type 
+				pntTemp=new Point(temp[1]);
+				inPoint[1]=pntTemp;
+			}
+			if((clObj[2].equals(clObj[
+			{
+				temp=inPoints[1].getPoint(); //is theoreticaly of Type 
+				pntTemp=new Point(temp[1]);
+				inPoint[1]=pntTemp;
+			}else{
+				System.out.println("no Mach fond some thing is odd");
+					return;
+			}
+			this.update();
 		}
-                inPoints[q]=event;
-		inPoints[2]=pnt;
-		this.draw();
 	}
        
         public void update()
@@ -232,9 +222,8 @@ public class CuveLines{
 		this.draw();
 	}
 
-	public void update(Complex pnt)
-	{
-		inPoints[2]=pnt;		
+	public void update(Complex pnt)//does not realy do much other than update()??
+	{		
 		this.draw();		
 	}	
 

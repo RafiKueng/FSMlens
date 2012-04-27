@@ -13,23 +13,9 @@
 
 import java.util.Vector;
 
-public class LinkCuve{
+public abstract class LinkCuve{
 
-	private CuveLines cuve;
-	private CuveLines cuveLink;
-	
-	LinkCuve()
-	{
-	 //create the cuve lines using the link
-	}
-
-	public void link()
-	{
-		cuve=new CuveLines();
-		cuveLink=new CuveLines();
-		cuveLink.isLink=true;
-		
-		
-	}
+	public abstract void Print();
+	public abstract void update(Complex udp);
 
 }

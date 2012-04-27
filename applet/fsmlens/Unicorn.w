@@ -189,14 +189,18 @@
 		
 		else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 ){
 		complex1=new Complex(x2N,y2N);
-		cuveLines2=new CuveLines();  //***********************
-		cuveLines2.update(complex1,g);}
+		cuveLines2=cuveLines.getcuveLines();  //***********************
+		Complex comp2=cuveLines.inPoints[2];
+		cuveLines2.update(complex1,g,comp2);
+		}
                 
                 else if(CuveLines.COUNT==2){
+			System.out.println("before updates");
                 if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
                 else {cuveLines2.setActive(); cuveLines.setInactive();}
                 cuveLines.update();	
-                cuveLines2.update();
+                cuveLines2.update(cuveLines.inPoints[2]);
+		System.out.println("After updates");
                 }
 
       	repaint();
