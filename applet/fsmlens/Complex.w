@@ -47,7 +47,11 @@ public class Complex {
 	{
 		return re;
 	}
-	
+	public void update(Complex event)
+	{
+		this.im=event.imaginary();
+		this.re=event.real();
+	}
 	public Complex add(double x)
 	{
 		Complex zTot=new Complex(this.re+x,this.im);
