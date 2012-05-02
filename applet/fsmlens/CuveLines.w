@@ -15,8 +15,9 @@ import java.util.Vector;
 
 public class CuveLines{
 	public static int COUNT=0;
-	//private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
+	//private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};##
         private Complex[] inPoints={new Complex(182,72),new Complex(100,162),new Complex(200,183)};
+	private Vector<Complex> cuvePoints;//=new Vector<Complex>(inPoints); How to initialize the vector with the points of an rray
 
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
@@ -29,11 +30,19 @@ public class CuveLines{
 		CuveLines.COUNT+=1;
 		System.out.println(CuveLines.COUNT);
 		this.inPoints=pnt;
+		for(int i=0;i<3;i++)
+		{
+			cuvePoints.add(pnt[i]);//add the initial point to the vector to the vector to initialze the vector
+		}
 	}
 	CuveLines()
 	{
 		CuveLines.COUNT+=1;
 		System.out.println(CuveLines.COUNT);
+		for(int i=0;i<3;i++)
+		{
+			cuvePoints.add(inPoints[i]);//add the point given as defaiult to the vector to initialze the vector
+		}
 	}
 
 	
@@ -59,7 +68,7 @@ public class CuveLines{
 	}
 	
 
-	public void draw()
+	private void draw(Complex [] inPoints)
 	{            
             inPoints[0].printNumber();
             inPoints[1].printNumber();
@@ -164,13 +173,14 @@ public class CuveLines{
 	
 	public void update(Complex event, Graphics g)
 	{
+		
                 this.g = g;
 		double ds=0;
-		double dsmin=(event.subtract(inPoints[0])).modSQR();
+		double dsmin=(event.subtract(cuvePoints.get(0))).modSQR();
 		int q=0;
-		for(int p=0;p<3;p++)
+		for(int p=0;p<cuvePoints.size();p++)
 		{
-			ds=(event.subtract(inPoints[p])).modSQR();
+			ds=(event.subtract(cuvePoints.get(p))).modSQR();
 			if(p==0 || ds<dsmin)
 			{
 				dsmin=ds;
@@ -179,14 +189,27 @@ public class CuveLines{
 		//inPoints[q]=event;
 		//this.draw();
 		}
-                inPoints[q]=event;
-		this.draw();
+                inPoints[q]=event;//there is a better way to do this look up overrite --> is set or something 
+		//create an array with the points
+		this.draw(inPoints);
 		
 	}
        
         public void update()
 	{
-		this.draw();		
+		//extract the first tree points from the vector cuvePoints in to an array		
+		this.draw(inPoints);		
+	}
+
+	public void expandComplex(Complex exp)
+	{
+		//expand the point in the vector
+		//1)find the number which corresponds to exp
+		//2a)update the flag of the found number
+		//2b)expand the number exp into an array of 3 numbers where the first one is a saddel point
+		//3)add the new numbers to the vector
+		//  the flag should now hold the nuber which indicates the spot in the vector where the new complex is 
+		//perhaps use iterator
 	}
 
         public void point(Complex z)

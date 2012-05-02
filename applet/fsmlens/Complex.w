@@ -7,6 +7,7 @@ public class Complex {
 	public static Complex I =new Complex(0,1);
 	public static Complex R=new Complex(1,0);
 	
+	private int flag=0;
 	
 	private double re=0;
 	private double im=0;
@@ -25,7 +26,19 @@ public class Complex {
 		this.re=z[0];
 		this.im=z[1];
 	}
-	
+	public int getFlag()
+	{
+		return flag;
+	}
+
+	public void updateFlag(int i)
+	{
+		flag=i;
+	}
+	public boolean checkFlag()
+	{
+		return flag==0;
+	}
 	public double imaginary()
 	{
 		return im;
