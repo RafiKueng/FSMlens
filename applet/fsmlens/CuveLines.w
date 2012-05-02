@@ -260,8 +260,8 @@ public class CuveLines{
 				
 	}
 
-	public void expandComplex(Complex exp)
-	{
+	public void expandCuve(Complex exp)
+	{		
 		//expand the point in the vector
 		//1)find the number which corresponds to exp
 		//2a)update the flag of the found number
@@ -269,6 +269,37 @@ public class CuveLines{
 		//3)add the new numbers to the vector
 		//  the flag should now hold the nuber which indicates the spot in the vector where the new complex is 
 		//perhaps use iterator
+		
+		//Iterator iter=cuvePoints.iterator();
+		Complex temp2=new Complex();
+		//=cuvePoints.lastIndexOf(exp);
+		
+		for(ListIterator<Complex> iter=cuvePoints.listIterator(); iter.hasNext();)
+		{
+			temp2=iter.next();
+			temp2=temp2.subtract(exp);
+			int index=iter.nextIndex();
+			if(Math.abs(temp2.real())<10 && Math.abs(temp2.imaginary())<10)
+			{		
+				Complex temp;				
+				temp=cuvePoints.get(index);
+				temp.updateFlag(cuvePoints.size());
+				cuvePoints.set(index,temp);
+		
+				//expansion
+				cuvePoints.add(exp);
+				temp=exp.add(new Complex(10,10));
+				cuvePoints.add(temp);
+				temp=exp.add(new Complex(-10, -10));
+				cuvePoints.add(temp);
+				break;
+				
+			}
+
+		}
+
+
+		
 	}
 
         public void point(Complex z)

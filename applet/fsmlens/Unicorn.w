@@ -178,7 +178,7 @@
 	if(quadrLine.equals("Line")){
 
 		if(event.getButton()==MouseEvent.BUTTON3){
-			System.out.println("in Mous Event Button 3 pressed");
+			//System.out.println("in Mous Event Button 3 pressed");
 			state=!state;
 		}
 		if(CuveLines.COUNT==0){
@@ -189,14 +189,19 @@
 		
 		else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 ){
 		complex1=new Complex(x2N,y2N);
-		cuveLines2=new CuveLines();  //***********************
-		cuveLines2.update(complex1,g);}
+		cuveLines.expandCuve(complex1);
+		//cuveLines2=new CuveLines();  //***********************
+		cuveLines.update(complex1,g);}
                 
                 else if(CuveLines.COUNT==2){
-                if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
-                else {cuveLines2.setActive(); cuveLines.setInactive();}
-                cuveLines.update();	
-                cuveLines2.update();
+                	if(state) 
+			{
+				cuveLines.setActive(); 
+				//cuveLines2.setInactive();
+			}
+                	//else {cuveLines2.setActive(); cuveLines.setInactive();}
+                	cuveLines.update();	
+                	//cuveLines2.update();
                 }
 
       	repaint();
