@@ -206,25 +206,12 @@ public class CuveLines{
 		Complex temp=cuvePoints.get(q);
 		temp.update(event);
 		cuvePoints.set(q,temp);
-		//Iterator itr = cuvePoints.iterator();
-		/*if(q%3==0)
-		{
-			setPoints(q,q+3,temp);
-			
-		}
-		else if(q%3==1)
-		{
-			setPoints(q-1,q+2,temp);
-		}
-		else if(q%3==2)
-		{
-			setPoints(q-2,q+1,temp)
-		}*/
 
 		int begin=q-q%3;
 		int end =q+(3-q%3);
 		int j=0;
-		
+		System.out.println("The array cuvePoints has a size of: "+ cuvePoints.size());
+		printVector();
 		for(int i=begin;i<end;i++)
 		{
 			if(!(temp.checkFlag()))
@@ -235,14 +222,35 @@ public class CuveLines{
 			{	inPoints[j]=cuvePoints.get(i);}
 			++j;
 		}
+
+		Complex pointsTemp []=new Complex[3];
+		for(int m=0;m<begin;m++)
+		{	
+			for(int k=0;k<3;k++)
+			{
+				pointsTemp[k]=cuvePoints.get(m);
+			}
+			draw(pointsTemp);
+					
+		}
+		for(int m=end+1;m<cuvePoints.size();m++)
+		{	
+			for(int k=0;k<3;k++)
+			{
+				pointsTemp[j]=cuvePoints.get(m);
+			}
+			draw(pointsTemp);
+					
+		}
 		
-		inPoints[q]=event;//there is a better way to do this look up overrite --> is set or something 
+		
+		//inPoints[q]=event;//there is a better way to do this look up overrite --> is set or something 
 		//create an array with the points
 		this.draw(inPoints);
 		
 	}
-       
-        public void update()
+       //not working
+       /* public void update()
 	{
 		Complex[] inPointsT=new Complex[3];
 		int numb=cuvePoints.size()/3;
@@ -258,7 +266,7 @@ public class CuveLines{
 		}		
 		//extract the first tree points from the vector cuvePoints in to an array		
 				
-	}
+	}*/
 
 	public void expandCuve(Complex exp)
 	{		
@@ -332,5 +340,22 @@ public class CuveLines{
         {
         activeStat = false;
         }
+
+	public void printVector()
+	{
+		//ListIterator iter=cuvePoints.listIterator();
+		Complex temp;
+		System.out.println("the Vector cuvePoints contains the folowing elements");
+		for(ListIterator<Complex> iter=cuvePoints.listIterator(); iter.hasNext();)
+		{
+			for(int i=0;i<3;i++){			
+			temp=iter.next();			
+			temp.printNumber();
+			System.out.print(";");
+			}
+			System.out.println();
+			
+		}
+	}
 	
 }

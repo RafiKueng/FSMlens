@@ -193,7 +193,7 @@
 		//cuveLines2=new CuveLines();  //***********************
 		cuveLines.update(complex1,g);}
                 
-                else if(CuveLines.COUNT==2){
+                /*else if(CuveLines.COUNT==2){
                 	if(state) 
 			{
 				cuveLines.setActive(); 
@@ -202,7 +202,7 @@
                 	//else {cuveLines2.setActive(); cuveLines.setInactive();}
                 	cuveLines.update();	
                 	//cuveLines2.update();
-                }
+                }*/
 
       	repaint();
 	}
