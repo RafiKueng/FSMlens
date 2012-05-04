@@ -16,7 +16,7 @@ import java.util.Vector;
 public class CuveLines{
 	public static int COUNT=0;
 	private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
-        private LinkCuve[] linkCuve={new Point(new Complex(182,72)),new Point(new Complex(100,162)),new Point(new Complex(200,183))};
+//        private LinkCuve[] linkCuve={new Point(new Complex(182,72)),new Point(new Complex(100,162)),new Point(new Complex(200,183))};
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
@@ -198,18 +198,19 @@ public class CuveLines{
 				pntTemp=new Point(temp[2]);
 				inPoint[2]=pntTemp;
 			}
-			if((clObj[0].equals(clObj[2)))
+			if((clObj[0].equals(clObj[2])))
 			{
 				temp=inPoints[1].getPoint(); //is theoreticaly of Type 
 				pntTemp=new Point(temp[1]);
 				inPoint[1]=pntTemp;
 			}
-			if((clObj[2].equals(clObj[
-			{
-				temp=inPoints[1].getPoint(); //is theoreticaly of Type 
-				pntTemp=new Point(temp[1]);
-				inPoint[1]=pntTemp;
-			}else{
+//			if((clObj[2].equals(clObj[
+//			{
+//				temp=inPoints[1].getPoint(); //is theoreticaly of Type 
+//				pntTemp=new Point(temp[1]);
+//				inPoint[1]=pntTemp;
+//			}
+                        else{
 				System.out.println("no Mach fond some thing is odd");
 					return;
 			}
