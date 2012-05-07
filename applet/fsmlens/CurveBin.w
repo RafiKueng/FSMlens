@@ -1,8 +1,9 @@
 @* CurveBin.
 
 @(CurveBin.java@>=
+package fsmlens;
 
-qgd.util.*;
+import qgd.util.*;
 import java.util.ListIterator;
 import java.awt.*;
 import javax.swing.*;
@@ -36,7 +37,9 @@ public class CurveBin {
 	{
 		this.g = g;
 		this.points.add(event);
-		this.expandCuve(event);
+		this.expandCurve(event);
+        this.drawPoints();
+        this.drawCurve();
 
 	}
 
@@ -126,20 +129,16 @@ public class CurveBin {
 	public void updatePoint(Complex event, Graphics g) {
 		this.g = g;
 		int q = this.findeClosest(event);
-		Complex temp = points.get(q);
-		temp.update(event);
-		points.set(q, temp);
+		points.set(q, event);
 	}
 
 	public void updatePoint(Complex event) {
 		int q = this.findeClosest(event);
-		Complex temp = points.get(q);
-		temp.update(event);
-		points.set(q, temp);
+		points.set(q, event);
 
 		this.draw();
 	}
-	public CurveLine getCuve(int index) {
+	public CurveLine getCurve(int index) {
 		return dataBase.get(index);
 	}
 
@@ -157,7 +156,7 @@ public class CurveBin {
 	 * @param event a complex number holding the x and y position where the mous
 	 * was clicked
 	 */
-	public void expandCuve(Complex event) {
+	public void expandCurve(Complex event) {
 		// expand the point in the vector
 		// 1)find the number which corresponds to event
 		// 2a)update the flag of the found number

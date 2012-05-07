@@ -1,9 +1,9 @@
 @* CurveLine.
 
 @(CurveLine.java@>=
-  package fsmlens;
+package fsmlens;
 
-qgd.util.*;
+import qgd.util.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -43,11 +43,12 @@ public class CurveLine {
 	
 	private void calcNodes() {
 		
-			
+		/*
 		inPoints[0].printNumber();
 		inPoints[1].printNumber();
 		inPoints[2].printNumber();
 		System.out.print("\n");
+        */
 
 		Complex temp1 = new Complex();
 		Complex temp2 = new Complex();
@@ -121,13 +122,15 @@ public class CurveLine {
 		//drawLine(bezirLines3);
 
 		// draw Point the three points inPoints 0-2
-		/*if (activeStat)
+		/*
+        if (activeStat)
 			g.setColor(Color.red);
 		else
 			g.setColor(Color.blue);
 		//point(inPoints[0]);
 		//point(inPoints[1]);
-		//point(inPoints[2]);*/
+		//point(inPoints[2]);
+        */
 	}
 	
 	private Vector<Complex> bezier(Complex p1, Complex p2, Complex p3, Complex p4)

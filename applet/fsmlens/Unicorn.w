@@ -155,7 +155,7 @@ import javax.imageio.metadata.*;
 @ @<Drawing curves with the mouse@>=
     public void mouseClicked(MouseEvent event)
     {
-        System.out.println("click on "+x(event.getX())+" "+y(event.getY()));
+        //System.out.println("click on "+x(event.getX())+" "+y(event.getY()));
     }
 
 
@@ -173,6 +173,9 @@ import javax.imageio.metadata.*;
         x1 = x(x1N);
         y1 = y(y1N);
         double[] maxVal2 = new double[2];
+        
+        System.out.println("unic/mpressed " + x1N+" / " + y1N);
+        
         if(quadrLine.equals("Rectangle"))
         {
             g.setColor(Color.blue);
@@ -193,62 +196,42 @@ import javax.imageio.metadata.*;
             repaint();
         }
         // if mouse is clicke a new cuveLine is drawn
-        if(quadrLine.equals("Line")){
+        if(quadrLine.equals("Line"))
+        {
+            System.out.println("unic/mpres/line " + event.getButton());
+            
             if(event.getButton()==MouseEvent.BUTTON3)
             {
-                System.out.println("in Mous Event Button 3 pressed");
+                System.out.println("in Mouse Event Button 3 pressed");
                 //state=!state;
                 
                 /* TODO select the CurveBin whitch is selected and should be modified */
                 
             }
             
-            Complex mouseClickLocation = new Complex(x2N,y2N);
+            Complex mouseClickLocation = new Complex(x1N,y1N);
             
             if(curveBin == null)
             {
+                System.out.println("unic/mpres/line/if1 ");
                 
                 curveBin = new CurveBin(mouseClickLocation, this.g);
 
-                /*TODO this constructor doesn't exist yet*/
                 /*TODO check if this g remains valid (or is a new one created every time on update...)*/
             }
-            /* erledigt
-            if(CuveLines.COUNT==0)
-            {
-                complex1=new Complex(x2N,y2N);
-                cuveLines=new CuveLines();  //***********************
-                cuveLines.update(complex1,g);
-            }
-            */
             
             else if (event.getButton()==MouseEvent.BUTTON3)
             {
-                curveBin.expand(mouseClickLocation);
+                System.out.println("unic/mpres/line/if2 ");
+                curveBin.expandCurve(mouseClickLocation);
             }
-            /* erledigt            
-            else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 )
-            {
-                complex1=new Complex(x2N,y2N);
-                cuveLines2=new CuveLines();  //***********************
-                cuveLines2.update(complex1,g);
-            }
-            */
             
             else if (event.getButton()==MouseEvent.BUTTON1)
             {
-                curveBin.update(mouseClickLocation)
+                System.out.println("unic/mpres/line/if3 ");
+                curveBin.updatePoint(mouseClickLocation);
             }
             
-            /* erledigt
-            else if(CuveLines.COUNT==2)
-            {
-                if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
-                else {cuveLines2.setActive(); cuveLines.setInactive();}
-                cuveLines.update();	
-                cuveLines2.update();
-            }
-            */
             
             else 
             {
@@ -257,6 +240,10 @@ import javax.imageio.metadata.*;
 
             repaint();
         }
+        
+        System.out.println("unic/mousepressed: printing points");
+        curveBin.printPoints();
+        
     }
 
 //@ @<Drawing curves with the mouse@>=
@@ -297,7 +284,9 @@ import javax.imageio.metadata.*;
         //x2 = x(x2N);
         //y2 = y(y2N);
         
-        Complex mouseDraggedLocation = Complex(x2N,y2N);
+        System.out.println("unic/drag: "+x2N + " / " + y2N);
+        
+        Complex mouseDraggedLocation = new Complex(x2N,y2N);
         
         if(quadrLine.equals("Line"))
         {
