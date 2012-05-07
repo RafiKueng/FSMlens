@@ -9,9 +9,10 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.Graphics.*;
-import java.lang.Object.*;*/
+import java.lang.Object.*;
 import java.util.*;
 import java.util.Vector;
+
 
 public class CurveLine {
 	private Complex[] inPoints = new Complex[3];
@@ -37,8 +38,10 @@ public class CurveLine {
 		index[2] = 2;
 	}*/
 	
+//TODO: This function should calculate the nodes of the bezier lines around the three points which this instance holds so that they can after be used to
+// 		draw the lines.
 	
-	public void calcNodes() {
+	private void calcNodes() {
 		
 			
 		inPoints[0].printNumber();
@@ -148,6 +151,7 @@ public class CurveLine {
 	
 	public Vector<Complex> curve()
 	{
+		calcNodes();
 		Vector<Complex> theCurve=new Vector<Complex>();
 		theCurve.addAll(this.bezirLines0);
 		theCurve.addAll(this.bezirLines1);
