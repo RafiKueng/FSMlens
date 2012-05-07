@@ -55,8 +55,9 @@ import javax.imageio.metadata.*;
     
     Monster home;
     Graphics g;
-    CuveLines cuveLines; //Global cuveLine
-    CuveLines cuveLines2;
+    //CuveLines cuveLines; //Global cuveLine
+    //CuveLines cuveLines2;
+    CurveBin curveBin;
     Image img;
     BufferedImage imgrect = null;
     BufferedImage imageOrg;
@@ -196,20 +197,50 @@ import javax.imageio.metadata.*;
             if(event.getButton()==MouseEvent.BUTTON3)
             {
                 System.out.println("in Mous Event Button 3 pressed");
-                state=!state;
+                //state=!state;
+                
+                /* TODO select the CurveBin whitch is selected and should be modified */
+                
             }
+            
+            Complex mouseClickLocation = new Complex(x2N,y2N);
+            
+            if(curveBin == null)
+            {
+                
+                curveBin = new CurveBin(mouseClickLocation, this.g);
+
+                /*TODO this constructor doesn't exist yet*/
+                /*TODO check if this g remains valid (or is a new one created every time on update...)*/
+            }
+            /* erledigt
             if(CuveLines.COUNT==0)
             {
                 complex1=new Complex(x2N,y2N);
                 cuveLines=new CuveLines();  //***********************
                 cuveLines.update(complex1,g);
             }
+            */
+            
+            else if (event.getButton()==MouseEvent.BUTTON3)
+            {
+                curveBin.expand(mouseClickLocation);
+            }
+            /* erledigt            
             else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 )
             {
                 complex1=new Complex(x2N,y2N);
                 cuveLines2=new CuveLines();  //***********************
                 cuveLines2.update(complex1,g);
             }
+            */
+            
+            else if (event.getButton()==MouseEvent.BUTTON1)
+            {
+                curveBin.update(mouseClickLocation)
+            }
+            
+            /* erledigt
             else if(CuveLines.COUNT==2)
             {
                 if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
@@ -217,6 +248,13 @@ import javax.imageio.metadata.*;
                 cuveLines.update();	
                 cuveLines2.update();
             }
+            */
+            
+            else 
+            {
+                System.out.println("!!!!!! Error, this else should never occur... in MousePressed");
+            }
+
             repaint();
         }
     }
@@ -256,10 +294,18 @@ import javax.imageio.metadata.*;
         drawAxes(1);
         x2N = event.getX();
         y2N = event.getY();
-        x2 = x(x2N);
-        y2 = y(y2N);
+        //x2 = x(x2N);
+        //y2 = y(y2N);
+        
+        Complex mouseDraggedLocation = Complex(x2N,y2N);
+        
         if(quadrLine.equals("Line"))
         {
+            
+            curveBin.updatePoint(mouseDraggedLocation);
+            /*TODO expand this in case of multiple curveBin */
+            
+            /* erledigt
             if(state)
             {
                 //drawLine(x1,y1,x2,y2);
@@ -274,6 +320,8 @@ import javax.imageio.metadata.*;
                 cuveLines.update(complex,g);
                 cuveLines2.update(complex1,g);
             }
+            */
+            
         }
         repaint();
     }
