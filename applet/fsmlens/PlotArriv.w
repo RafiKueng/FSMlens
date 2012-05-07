@@ -25,7 +25,7 @@
 
 @ @<Generic stuff in |PlotArriv|@>=
   public PlotArriv()
-    { super(320,320);  @/
+    { super(300,300);  @/
       @<Set up input fields in |PlotArriv|@>
       @<Initialize fields in |PlotArriv|@>
     }

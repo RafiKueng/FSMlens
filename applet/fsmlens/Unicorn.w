@@ -13,15 +13,16 @@
       @<Reset the array@>
       @<get the RGB matrix out@>
       @<Drawing the source@>
+      @<check rgb@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
-      //double x1N,y1N;
       int[][][] rgbPix;
       Complex complex;
       Complex complex1;
       Complex complex2;
     }
+
 
 @ @<Imports for |Unicorn|@>=
   import qgd.util.*;
@@ -32,7 +33,23 @@
   import java.awt.Graphics.*;
   import java.lang.Object.*;
   import java.util.*;
+  import java.io.*;
+  import javax.imageio.*; 
+  import javax.imageio.stream.*;
+  import javax.imageio.metadata.*;
 
+
+
+
+@ @<Init variables for |Unicorn|@>=
+    String quadrLine="Line"; 
+    int x1N,y1N, picSize; 
+    double x2N,y2N;
+    //double x1N,y1N;
+    int[][][] rgbPix;
+    Complex complex;
+    Complex complex1;
+    Complex complex2;
 
 
 @ @<Code to read and show raw lenses@>=
@@ -68,6 +85,10 @@
 @ @<Initialize fields in |Unicorn|@>=
   choice.addItem("PG1115V.gif");
   choice.addItem("Q0047V.gif");
+  choice.addItem("PG1115V_gray.gif");
+  choice.addItem("PG1115V_gray.jpg");
+  choice.addItem("EinsteinCross.png");
+  choice.addItem("pngTranspDemo.png");
   rect.addItem("Line");
   rect.addItem("Rectangle");
 
@@ -80,16 +101,33 @@
   Image img;
   BufferedImage imgrect = null;
   BufferedImage imageOrg;
+  BufferedImage intensity = null;
+  
   void showImage(String str)
     { str = "images/" + str;
       JApplet app = new JApplet();
       Image img = app.getToolkit().getImage(getClass().getResource(str));
       image = toBufferedImage(img,wd,ht);
+      @<check if there is alpha channel with intensity@>
       imageOrg = image;
       g = image.getGraphics();
       g.setColor(Color.blue);
       drawAxes(1);
     }
+
+    
+    
+@ @<check if there is alpha channel with intensity@>=
+      /* if this img has an alpha channel, extract it and save it under */
+      /* author: rk */
+
+      if (hasAlpha(img)) {
+        System.out.println("this has alpha channel");
+        intensity = extractAlpha(img,wd,ht);
+        image = intensity;
+      }
+
+
 
 @ @<Drawing curves with the mouse@>=
   public void mouseEntered(MouseEvent event) { }
@@ -107,34 +145,37 @@
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
   boolean state=true;
-
+  int subimageSize;
   public void mousePressed(MouseEvent event)
     { 
-      int subimageSize = 30;
+      subimageSize = 25;
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
-
+      double[] maxVal2 = new double[2];
       if(quadrLine.equals("Rectangle")){
         g.setColor(Color.blue);
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
         imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
+        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
 	for(int i=0; i<(subimageSize-2); i++)
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
 	      {
               //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-8000000)) 
-       	        rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);              
+              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1350000)) 
+              //if(rgbPix[x1N+i][y1N+j][0] == 0)
+       	        //rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
+                        
  	      }
  	  }
         repaint();
         }
 // if mouse is clicke a new cuveLine is drawn
-	else if(quadrLine.equals("Line")){
+	if(quadrLine.equals("Line")){
 
 		if(event.getButton()==MouseEvent.BUTTON3){
 			System.out.println("in Mous Event Button 3 pressed");
@@ -150,6 +191,13 @@
 		complex1=new Complex(x2N,y2N);
 		cuveLines2=new CuveLines();  //***********************
 		cuveLines2.update(complex1,g);}
+                
+                else if(CuveLines.COUNT==2){
+                if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
+                else {cuveLines2.setActive(); cuveLines.setInactive();}
+                cuveLines.update();	
+                cuveLines2.update();
+                }
 
       	repaint();
 	}
@@ -260,7 +308,26 @@
      return((int)y1N);
     }
 
-
+@ @<check rgb@>=
+  public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
+    { 
+    int rgbMin=0; int rgbMax=-100000000;
+    int xMax = 0; int yMax = 0;
+    for(int i = 0; i<subimageSize-2 ; i++)
+      for(int j = 0; j<subimageSize-2 ; j++)
+      {
+      if(pixIm.getRGB(i,j)<rgbMin) rgbMin = pixIm.getRGB(i,j);
+      if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = i; yMax = j; }
+      }
+    //System.out.println("RGB min ist: " + rgbMin);
+    //System.out.println("RGB max ist: " + rgbMax);
+    //System.out.println("x max ist: " + xMax);
+    //System.out.println("y max ist: " + yMax);
+    rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
+    double[] maxVal = new double[2];
+    maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
+    return maxVal;
+    }
 
 
 

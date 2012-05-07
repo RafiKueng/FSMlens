@@ -25,7 +25,7 @@ its descendant |Lens|.
 
 @ @<Generic stuff in |PlotPix|@>=
   public PlotPix()
-    { super(320,320);
+    { super(300,300);
       @<Initialize fields in |PlotPix|@>
     }
 
