@@ -32,6 +32,13 @@ public class CurveBin {
 		addCurve(temp1, temp2, temp3);
 
 	}
+	public CurveBin(Complex event, Graphics g) 
+	{
+		this.g = g;
+		this.points.add(event);
+		this.expandCuve(event);
+
+	}
 
 	
 
