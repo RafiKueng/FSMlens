@@ -100,6 +100,22 @@
 
 
 @ @<Example inputs@>=
+  str = new String("Einstein-Cross");  @/
+  strb = new StringBuffer("object Einstein-Cross \n");  @/
+  strb.append("pixrad 8 \n");
+  strb.append("zlens 0.311 \n");
+  strb.append("g 14 \n");
+  strb.append("multi 4 1.722 \n");
+  strb.append(" -0.2786 -0.0429  1 \n");
+  strb.append("-0.0071 -0.1357 2 \n");
+  strb.append("0.1714 0.0643 1 \n");
+  strb.append(" -0.0999 0.2429 2 \n\n");
+  strb.append("models 20 \n");
+  choice.addItem(str); id.addElement(str); data.addElement(strb.toString());
+
+
+
+@ @<Example inputs@>=
   str = new String("ACO 1703");  @/
   strb = new StringBuffer("object ACO-1703 \n");  @/
   strb.append("pixrad 10 \n");

@@ -33,6 +33,8 @@ with basic gravitational lensing theory.
   int flag=0;  @/
   LensModel lens;  // Has its own GUI.
   MPlot caus;  Figure crit,arriv;
+  Figure ex;
+  Console text;
   PPlot dels;
   public void main()
     { if (Dual.mode()==2) parse_flag(getParameter("basemodel"));
@@ -47,14 +49,26 @@ with basic gravitational lensing theory.
       arriv.setBackground(Color.black);
       arriv.setTitle("arrival time"); @/
       dels = new PPlot(siz,siz);  @/
+
+        ex = new Figure(siz,siz);
+      	ex.setBackground(Color.black);
+      	ex.setTitle("example pic"); @/
+	text = new Console(4,80);
+	text.setBackground(Color.white);
+	text.append("Explanatory text here");
+
+
       mainPane.add("West",caus.getPanel());
-      mainPane.add("Center",crit.getPanel());
+	mainPane.add("East",ex.getPanel());
+	mainPane.add("South",text.getPanel());
+	
+//      mainPane.add("East",crit.getPanel());
       if (flag==1)
-        { mainPane.add("East",dels.getPanel());  dels.setDecim(6);
+        { mainPane.add("Center",dels.getPanel());  dels.setDecim(6);
         }
-      else mainPane.add("East",arriv.getPanel());
+      else mainPane.add("Center",arriv.getPanel());
       lens = new LensModel(this);
-      mainPane.add("South",lens);  @/
+      mainPane.add("North",lens);  @/
       lens.model_vanilla();
       show("Daemon version 0.1","Show Daemon window");
     }

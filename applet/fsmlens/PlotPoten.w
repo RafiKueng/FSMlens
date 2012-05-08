@@ -27,7 +27,7 @@
 
 @ @<Generic stuff in |PlotPoten|@>=
   public PlotPoten()
-    { super(320,320);
+    { super(300,300);
       @<Set up input fields in |PlotPoten|@>
       @<Initialize fields in |PlotPoten|@>
     }
