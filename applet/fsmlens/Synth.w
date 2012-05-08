@@ -82,6 +82,8 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<set somer picture@>=
   public void setPic()
     {
+        System.out.println(x(0) + " " + x(picSize/2.0) + " " + x(picSize));
+	System.out.println(xpix(0) + " " + xpix(1) + " " + xpix(-1));
 	rgbPix = unicorn.getrgbMatrix();
          for(int i=0; i<picSize; i++) 
            {
@@ -102,18 +104,28 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         pixCount = synthimg.getAveragePix();
         double[] sourcCoo = new double[3];      
         //for(int j=0; j<picSize;j++)
-        for(int j=xMin; j<xMax;j++)
+        for(int j=xMin; j<=xMax;j++)
  	  {
-	  //for(int k=0; k<picSize;k++)
+	  //for(int k=0; k<=picSize;k++)
           for(int k=yMin; k<yMax;k++)
 	    {
-                sourcCoo[1] = x(j); 
-	        sourcCoo[2] = y(k); 
+                //sourcCoo[1] = x(j); 
+	        //sourcCoo[2] = y(k); 
+                sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
+	        sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
                 //System.out.println("X: " + j + " " + x(j) + "  Y: " + k + " " + y(k));
 		try{
+                  double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
-                  xNew = xpix(sourcCoo[1]); 
-	          yNew = ypix(sourcCoo[2]); 
+                  //sourcCooNew = home.sourCoord(sourcCoo);
+                  //xNew = xpix(sourcCoo[1]); 
+                  //xNew = xpix(sourcCooNew[1]);
+	          //xNew = (int)((picSize+picSize*sourcCoo[1]/x(picSize))/(2.0));
+		  xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
+	          //yNew = ypix(sourcCoo[2]);
+                  //yNew = ypix(sourcCooNew[2]);
+                  //yNew = (int)((picSize-picSize*sourcCoo[2]/y(0))/(2.0)); 
+                  yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
                   if(pixCount[xNew][yNew][0]!=0){
                     System.out.println(xNew + " " + sourcCoo[1] +  "      " + yNew + " " + sourcCoo[2]);
                     System.out.println(j + "  " + k); 
@@ -123,6 +135,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 		catch(Exception e) {
 		  xNew = j;
 	 	  yNew = k;
+                  System.out.println("Exception, no coord transformation");
 		}
 	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
 		  {

@@ -68,12 +68,16 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 	  for(int k=0; k<picSize;k++)
 	    {
               if(rgbPix[j][k][0] != 0){             
-                sourcCoo[1] = x(j);
-	        sourcCoo[2] = y(k);
+                //sourcCoo[1] = x(j);
+	        //sourcCoo[2] = y(k);
+                sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
+	        sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);                  
-                  xNew = xpix(sourcCoo[1]);
-	          yNew = ypix(sourcCoo[2]);
+                  //xNew = xpix(sourcCoo[1]);
+	          //yNew = ypix(sourcCoo[2]);
+                  xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
+                  yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -88,12 +92,12 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
                } 
    	    }
 	  }
-        /*for(int m=0;m<3;m++)
-          for(int n=0;n<3;n++)
+        for(int m=0;m<25;m++)
+          for(int n=0;n<25;n++)
             {
             pixCount[xNew-1+m][yNew-1+n][0] = pixCount[xNew][yNew][0];
             }
-        unicorn.drawSource(xNew,yNew);*/
+        unicorn.drawSource(xNew,yNew);
         makeAverage();
         //drawPic();
         //repaint();
@@ -106,7 +110,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     for(int i=0; i<picSize; i++)
       for(int j=0; j<picSize; j++)
         { 
-        if(pixCount[i][j][1] != 0)
+        if(pixCount[i][j][0] != 0)
           image.setRGB(i,j,pixCount[i][j][0]);  
         }
     }
