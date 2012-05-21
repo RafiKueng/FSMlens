@@ -74,13 +74,17 @@
 
 @ Now we have to code to take parameter values interactively.
 @<GUI for lens parameters@>=
-  InputField a_tf,b_tf,h_tf,n_tf,g1_tf,g2_tf,eps_tf;  @/
-  InputField r_tf,x_tf,y_tf;  @/
+//  InputField a_tf,b_tf,h_tf,n_tf,g1_tf,g2_tf,eps_tf;  @/
+//  InputField r_tf,x_tf,y_tf;  @/
   Daemon wyn;
   JPanel[] panel;
   JComboBox choice;
   public LensModel(Daemon wyn)
     { this.wyn = wyn;  @/
+      panel = new JPanel[1];
+      panel[0] = new JPanel(); @/
+
+/*
       panel = new JPanel[3];
       for (int n=0; n<3; n++) panel[n] = new JPanel();  @/
       a_tf = newInputField("a",4,"1.0",panel[0]);
@@ -93,6 +97,8 @@
       r_tf = newInputField("r",3,"0.0",panel[1]);
       x_tf = newInputField("x",4,"0.0",panel[1]);
       y_tf = newInputField("y",4,"0.0",panel[1]);
+*/
+
       @<Set up the choices@>
       add(Misc.stackPanels(panel));
     }
@@ -111,18 +117,22 @@
         { String str = (String) choice.getSelectedItem();
           if (str.compareTo("vanilla")==0)  model_vanilla();
           if (str.compareTo("B1115 model")==0)  model_1115();
-          if (str.compareTo("shear")==0)  model_1115_shear();
+          if (str.compareTo("B1422 model")==0) model_1422();
+
+/*        if (str.compareTo("shear")==0)  model_1115_shear();
           if (str.compareTo("more shear")==0) model_1115_moreshear();
           if (str.compareTo("steeper")==0) model_1115_steep();
           if (str.compareTo("shallower")==0) model_1115_shallow();
-          if (str.compareTo("B1422 model")==0) model_1422();
+          if (str.compareTo("B1422 model")==0) model_1422(); 
+*/
         }
       @<Read lens parameters@>
       wyn.source();
     }
 
 @ @<Read lens parameters@>=
-  a = a_tf.readDouble(0.1,3);
+
+/*  a = a_tf.readDouble(0.1,3);
   b = b_tf.readDouble(0.1,3);
   h = h_tf.readDouble(0,3);
   n = n_tf.readDouble(0.1,3);
@@ -131,37 +141,43 @@
   eps = eps_tf.readDouble(1e-6,1);
   r1 = r_tf.readDouble(0,3);
   x1 = x_tf.readDouble(-10,10);
-  y1 = y_tf.readDouble(-10,10);
+  y1 = y_tf.readDouble(-10,10); 
+*/
+
+  a=1; b=1; h=0; n=0.5; g1=0.2; g2=0; eps=0.01;
+  r1 = 0; x1 = 0; y1 = 0;
 
 @ @<GUI for lens parameters@>=
   void refresh()
-    { a_tf.set(a); b_tf.set(b); h_tf.set(h);
-      g1_tf.set(g1); g2_tf.set(g2);  @/
-      n_tf.set(n); eps_tf.set(eps);  @/
+    { 
+      //a_tf.set(a); b_tf.set(b); h_tf.set(h);
+      //g1_tf.set(g1); g2_tf.set(g2);  @/
+      //n_tf.set(n); eps_tf.set(eps);  @/
       r1 = x1 = y1 = 0;
-      r_tf.set(r1); x_tf.set(x1); y_tf.set(y1);
+      //r_tf.set(r1); x_tf.set(x1); y_tf.set(y1);
     }
 
 @ @<Set up the choices@>=
   choice = new JComboBox();
   choice.addItem("vanilla");
   choice.addItem("B1115 model");
-  choice.addItem("shear");
-  choice.addItem("more shear");
-  choice.addItem("steeper");
-  choice.addItem("shallower");
+//  choice.addItem("shear");
+//  choice.addItem("more shear");
+//  choice.addItem("steeper");
+//  choice.addItem("shallower");
   choice.addItem("B1422 model");
-  panel[2].add(choice);
+  panel[0].add(choice);
   choice.addActionListener(this);
 
 
 @ @<Example models@>=
   void model_vanilla()
     { a = 1; b = 1; h=0; n=0.5; g1=0.2; g2=0; eps=0.01;  @/
-      refresh();  wyn.source(-0.0211,0.1303);
+     refresh();  
+      wyn.source(-0.0211,0.1303);
     }
   void model_1115()
-    { a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.01; g2=0.08; eps=0.01;  @/
+   { a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.01; g2=0.08; eps=0.01;  @/
       refresh();  wyn.source(-0.0211,0.1303);
     }
   void model_1115_shear()

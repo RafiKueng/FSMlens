@@ -2,11 +2,15 @@ all: Daemon.class
 
 #---------------compile the classes--------------------------------------
 
-Daemon.class: Daemon.java LensModel.java MPlot.java PPlot.class
+#Daemon.class: Daemon.java LensModel.java MPlot.java PPlot.class
+#	$(JAVAC) Daemon.java
+
+#PPlot.class: PPlot.java
+#	$(JAVAC) PPlot.java
+
+Daemon.class: Daemon.java LensModel.java MPlot.java PPlot.java
 	$(JAVAC) Daemon.java
 
-PPlot.class: PPlot.java
-	$(JAVAC) PPlot.java
 
 #---------------Tangle to get java files---------------------------------
 
@@ -23,4 +27,5 @@ PPlot.java: PPlot.w
 	javatangle PPlot.w
 
 #------------------------------------------------------------------------
-
+clean:
+	rm -f *.class *.log *.dvi *.toc *.tex *.java *~
