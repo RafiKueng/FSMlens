@@ -38,8 +38,8 @@ public class CurveBin {
 		this.g = g;
 		this.points.add(event);
 		this.expandCurve(event);
-        this.drawPoints();
-        this.drawCurve();
+                this.drawPoints();
+                this.drawCurve();
 
 	}
 
@@ -110,7 +110,7 @@ public class CurveBin {
 		}
 	}
 
-	private void draw() {
+	public void draw() {
 		this.drawCurve();
 		this.drawPoints();
 	}
@@ -130,6 +130,7 @@ public class CurveBin {
 		this.g = g;
 		int q = this.findeClosest(event);
 		points.set(q, event);
+                this.draw();
 	}
 
 	public void updatePoint(Complex event) {

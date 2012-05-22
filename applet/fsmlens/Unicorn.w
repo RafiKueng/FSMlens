@@ -25,6 +25,7 @@
       BufferedImage imgInt;
       BufferedImage imageOrg = null;
       Illus illus;
+      CurveBin curveBin;
     }
 
 
@@ -78,7 +79,16 @@ import javax.imageio.metadata.*;
 
     }
 
-    
+@ @<Code to read and show raw lenses@>=
+  JComboBox choice;
+  JComboBox rect;
+  public void actionPerformed(ActionEvent event)
+    { showImage((String) choice.getSelectedItem());
+      quadrLine = ((String) rect.getSelectedItem());
+      repaint();
+    }    
+
+
     
 @ @<Initialize fields in |Unicorn|@>=
         choice.addItem("PG1115V.gif");
@@ -94,20 +104,9 @@ import javax.imageio.metadata.*;
 
 
   
-  
+ 
 @ @<Code to read and show raw lenses@>=
-    public void actionPerformed(ActionEvent event)
-    {
-        showImage((String) choice.getSelectedItem());
-        quadrLine = ((String) rect.getSelectedItem());
-        repaint();
-    }
 
-
-
-
-
-@ @<Code to read and show raw lenses@>=
   Monster home;
   Graphics g;
   CuveLines cuveLines; //Global cuveLine
@@ -276,10 +275,11 @@ import javax.imageio.metadata.*;
 
 
 @ @<Drawing curves with the mouse@>=
+    Complex mouseDraggedLocation;
     public void mouseDragged(MouseEvent event)
     {
         reset();
-        erase();
+        //erase();
         drawAxes(1);
         x2N = event.getX();
         y2N = event.getY();
@@ -287,13 +287,13 @@ import javax.imageio.metadata.*;
         //y2 = y(y2N);
         
         System.out.println("unic/drag: "+x2N + " / " + y2N);
-        
-        Complex mouseDraggedLocation = new Complex(x2N,y2N);
+        mouseDraggedLocation = new Complex(x2N,y2N);
         
         if(quadrLine.equals("Line"))
         {
             
-            curveBin.updatePoint(mouseDraggedLocation);
+            curveBin.updatePoint(mouseDraggedLocation,g);
+            repaint();
             /*TODO expand this in case of multiple curveBin */
             
             /* erledigt
@@ -328,8 +328,6 @@ import javax.imageio.metadata.*;
 
 
 
-
-
 @ @<Drawing the source@>=
     public void drawSource(int xMax, int yMax)
     {
@@ -338,8 +336,6 @@ import javax.imageio.metadata.*;
         repaint();
     }
 
-
-    
 
 @ @<Reset the array@>=
     public void reset()
@@ -352,8 +348,6 @@ import javax.imageio.metadata.*;
 
     }
 
-    
-    
 
 @ @<init rgb matrix@>=
     private void rgbMatrix()
@@ -370,8 +364,6 @@ import javax.imageio.metadata.*;
     }
 
     
-    
-    
 
 @ @<get the RGB matrix out@>=
     public int[][][] getrgbMatrix()
@@ -380,9 +372,6 @@ import javax.imageio.metadata.*;
     }
 
     
-    
-    
-
 @ @<get the Picture out@>=
     public BufferedImage getImage()
     {
@@ -431,30 +420,5 @@ import javax.imageio.metadata.*;
     
 
 
-
-
-@ @<check rgb@>=
-    public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
-    { 
-        int rgbMin=0; int rgbMax=-100000000;
-        int xMax = 0; int yMax = 0;
-        for(int i = 0; i<subimageSize-2 ; i++)
-        {
-            for(int j = 0; j<subimageSize-2 ; j++)
-            {
-                if(pixIm.getRGB(i,j)<rgbMin) rgbMin = pixIm.getRGB(i,j);
-                if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = i; yMax = j; }
-            }
-        }
-        
-        //System.out.println("RGB min ist: " + rgbMin);
-        //System.out.println("RGB max ist: " + rgbMax);
-        //System.out.println("x max ist: " + xMax);
-        //System.out.println("y max ist: " + yMax);
-        rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
-        double[] maxVal = new double[2];
-        maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
-        return maxVal;
-    }
 
     
