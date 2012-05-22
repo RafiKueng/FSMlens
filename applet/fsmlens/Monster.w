@@ -69,7 +69,6 @@
 @ @<Managing the buttons in |Monster|@>=
   boolean completed;
   JButton bresume;
-  CuveLines cuveLines;
   Unicorn unicorn;
   Synth synth;
   Synthimg synthimg;
@@ -94,9 +93,11 @@
 
 
 @ @<Put plots to East@>=
+
   int picSize = 400;
   //cuveLines = new CuveLines();
   unicorn = new Unicorn(this,picSize,inp);
+
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
   FigDeck pd = new FigDeck(); @/

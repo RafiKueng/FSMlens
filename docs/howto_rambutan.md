@@ -7,11 +7,11 @@ v1 2012-03-26 19:00
 
 based on the readme file in the zip
 
-Step by step installation
--------------------------
+Step by step installation (ubuntu like os)
+------------------------------------------
 
 1. download rambutan:  
-    http://www.qgd.uzh.ch/projects/rambutan/rambutan.zip
+    <http://www.qgd.uzh.ch/projects/rambutan/rambutan.zip>
     
 2. extract to some dir (`~/local/src/rambutan`)
 
@@ -32,8 +32,8 @@ Step by step installation
     or `/etc/environment` if your planning to do a system wide installation,
     or any other file that loads env variables (depending on your linux distro)
     
-    (see here: https://help.ubuntu.com/community/EnvironmentVariables#Persistent_environment_variables
-    and here http://askubuntu.com/questions/4667/where-to-declare-environment-variables )
+    (see here: <https://help.ubuntu.com/community/EnvironmentVariables#Persistent_environment_variables>
+    and here <http://askubuntu.com/questions/4667/where-to-declare-environment-variables> )
 
    
 5. logout / login: so your new .profile file gets read
@@ -43,6 +43,39 @@ Step by step installation
     `~/local/src/rambutan$ make install`  
     `~/local/src/rambutan$ make clean`  
 
+    
+Step by step installation (Mac OSX)
+-----------------------------------
+(this is NOT tested, i don't have a mac...)
+
+1. download rambutan:  
+    <http://www.qgd.uzh.ch/projects/rambutan/rambutan.zip>
+    
+2. extract to some dir (`~/local/src/rambutan`)
+
+3. open makefile, edit the paragrafs:  
+    `BIN = $(HOME)/local/bin`  
+    `TEXINPUTS = $(HOME)/local/tex/misc`  
+    and create those folders (or use system folders)
+    
+    *    the folder ~/local is used to store local apps, that you compile for yourself and are only useable for the current user (so you don't need any root access, this works on the university machines too..)
+    *    the folder ~/local/src contains all the source code for the projects, one subfolder per project
+    *    the folder ~/local/bin conatins all executables you compiled (not sorted by projects) so you can later add this folder to path that you can execute those programms from everywhere, see next point
+    
+4. set path to BIN  
+    open the file `~/.profile` (hidden) with TextEdit. Look for the line starting with `export PATH=`, could be it looks like this: `export PATH=/opt/local/bin:/opt/local/sbin:$PATH`  
+    add the local bin path to this line, separated wich a `:` to the front, so it should look like this: 
+    `export PATH=$HOME/local/bin:/opt/local/bin:/opt/local/sbin:$PATH`  
+    then look for the part 
+    `export TEXINPUTS=$HOME/local/tex:/usr/share/texmf/tex:/usr/share/texmf/pdftex"`   
+    <http://superuser.com/questions/69130/where-does-path-get-set-in-os-x-10-6-snow-leopard>
+   
+5. logout / login: so your new .profile file gets read
+
+6. go to your src folder (in console) and compile  
+    `~$ cd ~/local/src/rambutan`  
+    `~/local/src/rambutan$ make install`  
+    `~/local/src/rambutan$ make clean`  
     
 (very) short how to use    
 -----------------------
@@ -60,7 +93,7 @@ Step by step installation
 
 additional notes / links
 ------------------------
-* homepage: http://www.qgd.uzh.ch/projects/rambutan/
-* manual: http://www.qgd.uzh.ch/projects/rambutan/Manual.pdf
-* article in TUGboat: http://www.tug.org/TUGboat/tb23-3-4/tb75saha.pdf
+* homepage: <http://www.qgd.uzh.ch/projects/rambutan/>
+* manual: <http://www.qgd.uzh.ch/projects/rambutan/Manual.pdf>
+* article in TUGboat: <http://www.tug.org/TUGboat/tb23-3-4/tb75saha.pdf>
 
