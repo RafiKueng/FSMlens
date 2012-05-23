@@ -32,11 +32,7 @@ public class CurveLine {
 		inPoints[2] = i2;
 	}
 	//Default constructor
-	/*CurveLine() {
-		index[0] = 0;
-		index[1] = 1;
-		index[2] = 2;
-	}*/
+
 	
 //TODO: This function should calculate the nodes of the bezier lines around the three points which this instance holds so that they can after be used to
 // 		draw the lines.

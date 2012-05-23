@@ -131,14 +131,13 @@ public class CurveBin {
 	public void updatePoint(Complex event, Graphics g) {
 		this.g = g;
 		int q = this.findeClosest(event);
-		points.set(q, event);
+		points.get(q).assign(event);
                 this.draw();
 	}
 
 	public void updatePoint(Complex event) {
 		int q = this.findeClosest(event);
-		points.set(q, event);
-
+		points.get(q).assign(event);
 		this.draw();
 	}
 	public CurveLine getCurve(int index) {

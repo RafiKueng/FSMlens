@@ -61,6 +61,11 @@ public class Complex {
 
 		return zTot;
 	}
+
+	void assign(Complex z)
+	{
+                re = z.real(); im = z.imaginary();
+	}
 	
 	public Complex times(Complex w) {
 
@@ -107,7 +112,7 @@ public class Complex {
 	}
 	public void printNumber()
 	{
-		System.out.print(this.re+"+i"+this.im+" ");
+		System.out.print("("+this.re+","+this.im+") ");
 	}
 	
 
