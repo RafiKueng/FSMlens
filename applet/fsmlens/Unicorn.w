@@ -109,8 +109,8 @@ import javax.imageio.metadata.*;
 
   Monster home;
   Graphics g;
-  CuveLines cuveLines; //Global cuveLine
-  CuveLines cuveLines2;
+  //CuveLines cuveLines; //Global cuveLine
+  //CuveLines cuveLines2;
   Image img;
   BufferedImage imgrect = null;
   BufferedImage intensity = null;
@@ -216,7 +216,9 @@ import javax.imageio.metadata.*;
             {
                 System.out.println("unic/mpres/line/if1 ");
                 
-                curveBin = new CurveBin(mouseClickLocation, this.g);
+                //curveBin = new CurveBin(mouseClickLocation, this.g);
+                curveBin = new CurveBin(g);
+
 
                 /*TODO check if this g remains valid (or is a new one created every time on update...)*/
             }

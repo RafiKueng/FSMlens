@@ -31,6 +31,8 @@ public class CurveBin {
 		points.add(temp2);
 		points.add(temp3);
 		addCurve(temp1, temp2, temp3);
+                this.draw();
+
 
 	}
 	public CurveBin(Complex event, Graphics g) 
@@ -144,11 +146,17 @@ public class CurveBin {
 	}
 
 	public void printPoints() {
-		System.out.println("the points used at the moment are ");
+		System.out.println("the points used at the moment are: ");
 		for (int i = 0; i < points.size(); i++) {
 			points.get(i).printNumber();
 		}
-		System.out.println();
+                for (int i=0; i<dataBase.size(); i++)
+                  {
+                   //for (int k=0; k<3;k++)
+                     //dataBase.get(i)[k].printNumber();
+                     dataBase.get(i).printCurves();
+                   }
+		System.out.println("Did you see?");
 	}
 	/*
 	 * this function uses a given mouse event and expands the closest
