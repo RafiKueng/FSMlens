@@ -424,7 +424,3 @@ import javax.imageio.metadata.*;
      illus.setKoord(maxKoord);
     }
     
-
-
-
-    

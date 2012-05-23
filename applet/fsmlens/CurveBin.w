@@ -18,7 +18,7 @@ import java.util.Vector;
 public class CurveBin {
 
 	private Vector<Complex> points = new Vector<Complex>();
-	private Vector<CurveLine> dataBase = new Vector<CurveLine>();
+	Vector<CurveLine> dataBase = new Vector<CurveLine>();
 	private Graphics g;
 
 	// Default constructor

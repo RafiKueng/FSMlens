@@ -165,7 +165,8 @@
         }
       err.setText(new String());
       try
-        { lenses.setup(inp.getText()); inp.save();
+        { lenses.todo(unicorn.curveBin.dataBase);
+          lenses.setup(inp.getText()); inp.save();
           setGUI(false,false,false);
           super.startRun();
         }
