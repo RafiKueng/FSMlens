@@ -52,7 +52,8 @@
 
 @ @<Setting up all the lenses@>=
   void todo(Vector<CurveLine> scurves)
-    { for (int i=0; i<scurves.size(); i++)
+    { System.out.println("Image data");
+      for (int i=0; i<scurves.size(); i++)
         scurves.get(i).printCurves();
     }
 
