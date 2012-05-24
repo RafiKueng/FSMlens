@@ -12,7 +12,7 @@ public class Complex {
 	private double im=0;
 	Complex()
 	{
-		//Complex number has real and imaginary part zero!!!
+		//Complex number has real and imag part zero!!!
 	}
 	
 	Complex(double re, double im)
@@ -26,7 +26,7 @@ public class Complex {
 		this.im=z[1];
 	}
 	
-	public double imaginary()
+	public double imag()
 	{
 		return im;
 	}
@@ -43,7 +43,7 @@ public class Complex {
 	
 	public Complex add(Complex z)
 	{
-		Complex zTot=new Complex(z.real()+this.re, z.imaginary()+this.im);
+		Complex zTot=new Complex(z.real()+this.re, z.imag()+this.im);
 		return zTot;
 		
 	}
@@ -57,19 +57,19 @@ public class Complex {
 	public Complex subtract(Complex z)
 	{
 
-		Complex zTot=new Complex(this.re-z.real(),this.im-z.imaginary());
+		Complex zTot=new Complex(this.re-z.real(),this.im-z.imag());
 
 		return zTot;
 	}
 
-	void assign(Complex z)
+	void set(Complex z)
 	{
-                re = z.real(); im = z.imaginary();
+                re = z.real(); im = z.imag();
 	}
 	
 	public Complex times(Complex w) {
 
-        return new Complex(this.re*w.real()-this.im*w.imaginary(),this.re*w.imaginary()+this.im*w.real());
+        return new Complex(this.re*w.real()-this.im*w.imag(),this.re*w.imag()+this.im*w.real());
     }
 	public Complex times(double a)
 	{

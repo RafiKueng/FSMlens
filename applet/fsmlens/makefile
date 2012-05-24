@@ -1,10 +1,12 @@
-all:	Monster.java Illus.java Unicorn.java Synth.java Tuple.java \
+all:	Monster.java Illus.java Tuple.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
-        LensPost.java Lens.java Lenses.java Synthimg.java \
+        LensPost.java Lens.java Lenses.java \
+	Unicorn.java Synth.java Synthimg.java \
+        CurveBin.java Complex.java CurveLine.java \
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
-        Poten.java Shear.java Cosm.java Simpwalk.java CurveBin.java \
-        Complex.java CurveLine.java
+        Poten.java Shear.java Cosm.java Simpwalk.java
 	$(JAVAC) Monster.java
+
 
 Monster.java: Monster.w
 	javatangle Monster.w

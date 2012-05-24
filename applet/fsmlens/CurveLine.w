@@ -56,7 +56,7 @@ public class CurveLine {
 		double B2 = B.modSQR();
 		double C2 = C.modSQR();
 
-		double D = 2.0 * (B.real() * C.imaginary() - B.imaginary() * C.real());
+		double D = 2.0 * (B.real() * C.imag() - B.imag() * C.real());
 
 		// The following part calculates
 		// cen = 1j*(B*C2-C*B2)/D + A

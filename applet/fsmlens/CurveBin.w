@@ -81,14 +81,14 @@ public class CurveBin {
 	// of a given complex number
 	/*
 	 * public void redrawPoint(int index) { Complex temp=points.get(index); int
-	 * x=(int)(temp.real()); int y=(int)(temp.imaginary());
+	 * x=(int)(temp.real()); int y=(int)(temp.imag());
 	 * g.fillOval(x-5,y-5,10,10); }
 	 */
 	private void drawPoints() {
 		for (int i = 0; i < points.size(); i++) {
 			Complex temp = points.get(i);
 			int x = (int) (temp.real());
-			int y = (int) (temp.imaginary());
+			int y = (int) (temp.imag());
 			g.fillOval(x - 5, y - 5, 10, 10);
 		}
 
@@ -103,11 +103,11 @@ public class CurveBin {
 			int x1, x2, y1, y2;
 			for (int i = 0; i < vec.size() - 1; i++) {
 				x1 = (int) vec.get(i).real();
-				y1 = (int) vec.get(i).imaginary();
+				y1 = (int) vec.get(i).imag();
 				x2 = (int) vec.get(i + 1).real();
-				y2 = (int) vec.get(i + 1).imaginary();
-
-				g.drawLine(x1, y1, x2, y2);
+				y2 = (int) vec.get(i + 1).imag();
+                                if ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2) < 100)
+  				  g.drawLine(x1, y1, x2, y2);
 			}
 		}
 	}
@@ -131,13 +131,13 @@ public class CurveBin {
 	public void updatePoint(Complex event, Graphics g) {
 		this.g = g;
 		int q = this.findeClosest(event);
-		points.get(q).assign(event);
+		points.get(q).set(event);
                 this.draw();
 	}
 
 	public void updatePoint(Complex event) {
 		int q = this.findeClosest(event);
-		points.get(q).assign(event);
+		points.get(q).set(event);
 		this.draw();
 	}
 	public CurveLine getCurve(int index) {
