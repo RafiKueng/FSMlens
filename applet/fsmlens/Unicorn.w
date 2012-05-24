@@ -276,8 +276,8 @@ import javax.imageio.metadata.*;
 @ @<Drawing curves with the mouse@>=
     public void mouseDragged(MouseEvent event)
     {
-        reset();
-        erase();
+        //reset();
+        //erase();
         drawAxes(1);
         x2N = event.getX();
         y2N = event.getY();

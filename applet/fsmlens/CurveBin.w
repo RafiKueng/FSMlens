@@ -31,6 +31,7 @@ public class CurveBin {
 		points.add(temp2);
 		points.add(temp3);
 		addCurve(temp1, temp2, temp3);
+		this.draw();
 
 	}
 	public CurveBin(Complex event, Graphics g) 
