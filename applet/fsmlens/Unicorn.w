@@ -56,6 +56,7 @@ import javax.imageio.metadata.*;
     Complex complex;
     Complex complex1;
     Complex complex2;
+    //Vector<Complex> points = new Vector<Complex>();
 
 
 @ @<Code to read and show raw lenses@>=
@@ -221,9 +222,7 @@ import javax.imageio.metadata.*;
             {
                 System.out.println("unic/mpres/line/if1 ");
                 
-                curveBin = new CurveBin(mouseClickLocation,g);
-                curveBin2 = new CurveBin(g);
-
+                curveBin = new CurveBin(mouseClickLocation,g);            
 
                 /*TODO check if this g remains valid (or is a new one created every time on update...)*/
             }
@@ -283,6 +282,7 @@ import javax.imageio.metadata.*;
 
 @ @<Drawing curves with the mouse@>=
     Complex mouseDraggedLocation;
+    Vector<Complex> points = new Vector<Complex>();
     public void mouseDragged(MouseEvent event)
     {
         reset();
@@ -320,6 +320,16 @@ import javax.imageio.metadata.*;
             }
             */
             
+        }
+        rgbMatrix();
+        points = curveBin.getPoints();
+        double[] maxVal2 = new double[2];
+        for(int i = 1; i<points.size();i++){
+          complex = new Complex();
+          complex = points.get(i);
+          x1N = (int)complex.real();
+          y1N = (int)complex.imag();
+          maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2);
         }
         repaint();
     }
