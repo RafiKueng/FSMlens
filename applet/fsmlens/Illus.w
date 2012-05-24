@@ -87,6 +87,28 @@
 @ @<Clear input@>=
   str = new String("clear"); strb = new StringBuffer();
   choice.addItem(str); id.add(str); data.add(strb.toString());
+
+@ @<Unicorn inputs@>=
+  void ghostWrite(Vector<CurveLine> scurves)
+    { 
+      StringBuffer strb = new StringBuffer("object UnicornInput \n");
+      strb.append("pixrad 8 \n");
+      strb.append("zlens 0.3 \n");
+      strb.append("g 14 \n");
+
+      @<Work out image order, and write into |strb|@>
+
+      strb.append("models 20 \n"); 
+      txt.setText(strb.toString());
+
+    }
+
+@ @<Work out image order, and write into |strb|@>=
+  System.out.println("Image data");
+  for (int i=0; i<scurves.size(); i++)
+    scurves.get(i).printCurves();
+
+
  
 @ @<Unicorn inputs@>=
   ArrayList<double[]> maxKoord = new ArrayList<double[]>();

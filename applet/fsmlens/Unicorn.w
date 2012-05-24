@@ -320,6 +320,7 @@ import javax.imageio.metadata.*;
             */
             
         }
+        illus.ghostWrite(curveBin.dataBase);
         repaint();
     }
 
