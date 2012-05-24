@@ -166,7 +166,10 @@ import javax.imageio.metadata.*;
 
     public void mousePressed(MouseEvent event)
     { 
-        subimageSize = 25;
+        
+	//reset();
+        //erase();	
+	subimageSize = 25;
         drawAxes(1);
         x1N = event.getX();
         y1N = event.getY();

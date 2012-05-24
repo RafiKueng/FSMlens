@@ -118,8 +118,8 @@ public class CurveBin {
 	}
 
 	private void draw() {
-		reset();
-        	erase();
+		//reset();
+        	//erase();
 		this.drawCurve();
 		this.drawPoints();
 	}
