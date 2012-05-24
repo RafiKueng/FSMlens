@@ -26,6 +26,7 @@
       BufferedImage imageOrg = null;
       Illus illus;
       CurveBin curveBin;
+      CurveBin curveBin2;
     }
 
 
@@ -216,8 +217,8 @@ import javax.imageio.metadata.*;
             {
                 System.out.println("unic/mpres/line/if1 ");
                 
-                //curveBin = new CurveBin(mouseClickLocation, this.g);
-                curveBin = new CurveBin(g);
+                curveBin = new CurveBin(mouseClickLocation,g);
+                curveBin2 = new CurveBin(g);
 
 
                 /*TODO check if this g remains valid (or is a new one created every time on update...)*/

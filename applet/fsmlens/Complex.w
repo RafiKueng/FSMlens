@@ -3,13 +3,13 @@
 @(Complex.java@>=
   package fsmlens;
 
-public class Complex {
+public class Complex implements Cloneable{
 	public static Complex I =new Complex(0,1);
 	public static Complex R=new Complex(1,0);
 	
 	
-	private double re=0;
-	private double im=0;
+	public double re=0;
+	public double im=0;
 	Complex()
 	{
 		//Complex number has real and imaginary part zero!!!
@@ -109,7 +109,17 @@ public class Complex {
 	{
 		System.out.print(this.re+"+i"+this.im+" ");
 	}
-	
-
+	public Complex clone()
+          {
+          try
+            {
+             return (Complex) super.clone();
+            }
+          catch (CloneNotSupportedException e ) {
+            throw new InternalError();
+            }
+          }
+   
+    
 }
 

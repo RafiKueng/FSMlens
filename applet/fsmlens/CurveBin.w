@@ -15,11 +15,13 @@ import java.util.*;
 import java.util.Iterator;
 import java.util.Vector;
 
+
 public class CurveBin {
 
 	private Vector<Complex> points = new Vector<Complex>();
 	private Vector<CurveLine> dataBase = new Vector<CurveLine>();
-	private Graphics g;
+	//private Graphics g;
+        Graphics g;
 
 	// Default constructor
 	public CurveBin(Graphics g) {
@@ -40,10 +42,11 @@ public class CurveBin {
 		this.g = g;
 		this.points.add(event);
 		this.expandCurve(event);
-                this.drawPoints();
-                this.drawCurve();
+                //this.drawPoints();
+                //this.drawCurve();
 
 	}
+        
 
 	
 
@@ -74,6 +77,7 @@ public class CurveBin {
 				q = p;
 			}
 		}
+                System.out.println("q ist: " + q);
 		return q;
 	}
 
@@ -106,16 +110,21 @@ public class CurveBin {
 				y1 = (int) vec.get(i).imaginary();
 				x2 = (int) vec.get(i + 1).real();
 				y2 = (int) vec.get(i + 1).imaginary();
-
 				g.drawLine(x1, y1, x2, y2);
 			}
 		}
 	}
 
+
+
+
+
 	public void draw() {
 		this.drawCurve();
 		this.drawPoints();
 	}
+
+  
 	
 	// adding a new point to the vector externally
 	private void addPoint(Complex pnt) {
@@ -138,9 +147,10 @@ public class CurveBin {
 	public void updatePoint(Complex event) {
 		int q = this.findeClosest(event);
 		points.set(q, event);
-
+                
 		this.draw();
 	}
+
 	public CurveLine getCurve(int index) {
 		return dataBase.get(index);
 	}
@@ -152,11 +162,9 @@ public class CurveBin {
 		}
                 for (int i=0; i<dataBase.size(); i++)
                   {
-                   //for (int k=0; k<3;k++)
-                     //dataBase.get(i)[k].printNumber();
                      dataBase.get(i).printCurves();
                    }
-		System.out.println("Did you see?");
+		System.out.println();
 	}
 	/*
 	 * this function uses a given mouse event and expands the closest
@@ -177,35 +185,16 @@ public class CurveBin {
 		// perhaps use iterator
 		int q = this.findeClosest(event);
 		addPoint(event.add(new Complex(10, 10)));
-		addPoint(event.add(new Complex(-10, -10)));// perhaps these have to be
-													// adjusted; they are just a
-													// lucky guess of two points
-													// near the first one
-		int size = points.size();// find the current size of the vector
-		addCurve(points.get(q), points.get(size - 1), points.get(size - 2)); // the
-																				// fist
-																				// point
-																				// is
-																				// given
-																				// and
-																				// the
-																				// second
-																				// and
-																				// third
-																				// are
-																				// the
-																				// ones
-																				// we
-																				// just
-																				// added
-																				// at
-																				// the
-																				// end
-																				// of
-																				// the
-																				// vector
+		addPoint(event.add(new Complex(-10, -10)));                  // perhaps these have to be
+									     // adjusted; they are just a
+									     // lucky guess of two points
+									     // near the first one
+		int size = points.size();                                    // find the current size of the vector
+		addCurve(points.get(q), points.get(size - 1), points.get(size - 2)); 
+                //the fist point is given and the second and third are the ones we just added at the end of the vector//   
 		this.draw();
 	}
 
-}
+}																			
+
 
