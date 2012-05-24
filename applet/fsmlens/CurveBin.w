@@ -14,6 +14,11 @@ import java.lang.Object.*;
 import java.util.*;
 import java.util.Iterator;
 import java.util.Vector;
+//
+import java.io.*;
+import javax.imageio.*; 
+import javax.imageio.stream.*;
+import javax.imageio.metadata.*;
 
 public class CurveBin {
 
@@ -39,8 +44,9 @@ public class CurveBin {
 		this.g = g;
 		this.points.add(event);
 		this.expandCurve(event);
-        this.drawPoints();
-        this.drawCurve();
+		this.draw();
+        //this.drawPoints();
+        //this.drawCurve();
 
 	}
 
@@ -112,6 +118,8 @@ public class CurveBin {
 	}
 
 	private void draw() {
+		reset();
+        	erase();
 		this.drawCurve();
 		this.drawPoints();
 	}
