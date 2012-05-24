@@ -50,6 +50,13 @@
   plotArriv.reset();
   mods = 100; nummod = 0; begun = false;
 
+@ @<Setting up all the lenses@>=
+  void todo(Vector<CurveLine> scurves)
+    { System.out.println("Image data");
+      for (int i=0; i<scurves.size(); i++)
+        scurves.get(i).printCurves();
+    }
+
 
 @ @<Setting up all the lenses@>=
   void setup(String user_inp) throws ErrorMsg

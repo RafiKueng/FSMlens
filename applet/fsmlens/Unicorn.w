@@ -172,12 +172,16 @@ import javax.imageio.metadata.*;
       x1 = x(x1N);
       y1 = y(y1N);
 
+      int mouseModif = event.getModifiers();
+
       System.out.println("unic/mpressed " + x1N+" / " + y1N);
 
       double[] maxVal2 = new double[2];
       if(quadrLine.equals("Rectangle")){
-        if(event.getButton()==MouseEvent.BUTTON3){ g.setColor(Color.red); oneortwo=2;}
-        else if(event.getButton()==MouseEvent.BUTTON2){ g.setColor(Color.green); oneortwo=3;}
+        if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
+          { g.setColor(Color.red); oneortwo=2;}
+        else if(event.getButton()==MouseEvent.BUTTON2 || mouseModif==24)
+          { g.setColor(Color.green); oneortwo=3;}
         else{ g.setColor(Color.blue); oneortwo = 1;}
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
         if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
@@ -202,7 +206,7 @@ import javax.imageio.metadata.*;
         {
             System.out.println("unic/mpres/line " + event.getButton());
             
-            if(event.getButton()==MouseEvent.BUTTON3)
+            if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
                 System.out.println("in Mouse Event Button 3 pressed");
                 //state=!state;
@@ -224,13 +228,13 @@ import javax.imageio.metadata.*;
                 /*TODO check if this g remains valid (or is a new one created every time on update...)*/
             }
             
-            else if (event.getButton()==MouseEvent.BUTTON3)
+            else if (event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
                 System.out.println("unic/mpres/line/if2 ");
                 curveBin.expandCurve(mouseClickLocation);
             }
             
-            else if (event.getButton()==MouseEvent.BUTTON1)
+            else if (event.getButton()==MouseEvent.BUTTON1 || mouseModif==18)
             {
                 System.out.println("unic/mpres/line/if3 ");
                 curveBin.updatePoint(mouseClickLocation);
@@ -420,8 +424,4 @@ import javax.imageio.metadata.*;
     {
      illus.setKoord(maxKoord);
     }
-    
-
-
-
     
