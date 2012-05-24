@@ -19,14 +19,10 @@ import java.util.Vector;
 public class CurveBin {
 
 	private Vector<Complex> points = new Vector<Complex>();
-<<<<<<< HEAD
-	private Vector<CurveLine> dataBase = new Vector<CurveLine>();
-	//private Graphics g;
-        Graphics g;
-=======
+
 	Vector<CurveLine> dataBase = new Vector<CurveLine>();
 	private Graphics g;
->>>>>>> 19d7846890bb00b12bf204b57574ab95e0f715f7
+
 
 	// Default constructor
 	public CurveBin(Graphics g) {
@@ -114,14 +110,11 @@ public class CurveBin {
 				x1 = (int) vec.get(i).real();
 				y1 = (int) vec.get(i).imag();
 				x2 = (int) vec.get(i + 1).real();
-<<<<<<< HEAD
-				y2 = (int) vec.get(i + 1).imaginary();
-				g.drawLine(x1, y1, x2, y2);
-=======
+
 				y2 = (int) vec.get(i + 1).imag();
                                 if ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2) < 100)
   				  g.drawLine(x1, y1, x2, y2);
->>>>>>> 19d7846890bb00b12bf204b57574ab95e0f715f7
+
 			}
 		}
 	}
@@ -157,12 +150,9 @@ public class CurveBin {
 
 	public void updatePoint(Complex event) {
 		int q = this.findeClosest(event);
-<<<<<<< HEAD
-		points.set(q, event);
-                
-=======
+
 		points.get(q).set(event);
->>>>>>> 19d7846890bb00b12bf204b57574ab95e0f715f7
+
 		this.draw();
 	}
 
