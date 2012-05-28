@@ -53,6 +53,7 @@ with basic gravitational lensing theory.
         ex = new Figure(siz,siz);
       	ex.setBackground(Color.black);
       	ex.setTitle("example pic"); @/
+ 
 	text = new Console(4,80);
 	text.setBackground(Color.white);
 	text.append("Explanatory text here");
@@ -85,14 +86,15 @@ if zoomed.
 @<GUI for lens plots@>=
   double fs=2;
   void curves()
-    { caus.erase(); crit.erase(); arriv.erase();  @/
+    { caus.erase(); crit.erase(); arriv.erase(); ex.erase();  @/
       caus.setColor(Color.white.getRGB());
+ex.setColor(Color.white.getRGB());
       crit.setColor(Color.white.getRGB());
       arriv.setColor(Color.white.getRGB());  @/
-      caus.drawAxes(fs/2); crit.drawAxes(fs); arriv.drawAxes(fs);  @/
+      caus.drawAxes(fs/2); crit.drawAxes(fs); arriv.drawAxes(fs); ex.drawAxes(fs/2);  @/
       dels.reset();  @/
       find_curves();  @/
-      caus.repaint(); crit.repaint(); arriv.repaint(); dels.repaint();
+      caus.repaint(); crit.repaint(); arriv.repaint(); dels.repaint(); ex.repaint();
     }
 
 @ Now we move on the the messy numerical stuff.
