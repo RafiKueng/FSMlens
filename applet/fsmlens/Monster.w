@@ -95,7 +95,7 @@
   pd.addFigure("mass",lenses.plotMass);
   pd.addFigure("potential",lenses.plotPoten);
   pd.addFigure("arrival time",lenses.plotArriv);
-  pd.add("North",synthimg.getPanel()); 
+//  pd.add("North",synthimg.getPanel()); 
   mainPane.add("East",pd);
 
 @ @<Put raw image in the middle@>=

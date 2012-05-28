@@ -14,6 +14,7 @@
 import java.util.Vector;
 
 public class CuveLines{
+        Monster home;
 	public static int COUNT=0;
 	//private Complex[] inPoints={new Complex(154,69),new Complex(72,99),new Complex(215,77)};
         private Complex[] inPoints={new Complex(182,72),new Complex(100,162),new Complex(200,183)};
@@ -30,8 +31,9 @@ public class CuveLines{
 		System.out.println(CuveLines.COUNT);
 		this.inPoints=pnt;
 	}
-	CuveLines()
+	CuveLines(Monster home)
 	{
+	        this.home = home;
 		CuveLines.COUNT+=1;
 		System.out.println(CuveLines.COUNT);
 	}
@@ -64,6 +66,10 @@ public class CuveLines{
             inPoints[0].printNumber();
             inPoints[1].printNumber();
 	    inPoints[2].printNumber();
+	    home.inp.reset();
+	    home.inp.coords(inPoints[0].re,inPoints[0].im);
+	    home.inp.coords(inPoints[1].re,inPoints[1].im);
+	    home.inp.coords(inPoints[2].re,inPoints[2].im);
 	    System.out.print("\n");
 		
 	    Complex temp1=new Complex();

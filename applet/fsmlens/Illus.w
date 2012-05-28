@@ -11,6 +11,7 @@
     { @<Constructor for |Illus|, including data@>
       @<Setting read-only flags in |Illus|@>
       @<Event handler for |Illus|@>
+      @<Handle mouse-derived input@>
     }
 
 @ @<Constructor for |Illus|, including data@>=
@@ -147,3 +148,15 @@
   strb.append("   25.0   26.7  1 \n");
   strb.append("   14.1   32.7  2 \n");  @/
   choice.addItem(str); id.addElement(str); data.addElement(strb.toString());
+
+@ @<Handle mouse-derived input@>=
+  void reset()
+    { txt.setText("object anonymous\n");
+      txt.append("pixrad 3 \n");
+      txt.append("zlens 0.3 \n");
+      txt.append("g 14 \n");
+      txt.append("multi 3 1.7 \n");
+    }
+  void coords(double x, double y)
+    { txt.append(x+" "+y+" 0\n");
+    }
