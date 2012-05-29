@@ -65,7 +65,8 @@ with basic gravitational lensing theory.
 		
 		
 		//BufferedImage myPicture = ImageIO.read(new File("path-to-file"));
-		picLabel = new JLabel();
+		JPanel picPanel = new JPanel();
+		picLabel = null;
 		
 		BufferedImage myPicture = null;
 		try {
@@ -77,9 +78,9 @@ with basic gravitational lensing theory.
 		}
 	  
 		picLabel = new JLabel(new ImageIcon( myPicture ));
+		picPanel.add(picLabel);
 		
-		
-		mainPane.add( "East", picLabel );
+		mainPane.add( "East", picPanel );
 
 		
  
