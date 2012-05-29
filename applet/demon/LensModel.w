@@ -179,47 +179,56 @@
 
 @ @<Example models@>=
   void model_vanilla()
-    { a = 1; b = 1; h=0; n=0.5; g1=0.2; g2=0; eps=0.01;  @/
-     refresh();  
-      wyn.source(-0.0211,0.1303);
-	  
-	  BufferedImage myPicture = null;
-	  try {
-	    myPicture = ImageIO.read(new File("demon/images/B1152Hcc.gif"));
-	  }
-	  catch (IOException e) {
-	    System.out.println("no valid filepath in LensModel: modelvanilla");
-		e.printStackTrace();
-	  }
-	  
-	  wyn.picLabel = new JLabel(new ImageIcon( myPicture ));
-
-	  
-    }
+  {
+    a = 1; b = 1; h=0; n=0.5; g1=0.2; g2=0; eps=0.01;  @/
+    refresh();  
+    wyn.source(-0.0211,0.1303);
+    wyn.updateImg("B1152Hcc.gif");
+  }
+    
   void model_1115()
-   { a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.01; g2=0.08; eps=0.01;  @/
-      refresh();  wyn.source(-0.0211,0.1303);
-    }
+  {
+    a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.01; g2=0.08; eps=0.01;  @/
+    refresh();
+    wyn.source(-0.0211,0.1303);
+    wyn.updateImg("B1422Hcc.gif");
+  }
+
   void model_1115_shear()
-    { a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.015; g2=0.12; eps=0.01; @/
-      refresh();  wyn.source(-0.0211,0.1303);
-    }
+  {
+    a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.015; g2=0.12; eps=0.01; @/
+    refresh();
+    wyn.source(-0.0211,0.1303);
+    wyn.updateImg("B1422Hcc.gif");
+  }
+  
   void model_1115_moreshear()
-    { a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.02; g2=0.16; eps=0.01;
-      refresh();  wyn.source(-0.0211,0.1303);
-    }
+  {
+    a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.02; g2=0.16; eps=0.01;
+    refresh();  wyn.source(-0.0211,0.1303);
+    wyn.updateImg("B1422Hcc.gif");
+  }
+  
   void model_1115_steep()
-    { a = 2.4000; b = 2.8000; h = 0.0077; n = 0.4;
-      g1 = -0.0200; g2 = 0.1000; eps = 0.01;  @/
-      refresh();  wyn.source(-0.0238,0.1557);
-    }
+  {
+    a = 2.4000; b = 2.8000; h = 0.0077; n = 0.4;
+    g1 = -0.0200; g2 = 0.1000; eps = 0.01;  @/
+    refresh();  wyn.source(-0.0238,0.1557);
+    wyn.updateImg("B1422Hcc.gif");
+  }
+  
   void model_1115_shallow()
-    { a = 0.6500; b = 0.7500; h = 0.0018; n = 0.7;
-      g1 = 0.0200; g2 = 0.0500; eps = 0.01;  @/
-      refresh();  wyn.source(-0.0103,0.0795);
-    }
+  {
+    a = 0.6500; b = 0.7500; h = 0.0018; n = 0.7;
+    g1 = 0.0200; g2 = 0.0500; eps = 0.01;  @/
+    refresh();  wyn.source(-0.0103,0.0795);
+    wyn.updateImg("B1422Hcc.gif");
+  }
+  
   void model_1422()
-    { a = 0.6; b = 0.6; h = 0; n = 0.5; g1 = -0.04; g2=-0.21; eps=0.01;  @/
-      refresh();  wyn.source(0.2490,0.1913);
-    }
+  {
+    a = 0.6; b = 0.6; h = 0; n = 0.5; g1 = -0.04; g2=-0.21; eps=0.01;  @/
+    refresh();  wyn.source(0.2490,0.1913);
+    wyn.updateImg("B1422Hcc.gif");
+  }
 

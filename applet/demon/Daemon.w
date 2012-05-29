@@ -9,10 +9,19 @@ with basic gravitational lensing theory.
   package demon;
   import qgd.util.*;
   @<Imported classes for |Daemon|@>
+  @<define JImagePanel@>
   public class Daemon extends Dual
-    { @<GUI for lens plots@>
-      @<Lens equations@>
-    }
+  { 
+    @<GUI for lens plots@>
+    @<set and update image@>
+    @<Lens equations@>
+  }
+
+
+
+
+
+
 
 @ @<Imported classes for |Daemon|@>=
   import java.util.Vector;
@@ -25,26 +34,34 @@ with basic gravitational lensing theory.
   import javax.imageio.ImageIO;
   import java.io.File;
   import java.io.IOException;
+  import java.net.URL;
+
+
+
   
   
 @ @<GUI for lens plots@>=
   public static void main(String[] args)
-    { Daemon wyn = new Daemon();
+    { 
+      Daemon wyn = new Daemon();
       if (args.length==1) wyn.parse_flag(args[0]);
       wyn.main();
     }
+
+
 
 @ @<GUI for lens plots@>=
   int flag=0;  @/
   LensModel lens;  // Has its own GUI.
   MPlot caus;  Figure crit,arriv;
-  Figure ex;
+  //Figure ex;
   Console text;
   PPlot dels;
-  JLabel picLabel;
+  
   
   public void main()
-    { if (Dual.mode()==2) parse_flag(getParameter("basemodel"));
+    { 
+      if (Dual.mode()==2) parse_flag(getParameter("basemodel"));
       int siz = 300;
       caus = new MPlot(this,siz,siz);
       caus.setBackground(Color.black);
@@ -56,48 +73,47 @@ with basic gravitational lensing theory.
       arriv.setBackground(Color.black);
       arriv.setTitle("arrival time"); @/
       dels = new PPlot(siz,siz);  @/
-		
-        ex = new Figure(siz,siz);
-      	ex.setBackground(Color.black);
-      	ex.setTitle("example pic"); @/
-		
-		
-		
-		
-		//BufferedImage myPicture = ImageIO.read(new File("path-to-file"));
-		JPanel picPanel = new JPanel();
-		picLabel = null;
-		
-		BufferedImage myPicture = null;
-		try {
-			myPicture = ImageIO.read(new File("demon/images/B1152Hcc.gif"));
-		}
-		catch (IOException e) {
-			System.out.println("no valid filepath in LensModel: modelvanilla");
-			e.printStackTrace();
-		}
-	  
-		picLabel = new JLabel(new ImageIcon( myPicture ));
-		picPanel.add(picLabel);
-		
-		mainPane.add( "East", picPanel );
 
-		
+      /*
+      ex = new Figure(siz,siz);
+      ex.setBackground(Color.black);
+      ex.setTitle("example pic"); @/
+      */
+      
+      
+      //imgPathPrefix = "demon/images/";
+      
+      //imgPath = "B1152Hcc.gif";
+      //picPanel = new JPanel();
+      
+      //updatePicPanel();
+
+      updateImg("B1152Hcc.gif");
+      
+      mainPane.add( "East", picPanel );
+
+
  
-	text = new Console(4,80);
-	text.setBackground(Color.white);
-	text.append("Explanatory text here");
+      text = new Console(4,80);
+      text.setBackground(Color.white);
+      text.append("Explanatory text here");
 
 
       mainPane.add("West",caus.getPanel());
-	//mainPane.add("East",ex.getPanel());
-	mainPane.add("South",text.getPanel());
-	
-//      mainPane.add("East",crit.getPanel());
+      //mainPane.add("East",ex.getPanel());
+      mainPane.add("South",text.getPanel());
+      //mainPane.add("East",crit.getPanel());
+
       if (flag==1)
-        { mainPane.add("Center",dels.getPanel());  dels.setDecim(6);
-        }
-      else mainPane.add("Center",arriv.getPanel());
+      {
+        mainPane.add("Center",dels.getPanel());
+        dels.setDecim(6);
+      }
+      else
+      {
+        mainPane.add("Center",arriv.getPanel());
+      }
+      
       lens = new LensModel(this);
       mainPane.add("North",lens);  @/
       lens.model_vanilla();
@@ -107,25 +123,39 @@ with basic gravitational lensing theory.
 
 @ @<GUI for lens plots@>=
   private void parse_flag(String str)
-    { if (str!=null)
+    {
+      if (str!=null)
+      {
         if (str.compareTo("fudge")==0) flag = 1;
+      }
     }
 
-@ Here field size (radius really).  The first plot is more convenient
-if zoomed.
+    
+@ Here field size (radius really).  The first plot is more convenient if zoomed.
 @<GUI for lens plots@>=
   double fs=2;
   void curves()
-    { caus.erase(); crit.erase(); arriv.erase(); ex.erase();  @/
-      caus.setColor(Color.white.getRGB());
-ex.setColor(Color.white.getRGB());
-      crit.setColor(Color.white.getRGB());
-      arriv.setColor(Color.white.getRGB());  @/
-      caus.drawAxes(fs/2); crit.drawAxes(fs); arriv.drawAxes(fs); ex.drawAxes(fs/2);  @/
-      dels.reset();  @/
-      find_curves();  @/
-      caus.repaint(); crit.repaint(); arriv.repaint(); dels.repaint(); ex.repaint();
-    }
+  {
+    caus.erase();
+    crit.erase();
+    arriv.erase();
+    //ex.erase();  @/
+    caus.setColor(Color.white.getRGB());
+    //ex.setColor(Color.white.getRGB());
+    crit.setColor(Color.white.getRGB());
+    arriv.setColor(Color.white.getRGB());  @/
+    caus.drawAxes(fs/2);
+    crit.drawAxes(fs);
+    arriv.drawAxes(fs);
+    //ex.drawAxes(fs/2);  @/
+    dels.reset();  @/
+    find_curves();  @/
+    caus.repaint();
+    crit.repaint();
+    arriv.repaint();
+    dels.repaint();
+    //ex.repaint();
+  }
 
 @ Now we move on the the messy numerical stuff.
 
@@ -203,19 +233,34 @@ ex.setColor(Color.white.getRGB());
     }
   if (flag==1) dels.plot();
 
+
+
+
+
+
 @ @<Lens equations@>=
   double sx=0,sy=0;
   void source(double sx, double sy)
-    { this.sx = sx; this.sy = sy; source();
-    }
+  { 
+    this.sx = sx;
+    this.sy = sy;
+    source();
+  }
+  
   void source()
-    { curves();
-      if (flag!=1)
-        { @<Set |lis| to image positions@>
-          @<Plot saddle point contours@>
-          @<Plot images@>
-        }
+  {
+    curves();
+    if (flag!=1)
+    {
+      @<Set |lis| to image positions@>
+      @<Plot saddle point contours@>
+      @<Plot images@>
     }
+  }
+
+
+
+
 
 
 @ @<Set |lis| to image positions@>=
@@ -275,17 +320,125 @@ ex.setColor(Color.white.getRGB());
 
 
 
+
+
+
+
+
 @ @<Plot images@>=
   crit.setColor(Color.red.getRGB());
   arriv.setColor(Color.red.getRGB());
   for (int i=0; i<lis.size(); i++)
-    { double[] p = lis.get(i);
-      crit.drawPoint(p[0],p[1]);
-      double mag = lens.maginv(p[0],p[1]);  mag = 1/Math.sqrt(Math.abs(mag));
-      int ds = 2*(int)(mag+1);
-      arriv.setDotsize(ds); arriv.drawPoint(p[0],p[1]); arriv.setDotsize(4);
+  {
+    double[] p = lis.get(i);
+    crit.drawPoint(p[0],p[1]);
+    double mag = lens.maginv(p[0],p[1]);
+    mag = 1/Math.sqrt(Math.abs(mag));
+    int ds = 2*(int)(mag+1);
+    arriv.setDotsize(ds);
+    arriv.drawPoint(p[0],p[1]);
+    arriv.setDotsize(4);
+  }
+  caus.setColor(Color.cyan.getRGB());
+  caus.drawPoint(sx,sy);
+  caus.repaint();
+
+
+
+@ @<define JImagePanel@>=
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+class JImagePanel extends JPanel{
+  Image image;
+  String imgPathPrefix;
+  String imgPath;
+
+  public JImagePanel(){
+    super();
+    imgPathPrefix = "demon/images/";
+    imgPath = "";
+  }
+  
+  public void setFileName(String filename) {
+    System.out.println("setFilename to" + filename);
+    this.imgPath = filename;
+  }
+  
+
+  public void paintComponent(Graphics g){
+    System.out.println("painting graphics: " + imgPathPrefix +this.imgPath);
+    image = Toolkit.getDefaultToolkit().getImage( imgPathPrefix +this.imgPath);
+    g.drawImage(image,0,0,200,200, this); // at location 0,0; size: 200x200
+  }
+}
+
+
+
+
+
+@ this updates the jpanel 'picPanel' that paints the images in the east pane to a new pictre defined by path
+@ make sure:
+@ - JPanel picPanel is init
+@ - imgPath is set before calling this
+@ (sa, rk)
+@<set and update image@>=
+/*
+  JPanel picPanel = new JPanel(); //contains the picture
+  String imgPath = ""; //sets the filename of the to be displayed picture
+  String imgPathPrefix = "demon/images/"; //in which folder are the image files?
+  
+  void updatePicPanel()
+  {
+    picPanel.removeAll();
+    
+    BufferedImage myPicture = null;
+    File filename = new File(imgPathPrefix + imgPath);
+    //URL filename = getClass().getResource(imgPathPrefix+imgPath); //this is supposed to be better, this can load pictures even from a class..
+    
+    try {
+      myPicture = ImageIO.read(filename);
     }
-  caus.setColor(Color.cyan.getRGB()); caus.drawPoint(sx,sy); caus.repaint();
+    catch (IOException e) {
+      System.out.println("no valid filepath set (variable: 'imgPath') in LensModel.createPicturePanel (path:"+imgPathPrefix + imgPath+")");
+      e.printStackTrace();
+    }
+
+    //JPanel picPanel = new JPanel();
+    JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
+    picPanel.add(picLabel);
+    //System.out.println("run update pic panel");
+    picPanel.repaint();
+    //mainPane.repaint();
+  }
+
+
+  public void updateImg(String imgPath)
+  {
+    this.imgPath = imgPath;
+    updatePicPanel();
+    picPanel.repaint();
+    mainPane.add( "East", picPanel );
+  }
+  */
+  //JImagePanel picPanel = new JImagePanel();
+  JPanel picPanel = new JPanel();
+  
+  public void updateImg(String imgPath)
+  {
+    System.out.println("Update Img: "+imgPath);
+    JImagePanel pPan = new JImagePanel();
+    pPan.setFileName(imgPath);
+    picPanel = pPan;
+    picPanel.repaint();
+    picPanel.update(picPanel.getGraphics());
+    picPanel.updateUI();
+    mainPane.updateUI();
+  }
+
+
+
+
 
 
 
