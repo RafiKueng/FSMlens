@@ -15,7 +15,7 @@ import java.util.Vector;
 
 
 public class CurveLine {
-	private Complex[] inPoints = new Complex[3];
+	Complex[] inPoints = new Complex[3];
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();

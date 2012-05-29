@@ -95,24 +95,23 @@
 @ @<Put plots to East@>=
 
   int picSize = 400;
-  //cuveLines = new CuveLines();
   unicorn = new Unicorn(this,picSize,inp);
 
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
-  FigDeck pd = new FigDeck(); @/
-  pd.setBackground(Color.black);
-  //pd.addFigure("pixellation",lenses.plotPix);
-  //pd.addFigure("mass",lenses.plotMass);
-  //pd.addFigure("potential",lenses.plotPoten);
-  //pd.addFigure("arrival time",lenses.plotArriv);
-  //pd.add("North",synthimg.getPanel()); 
-  pd.add("North",synth.getPanel()); 
+  FigDeck pd = new FigDeck();
+  pd.setBackground(Color.red);
+  pd.addFigure("pixellation",lenses.plotPix);
+  pd.addFigure("mass",lenses.plotMass);
+  pd.addFigure("potential",lenses.plotPoten);
+  pd.addFigure("arrival time",lenses.plotArriv);
+//  pd.add("North",synthimg.getPanel()); 
+//  pd.add("North",synth.getPanel()); 
   mainPane.add("East",pd);
 
 @ @<Put raw image in the middle@>=
   JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
-    ip.setBackground(Color.black);
+  ip.setBackground(Color.black);
   ip.add("North",unicorn.getPanel());
   //ip.add("South",synth.getPanel());
   mainPane.add("Center",ip);
