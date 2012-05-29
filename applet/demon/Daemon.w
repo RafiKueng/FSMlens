@@ -21,7 +21,12 @@ with basic gravitational lensing theory.
   import java.awt.BorderLayout;
   import java.awt.Color;
 
-
+  import java.awt.image.BufferedImage;
+  import javax.imageio.ImageIO;
+  import java.io.File;
+  import java.io.IOException;
+  
+  
 @ @<GUI for lens plots@>=
   public static void main(String[] args)
     { Daemon wyn = new Daemon();
@@ -36,6 +41,8 @@ with basic gravitational lensing theory.
   Figure ex;
   Console text;
   PPlot dels;
+  JLabel picLabel;
+  
   public void main()
     { if (Dual.mode()==2) parse_flag(getParameter("basemodel"));
       int siz = 300;
@@ -49,10 +56,32 @@ with basic gravitational lensing theory.
       arriv.setBackground(Color.black);
       arriv.setTitle("arrival time"); @/
       dels = new PPlot(siz,siz);  @/
-
+		
         ex = new Figure(siz,siz);
       	ex.setBackground(Color.black);
       	ex.setTitle("example pic"); @/
+		
+		
+		
+		
+		//BufferedImage myPicture = ImageIO.read(new File("path-to-file"));
+		picLabel = new JLabel();
+		
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("demon/images/B1152Hcc.gif"));
+		}
+		catch (IOException e) {
+			System.out.println("no valid filepath in LensModel: modelvanilla");
+			e.printStackTrace();
+		}
+	  
+		picLabel = new JLabel(new ImageIcon( myPicture ));
+		
+		
+		mainPane.add( "East", picLabel );
+
+		
  
 	text = new Console(4,80);
 	text.setBackground(Color.white);
@@ -60,7 +89,7 @@ with basic gravitational lensing theory.
 
 
       mainPane.add("West",caus.getPanel());
-	mainPane.add("East",ex.getPanel());
+	//mainPane.add("East",ex.getPanel());
 	mainPane.add("South",text.getPanel());
 	
 //      mainPane.add("East",crit.getPanel());

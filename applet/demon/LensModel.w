@@ -6,6 +6,13 @@
   import java.awt.event.*;
   import javax.swing.*;
   import java.awt.BorderLayout;
+  
+  import java.awt.image.BufferedImage;
+  import javax.imageio.ImageIO;
+  import java.io.File;
+  import java.io.IOException;
+  
+  
   public class LensModel extends JPanel implements ActionListener
     { @<Lens parameters, potential, and derivatives@>
       @<GUI for lens parameters@>
@@ -175,6 +182,19 @@
     { a = 1; b = 1; h=0; n=0.5; g1=0.2; g2=0; eps=0.01;  @/
      refresh();  
       wyn.source(-0.0211,0.1303);
+	  
+	  BufferedImage myPicture = null;
+	  try {
+	    myPicture = ImageIO.read(new File("demon/images/B1152Hcc.gif"));
+	  }
+	  catch (IOException e) {
+	    System.out.println("no valid filepath in LensModel: modelvanilla");
+		e.printStackTrace();
+	  }
+	  
+	  wyn.picLabel = new JLabel(new ImageIcon( myPicture ));
+
+	  
     }
   void model_1115()
    { a = 1.2; b = 1.4; h=0.004; n=0.5; g1=-0.01; g2=0.08; eps=0.01;  @/
