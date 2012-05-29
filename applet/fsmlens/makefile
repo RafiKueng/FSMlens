@@ -2,7 +2,7 @@ all:	Monster.java Illus.java Tuple.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
 	Unicorn.java Synth.java Synthimg.java \
-        CurveBin.java Complex.java CurveLine.java \
+        CurveBin.java Complex.java CurveLine.java ComplexExtend.java\
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
         Poten.java Shear.java Cosm.java Simpwalk.java
 	$(JAVAC) Monster.java
@@ -80,6 +80,8 @@ CurveBin.java:CurveBin.w
 CurveLine.java: CurveLine.w
 	javatangle CurveLine.w  
 
+ComplexExtend.java: ComplexExtend.w
+	javatangle ComplexExtend.w
 
 
 clean:
