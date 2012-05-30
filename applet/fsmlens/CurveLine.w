@@ -23,6 +23,7 @@ public class CurveLine {
 	private Vector<Complex> bezirLines3=new Vector<Complex>();
 
 	//none default Constructor 
+        ComplexExtend[] points = new ComplexExtend[3];
 	CurveLine(Complex i0, Complex i1, Complex i2) {
 		this.points[0]=new ComplexExtend(i0,"S");
 		this.points[1]=new ComplexExtend(i1);
@@ -211,5 +212,10 @@ public class CurveLine {
 		}
 		System.out.println();
 	}
+  
+        public ComplexExtend[] getExtendPoint(){
+          return points;
+        }
+   
 
 }

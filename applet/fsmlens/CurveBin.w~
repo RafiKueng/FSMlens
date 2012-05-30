@@ -140,7 +140,7 @@ public class CurveBin {
 	}
 
         public Vector<Complex> getPoints(){
-
+          return points;
         }
 
 	// updating the point closest to a given event with the coordinates of the

@@ -143,6 +143,10 @@ public class CurveBin {
           return points;
         }
 
+        public Vector<CurveLine> getData(){
+          return dataBase;
+        }
+
 	// updating the point closest to a given event with the coordinates of the
 	// given event
 	public void updatePoint(Complex event, Graphics g) {

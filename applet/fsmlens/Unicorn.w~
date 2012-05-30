@@ -188,7 +188,7 @@ import javax.imageio.metadata.*;
         if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
-        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
+       // maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
 	for(int i=0; i<(subimageSize-2); i++)
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
@@ -283,6 +283,8 @@ import javax.imageio.metadata.*;
 @ @<Drawing curves with the mouse@>=
     Complex mouseDraggedLocation;
     Vector<Complex> points = new Vector<Complex>();
+    Vector<CurveLine> dataBase = new Vector<CurveLine>();
+    ComplexExtend[] exPoints = new ComplexExtend[3];
     public void mouseDragged(MouseEvent event)
     {
         reset();
@@ -321,20 +323,33 @@ import javax.imageio.metadata.*;
             */
             
         }
-<<<<<<< HEAD
+
         rgbMatrix();
         points = curveBin.getPoints();
+        dataBase = curveBin.getData();
         double[] maxVal2 = new double[2];
-        for(int i = 1; i<points.size();i++){
-          complex = new Complex();
-          complex = points.get(i);
-          x1N = (int)complex.real();
-          y1N = (int)complex.imag();
-          maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2);
+        Complex point;
+        maxKoord.clear();
+        for(int i = 0; i<dataBase.size();i++){
+          exPoints = dataBase.get(i).getExtendPoint();
+          for( int j=0; j<3; j++){
+            complex = exPoints[j].getPnt();
+            if(exPoints[j].getExtrema() != "H"){
+              x1N = (int)complex.real();
+              y1N = (int)complex.imag();
+              int kind;
+              if(exPoints[j].getExtrema() != "L") kind = 1;
+              else kind = 2;
+              maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+              System.out.println("das ist  ein punkt mit " + exPoints[j].getExtrema());
+              System.out.println("Koord sind: " + complex.real() + " "  + complex.imag());
+              }
+            }
         }
-=======
+        
+
         illus.ghostWrite(curveBin.dataBase);
->>>>>>> 0af8bd525fcdf337b7718098553a16925fdd80ae
+        setPoints();
         repaint();
     }
 
@@ -402,7 +417,7 @@ import javax.imageio.metadata.*;
 
 @ @<check rgb@>=
   ArrayList<double[]> maxKoord = new ArrayList<double[]>();
-  public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
+  public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos, int kind)
     { 
     int rgbMin=0; int rgbMax=-100000000;
     int xMax = 0; int yMax = 0;
@@ -415,7 +430,7 @@ import javax.imageio.metadata.*;
     rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
     double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
-    maxVal[2] = oneortwo;
+    maxVal[2] = kind;
     maxKoord.add(maxVal);
     return maxVal;
     }
