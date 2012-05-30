@@ -16,31 +16,77 @@ import java.util.Vector;
 
 
 public class CurveLine {
+<<<<<<< HEAD
 	Complex[] inPoints = new Complex[3];
 
+=======
+	private ComplexExtend[] points= new ComplexExtend[3];
+>>>>>>> 57df815d47f6d8c76ebdd1511f0fc1b7c99e5459
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
 	private Vector<Complex> bezirLines3=new Vector<Complex>();
 
-	// private Vector<Complex> bezirLines0=new Vector<Complex>();
-	// private Vector<Complex> bezirLines1=new Vector<Complex>();
-	// private Vector<Complex> bezirLines2=new Vector<Complex>();
-	// private Vector<Complex> bezirLines3=new Vector<Complex>();
 	//none default Constructor 
 	CurveLine(Complex i0, Complex i1, Complex i2) {
-		inPoints[0] = i0;
-		inPoints[1] = i1;
-		inPoints[2] = i2;
+		this.points[0]=new ComplexExtend(i0,"S");
+		this.points[1]=new ComplexExtend(i1);
+		this.points[2]=new ComplexExtend(i2);
 	}
-	//Default constructor
-
 	
-//TODO: This function should calculate the nodes of the bezier lines around the three points which this instance holds so that they can after be used to
-// 		draw the lines.
-	
-	private void calcNodes() {
+	public void updateExtrema()
+	{
+		double angle;
+		Complex ext1=vec(points[0].getPnt(),points[1].getPnt());
+		Complex ext2=vec(points[0].getPnt(),points[2].getPnt());
+		angle=angle(ext1,ext2);
+//		ext1=ext1.div(ext1.mod());
+//		ext1=ext2.div(ext2.mod());
+		if(angle>Math.PI/2.0 && angle<=Math.PI)
+		{
+			//there are two minimas
+			points[1].setExtrema("L");
+			points[2].setExtrema("L");
 		
+		}else //{angle>Math.PI && angle<2*Mathe.PI || angle<=0 && angle >Math.PI/2.0}
+		{
+			//there is a maximum and a minimuma ->the point that is closer to the saddle point is a maximum
+			double dis1=ext1.mod();
+			double dis2=ext2.mod();
+			if(dis1<dis2)
+			{
+				//the point 1 is a maximum --> perhaps move to the end
+				points[1].setExtrema("H");//maximum
+				points[2].setExtrema("L");//minimum
+			}
+			else
+			{
+				points[1].setExtrema("L");//minimum
+				points[2].setExtrema("H");//maximum
+			}
+			
+		}
+	}
+	public double crossP(Complex x, Complex y)
+	{
+		return (x.real()*y.imag()-x.imag()*y.real());
+	}
+	public double angle(Complex x, Complex y)
+	{
+		double sp=x.real()*y.real()+x.imag()*y.imag();
+		return Math.acos(sp/(x.modSQR()*y.modSQR()));
+	}
+	public Complex vec(Complex x, Complex y)
+	{
+		return x.subtract(y);
+	}
+	private void calcNodes() {
+		updateExtrema();//<----------------------------------------Perhaps is better to calle this update function in some other place
+		Complex inPoints[]=new Complex[3];
+		for(int i=0;i<3;i++)
+		{
+			inPoints[i]=points[i].getPnt();
+		}
 		/*
 		inPoints[0].printNumber();
 		inPoints[1].printNumber();
@@ -165,7 +211,8 @@ public class CurveLine {
 		System.out.println("this curveLine hos the following points: ");
 		for(int i=0;i<3;i++)
 		{
-			inPoints[i].printNumber();
+			points[i].getPnt().printNumber();
+			System.out.println("the index of this pint is "+points[i].getExtrema());
 		}
 		System.out.println();
 	}
