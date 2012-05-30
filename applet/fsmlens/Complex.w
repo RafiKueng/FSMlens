@@ -34,6 +34,15 @@ public class Complex implements Cloneable{
 	{
 		return re;
 	}
+
+        public boolean equals(Complex z)
+        {
+           if((z.real() == this.re) && (z.imag() == this.im))
+           return true;
+           else
+           return false;
+        }
+     
 	
 	public Complex add(double x)
 	{

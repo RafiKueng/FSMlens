@@ -16,6 +16,7 @@
       @<get choosen picture@>
       @<set points@>
       @< Reset the curves@>
+      @<sort maxKoord for illus@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
@@ -325,30 +326,31 @@ import javax.imageio.metadata.*;
         }
 
         rgbMatrix();
-        points = curveBin.getPoints();
+        //points = curveBin.getPoints();
         dataBase = curveBin.getData();
         double[] maxVal2 = new double[2];
         Complex point;
+        boolean equals = false;
         maxKoord.clear();
-        for(int i = 0; i<dataBase.size();i++){
+        for(int i = dataBase.size()-1; i>=0;i--){
           exPoints = dataBase.get(i).getExtendPoint();
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
             if(exPoints[j].getExtrema() != "H"){
-              x1N = (int)complex.real();
-              y1N = (int)complex.imag();
-              int kind;
-              if(exPoints[j].getExtrema() != "L") kind = 1;
-              else kind = 2;
-              maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
-              System.out.println("das ist  ein punkt mit " + exPoints[j].getExtrema());
-              System.out.println("Koord sind: " + complex.real() + " "  + complex.imag());
-              }
+                x1N = (int)complex.real();
+                y1N = (int)complex.imag();
+                int kind;
+                if(exPoints[j].getExtrema() != "L") kind = 1;
+                else kind = 2;
+                if(equals==false) maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                System.out.println("das ist  ein punkt mit " + exPoints[j].getExtrema());
+                System.out.println("Koord sind: " + complex.real() + " "  + complex.imag());
+                }
             }
         }
         
 
-        illus.ghostWrite(curveBin.dataBase);
+        //illus.ghostWrite(curveBin.dataBase);
         setPoints();
         repaint();
     }
@@ -387,6 +389,7 @@ import javax.imageio.metadata.*;
     public void resetCurv(){
       curveBin.reset();
       curveBin = null;
+      points.clear();
     }
 
 
@@ -440,6 +443,28 @@ import javax.imageio.metadata.*;
     return maxVal;
     }
 
+@ @<sort maxKoord for illus@>=
+   public void sort(){
+   ArrayList<double[]> maxKoordProv = new ArrayList<double[]>();
+   double[] sort = new  double[3];
+   double[] sortEq = new  double[3];
+     for(int i=0; i<maxKoord.size();i++){
+       sort = maxKoord.get(i);
+       if(sort[2]==1) maxKoordProv.add(sort);
+     }
+     for(int i=0; i<maxKoord.size();i++){
+       sort = maxKoord.get(i);
+       if(sort[2]==2) {
+          sortEq = sort;
+          sortEq[2] = 1;
+          if(maxKoordProv.contains(sortEq)==true) System.out.println("Doppelt");   
+         maxKoordProv.add(sort);
+       }
+     }
+   maxKoord = maxKoordProv;
+   }
+
+
 @ @<get max Koordinate@>=
   public ArrayList<double[]> getPointKoord()
     {
@@ -456,6 +481,7 @@ import javax.imageio.metadata.*;
 @ @<set points@>=
   public void setPoints()
     {
+     sort();
      illus.setKoord(maxKoord);
     }
     
