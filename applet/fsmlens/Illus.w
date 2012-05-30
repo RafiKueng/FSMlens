@@ -107,8 +107,9 @@
   Complex cen;
   Complex[] p = scurves.get(0).inPoints;
   if (p[0].subtract(p[1]).mod() < p[0].subtract(p[2]).mod()) cen = p[1];
-  cen = p[2];
-  System.out.println("size "+scurves.size());
+  else cen = p[2];
+  System.out.print("center at ");
+  cen.printNumber();
   if (scurves.size()==2)
     { strb.append("multi 4 1.5 \n");
       p = scurves.get(1).inPoints;
