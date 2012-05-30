@@ -143,6 +143,10 @@ public class CurveBin {
           return points;
         }
 
+        public Vector<CurveLine> getData(){
+          return dataBase;
+        }
+
 	// updating the point closest to a given event with the coordinates of the
 	// given event
 	public void updatePoint(Complex event, Graphics g) {
@@ -203,6 +207,11 @@ public class CurveBin {
                 //the fist point is given and the second and third are the ones we just added at the end of the vector//   
 		this.draw();
 	}
+
+        public void reset(){
+          points.clear();
+          dataBase.clear();        
+        }
 
 }																			
 

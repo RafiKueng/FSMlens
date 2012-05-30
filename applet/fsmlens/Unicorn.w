@@ -15,6 +15,7 @@
       @<get max Koordinate@>
       @<get choosen picture@>
       @<set points@>
+      @< Reset the curves@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
@@ -26,7 +27,6 @@
       BufferedImage imageOrg = null;
       Illus illus;
       CurveBin curveBin;
-      CurveBin curveBin2;
     }
 
 
@@ -295,7 +295,7 @@ import javax.imageio.metadata.*;
         //x2 = x(x2N);
         //y2 = y(y2N);
         
-        System.out.println("unic/drag: "+x2N + " / " + y2N);
+        //System.out.println("unic/drag: "+x2N + " / " + y2N);
         mouseDraggedLocation = new Complex(x2N,y2N);
         
         if(quadrLine.equals("Line"))
@@ -381,7 +381,12 @@ import javax.imageio.metadata.*;
     rgbMatrix();
     maxKoord.clear();
     //imageOrg = null;
+    }
 
+@ @< Reset the curves@>=
+    public void resetCurv(){
+      curveBin.reset();
+      curveBin = null;
     }
 
 

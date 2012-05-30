@@ -208,6 +208,11 @@ public class CurveBin {
 		this.draw();
 	}
 
+        public void reset(){
+          points.clear();
+          dataBase.clear();        
+        }
+
 }																			
 
 

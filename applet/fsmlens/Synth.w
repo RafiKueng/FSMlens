@@ -282,5 +282,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
     //resetMatrix();
     unicorn.reset();
     synthimg.reset();
+    unicorn.resetCurv();
     repaint();
     }
