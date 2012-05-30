@@ -104,10 +104,34 @@
     }
 
 @ @<Work out image order, and write into |strb|@>=
+  Complex cen;
+  Complex[] p = scurves.get(0).inPoints;
+  if (p[0].subtract(p[1]).mod() < p[0].subtract(p[2]).mod()) cen = p[1];
+  cen = p[2];
+  System.out.println("size "+scurves.size());
+  if (scurves.size()==2)
+    { strb.append("multi 4 1.5 \n");
+      p = scurves.get(1).inPoints;
+      if (p[1].subtract(p[0]).mod() < p[2].subtract(p[0]).mod())
+        { writenum(p[2].subtract(cen),strb); strb.append(" 1\n");
+          writenum(p[1].subtract(cen),strb); strb.append(" 1\n");
+        }
+      else
+        { writenum(p[1].subtract(cen),strb); strb.append(" 1\n");
+          writenum(p[2].subtract(cen),strb); strb.append(" 1\n");
+        }
+      writenum(p[0].subtract(cen),strb); strb.append(" 2\n");
+      p = scurves.get(0).inPoints;
+      writenum(p[0].subtract(cen),strb); strb.append(" 2\n");
+    }
   System.out.println("Image data");
   for (int i=0; i<scurves.size(); i++)
     scurves.get(i).printCurves();
 
+@ @<Unicorn inputs@>=
+  void writenum(Complex z, StringBuffer strb)
+    { strb.append(Double.toString(z.real())+" "+Double.toString(-z.imag()));
+    }
 
  
 @ @<Unicorn inputs@>=
