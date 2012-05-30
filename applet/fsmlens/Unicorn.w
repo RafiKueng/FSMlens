@@ -321,6 +321,7 @@ import javax.imageio.metadata.*;
             */
             
         }
+
         rgbMatrix();
         points = curveBin.getPoints();
         double[] maxVal2 = new double[2];
@@ -331,6 +332,9 @@ import javax.imageio.metadata.*;
           y1N = (int)complex.imag();
           maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2);
         }
+
+        illus.ghostWrite(curveBin.dataBase);
+
         repaint();
     }
 

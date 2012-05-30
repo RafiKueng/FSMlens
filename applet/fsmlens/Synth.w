@@ -99,10 +99,56 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
-        createMaxMin();
+
+
         int xNew=0,yNew=0;
-        pixCount = synthimg.getAveragePix();
-        double[] sourcCoo = new double[3];      
+        rgbPix = unicorn.getrgbMatrix();
+        double[] sourcCoo = new double[3];     
+        System.out.println("hier ist auch ok");
+        for(int j=0; j<picSize;j++)
+ 	  {
+	  for(int k=0; k<picSize;k++)
+	    {
+              if(rgbPix[j][k][0] != 0){    
+                System.out.println("Dammi wo isch de fehler");         
+                //sourcCoo[1] = x(j);
+	        //sourcCoo[2] = y(k);
+                sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
+	        sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
+		try{
+ 	          sourcCoo = home.sourCoord(sourcCoo);                  
+                  //xNew = xpix(sourcCoo[1]);
+	          //yNew = ypix(sourcCoo[2]);
+                  xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
+                  yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
+		}
+		catch(Exception e) {
+		  xNew = j;
+	 	  yNew = k;
+		}
+	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
+		  {
+      		    pixCount[xNew][yNew][1] += 1;
+                    System.out.println(xNew + " " + yNew + " \n");
+                    pixCount[xNew][yNew][0] += rgbPix[j][k][0];
+		  }                
+               } 
+   	    }
+	  }
+        /*for(int m=0;m<25;m++)
+          for(int n=0;n<25;n++)
+            {
+            pixCount[xNew-1+m][yNew-1+n][0] = pixCount[xNew][yNew][0];
+            } */
+        unicorn.drawSource(xNew,yNew);
+        makeAverage();
+        System.out.println("bis hierher kommt er");
+        //drawPic();
+        //repaint();
+        //return(pixCount);	
+
+        createMaxMin();
+        //pixCount = synthimg.getAveragePix();   
         //for(int j=0; j<picSize;j++)
         for(int j=xMin; j<=xMax;j++)
  	  {
@@ -223,6 +269,9 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
     //System.out.println("xmax: " + xmax + "  xmin: " + xmin + "      ymax: " + ymax + "   ymin: " + ymin);
     //System.out.println("xmax: " + xMax + "  xmin: " + xMin + "      ymax: " + yMax + "   ymin: " + yMin);
     }
+
+
+
 
 
 
