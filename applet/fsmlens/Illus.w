@@ -89,8 +89,10 @@
   choice.addItem(str); id.add(str); data.add(strb.toString());
 
 @ @<Unicorn inputs@>=
-  void ghostWrite(Vector<CurveLine> scurves)
+  double picsize;
+  void ghostWrite(Vector<CurveLine> scurves, int picsize)
     { 
+      this.picsize = picsize/2.0;
       StringBuffer strb = new StringBuffer("object UnicornInput \n");
       strb.append("pixrad 8 \n");
       strb.append("zlens 0.3 \n");
@@ -131,7 +133,7 @@
 
 @ @<Unicorn inputs@>=
   void writenum(Complex z, StringBuffer strb)
-    { strb.append(Double.toString(z.real()/200.0)+" "+ Double.toString(-z.imag()/200.0));
+    { strb.append(Double.toString(z.real()/picsize)+" "+ Double.toString(-z.imag()/picsize));
     }
 
  

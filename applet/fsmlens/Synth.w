@@ -92,17 +92,17 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
               image.setRGB(i,j,rgbPix[i][j][0]); 
  	      }
            }
-        unicorn.setPoints();
+        //unicorn.setPoints();
         repaint();
     }
 
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
-
+        setPic();
         pixCount = new int[picSize][picSize][2];
         int xNew=0,yNew=0;
-        rgbPix = unicorn.getrgbMatrix();
+        //rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
         
         for(int j=0; j<picSize;j++)
@@ -137,7 +137,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
             } */
         unicorn.drawSource(xNew,yNew);
         makeAverage(); 
-
         //drawPic();
         //repaint();
         //return(pixCount);	
@@ -152,19 +151,11 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	    {
                 sourcCoo[1] = x(j); 
 	        sourcCoo[2] = y(k); 
-                //sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
-	        //sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
-                //System.out.println("X: " + j + " " + x(j) + "  Y: " + k + " " + y(k));
 		try{
                   double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
                   xNew = xpix(sourcCoo[1]); 
-	          yNew = ypix(sourcCoo[2]);
-                  /*if(pixCount[xNew][yNew][0]!=0){
-                    System.out.println(xNew + " " + sourcCoo[1] +  "      " + yNew + " " + sourcCoo[2]);
-                    System.out.println(j + "  " + k); 
-                    } */
-                    
+	          yNew = ypix(sourcCoo[2]);                   
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -254,8 +245,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       }
     int outcast = 10;
     xMax = xpix(xmin)+outcast; xMin = xpix(xmax)-outcast; yMax = ypix(ymin)+outcast; yMin = ypix(ymax)-outcast;
-    //System.out.println("xmax: " + xmax + "  xmin: " + xmin + "      ymax: " + ymax + "   ymin: " + ymin);
-    //System.out.println("xmax: " + xMax + "  xmin: " + xMin + "      ymax: " + yMax + "   ymin: " + yMin);
     }
 
 

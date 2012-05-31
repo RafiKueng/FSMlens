@@ -190,22 +190,10 @@ import javax.imageio.metadata.*;
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
-	for(int i=0; i<(subimageSize-2); i++)
- 	  {
-	    for(int j=0; j<(subimageSize-2); j++)
-	      {
-              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1350000)) 
-              //if(rgbPix[x1N+i][y1N+j][0] == 0)
-       	        //rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
-                        
- 	      }
- 	  }
         repaint();
         }
         // if mouse is clicke a new cuveLine is drawn
-        if(quadrLine.equals("Line"))
-        {
+      if(quadrLine.equals("Line")){
             System.out.println("unic/mpres/line " + event.getButton());
             
             if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
@@ -250,8 +238,9 @@ import javax.imageio.metadata.*;
         }
         
         System.out.println("unic/mousepressed: printing points");
-        curveBin.printPoints();
-        
+        if(curveBin!=null){
+          curveBin.printPoints();
+          }       
     }
 
 //@ @<Drawing curves with the mouse@>=
@@ -343,21 +332,19 @@ import javax.imageio.metadata.*;
                 if(exPoints[j].getExtrema() != "L") kind = 1;
                 else kind = 2;
                 if(imgInt != null){ 
-                  System.out.println("also erkannt hat er es schon");
-                  BufferedImage img = toBufferedImage(imgInt,picSize,picSize);
-                  if(equals==false) maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                  BufferedImage img = null;
+                  img = toBufferedImage(imgInt,picSize,picSize);
+                  maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,kind);
                   }
                 else{
-                  if(equals==false) maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                  maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
                   }
-                System.out.println("das ist  ein punkt mit " + exPoints[j].getExtrema());
-                System.out.println("Koord sind: " + complex.real() + " "  + complex.imag());
                 }
             }
         } 
         
 
-        illus.ghostWrite(curveBin.dataBase);
+        illus.ghostWrite(curveBin.dataBase,picSize);
         //setPoints();
         repaint();
     }
@@ -386,7 +373,7 @@ import javax.imageio.metadata.*;
     public void reset()
     {
     showImage((String) choice.getSelectedItem());
-    repaint();
+    repaint();    
     rgbMatrix();
     maxKoord.clear();
     //imageOrg = null;
@@ -394,9 +381,11 @@ import javax.imageio.metadata.*;
 
 @ @< Reset the curves@>=
     public void resetCurv(){
-      curveBin.reset();
-      curveBin = null;
-     // points.clear();
+      if(curveBin!=null){
+        curveBin.reset();
+        curveBin = null;
+        points.clear();
+        }
     }
 
 
@@ -443,6 +432,7 @@ import javax.imageio.metadata.*;
       if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = i; yMax = j; }
       }
     rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
+    if(pixIm.getRGB(xMax,yMax)<-1000) rgbPix[xMax+xPos][yMax+yPos][0] = -1;
     double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
     maxVal[2] = kind;
@@ -486,7 +476,7 @@ import javax.imageio.metadata.*;
 @ @<set points@>=
   public void setPoints()
     {
-     //sort();
+     sort();
      illus.setKoord(maxKoord);
     }
     
