@@ -476,7 +476,7 @@ import javax.imageio.metadata.*;
 @ @<set points@>=
   public void setPoints()
     {
-     sort();
+     //sort();
      illus.setKoord(maxKoord);
     }
     

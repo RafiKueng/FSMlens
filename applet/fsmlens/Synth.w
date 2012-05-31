@@ -92,7 +92,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
               image.setRGB(i,j,rgbPix[i][j][0]); 
  	      }
            }
-        //unicorn.setPoints();
+        unicorn.setPoints();
         repaint();
     }
 

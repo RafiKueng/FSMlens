@@ -164,7 +164,13 @@
         }
       err.setText(new String());
       try
-        { lenses.todo(unicorn.curveBin.dataBase);
+        { 
+          try{
+            lenses.todo(unicorn.curveBin.dataBase);
+            }
+          catch(Exception e) {
+            System.out.println("No CurveBin generated");
+            }
           lenses.setup(inp.getText()); inp.save();
           setGUI(false,false,false);
           super.startRun();
@@ -173,6 +179,7 @@
         { message(ex.getMessage());
           setWaiting();
         }
+       
     }
 
 
