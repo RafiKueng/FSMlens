@@ -60,6 +60,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 @ @<set somer picture@>=
   public int[][][] setPixPic()
     {    
+       
         int xNew=0,yNew=0;
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
@@ -67,17 +68,21 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
+              
               if(rgbPix[j][k][0] != 0){             
-                //sourcCoo[1] = x(j);
-	        //sourcCoo[2] = y(k);
-                sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
-	        sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
+                sourcCoo[1] = x(j);
+	        sourcCoo[2] = y(k);
+                
+                //sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
+	        //sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
 		try{
- 	          sourcCoo = home.sourCoord(sourcCoo);                  
-                  //xNew = xpix(sourcCoo[1]);
-	          //yNew = ypix(sourcCoo[2]);
-                  xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
-                  yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
+ 	          sourcCoo = home.sourCoord(sourcCoo);        
+                 
+                  xNew = xpix(sourcCoo[1]);
+	          yNew = ypix(sourcCoo[2]);
+                  System.out.println("x koord: " + xNew + " y Koord: " + yNew);
+                  //xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
+                  //yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -92,11 +97,12 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
                } 
    	    }
 	  }
-        for(int m=0;m<25;m++)
-          for(int n=0;n<25;n++)
+       /* for(int m=0;m<5;m++)
+          for(int n=0;n<5;n++)
             {
             pixCount[xNew-1+m][yNew-1+n][0] = pixCount[xNew][yNew][0];
-            }
+            } */
+       
         unicorn.drawSource(xNew,yNew);
         makeAverage();
         //drawPic();

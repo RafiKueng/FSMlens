@@ -91,7 +91,7 @@
 @ @<Unicorn inputs@>=
   void ghostWrite(Vector<CurveLine> scurves)
     { 
-      /*StringBuffer strb = new StringBuffer("object UnicornInput \n");
+      StringBuffer strb = new StringBuffer("object UnicornInput \n");
       strb.append("pixrad 8 \n");
       strb.append("zlens 0.3 \n");
       strb.append("g 14 \n");
@@ -99,7 +99,7 @@
       @<Work out image order, and write into |strb|@>
 
       strb.append("models 20 \n"); 
-      txt.setText(strb.toString()); */
+      txt.setText(strb.toString()); 
 
     }
 
@@ -131,7 +131,7 @@
 
 @ @<Unicorn inputs@>=
   void writenum(Complex z, StringBuffer strb)
-    { strb.append(Double.toString(z.real())+" "+Double.toString(-z.imag()));
+    { strb.append(Double.toString(z.real()/200.0)+" "+ Double.toString(-z.imag()/200.0));
     }
 
  

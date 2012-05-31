@@ -28,6 +28,9 @@ public class CurveLine {
 		this.points[0]=new ComplexExtend(i0,"S");
 		this.points[1]=new ComplexExtend(i1);
 		this.points[2]=new ComplexExtend(i2);
+                this.inPoints[0] = i0;
+                this.inPoints[1] = i1;
+                this.inPoints[2] = i2;
 	}
 	
 	public void updateExtrema()

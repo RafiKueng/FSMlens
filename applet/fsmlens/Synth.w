@@ -50,10 +50,10 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	  this.synthimg = synthimg;
           copyButton = new JButton("Copy"); 
           copyButton.addActionListener(this);
-	  hook.add(copyButton);
+	  //hook.add(copyButton);
           reconstButton = new JButton("Source");
           reconstButton.addActionListener(this);
-          hook.add(reconstButton);
+          //hook.add(reconstButton);
           resetButton = new JButton("Reset");
           resetButton.addActionListener(this);
           hook.add(resetButton);
@@ -100,34 +100,33 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   public void getPixPic()
     {    
 
-
+        pixCount = new int[picSize][picSize][2];
         int xNew=0,yNew=0;
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
-        System.out.println("hier ist auch ok");
+        
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
-              if(rgbPix[j][k][0] != 0){    
-                System.out.println("Dammi wo isch de fehler");         
-                //sourcCoo[1] = x(j);
-	        //sourcCoo[2] = y(k);
-                sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
-	        sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
+              if(rgbPix[j][k][0] != 0){           
+                sourcCoo[1] = x(j);
+	        sourcCoo[2] = y(k);
+                //sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
+	        //sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);                  
-                  //xNew = xpix(sourcCoo[1]);
-	          //yNew = ypix(sourcCoo[2]);
-                  xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
-                  yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
+                  xNew = xpix(sourcCoo[1]);
+	          yNew = ypix(sourcCoo[2]);
+                  //xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
+                  //yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
 		}
 		catch(Exception e) {
 		  xNew = j;
 	 	  yNew = k;
 		}
 	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
-		  {
+		  { 
       		    pixCount[xNew][yNew][1] += 1;
                     System.out.println(xNew + " " + yNew + " \n");
                     pixCount[xNew][yNew][0] += rgbPix[j][k][0];
@@ -135,14 +134,14 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
                } 
    	    }
 	  }
-        /*for(int m=0;m<25;m++)
+        /* for(int m=0;m<25;m++)
           for(int n=0;n<25;n++)
             {
             pixCount[xNew-1+m][yNew-1+n][0] = pixCount[xNew][yNew][0];
             } */
         unicorn.drawSource(xNew,yNew);
-        makeAverage();
-        System.out.println("bis hierher kommt er");
+        makeAverage(); 
+
         //drawPic();
         //repaint();
         //return(pixCount);	
@@ -155,27 +154,27 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	  //for(int k=0; k<=picSize;k++)
           for(int k=yMin; k<yMax;k++)
 	    {
-                //sourcCoo[1] = x(j); 
-	        //sourcCoo[2] = y(k); 
-                sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
-	        sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
+                sourcCoo[1] = x(j); 
+	        sourcCoo[2] = y(k); 
+                //sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
+	        //sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
                 //System.out.println("X: " + j + " " + x(j) + "  Y: " + k + " " + y(k));
 		try{
                   double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
                   //sourcCooNew = home.sourCoord(sourcCoo);
-                  //xNew = xpix(sourcCoo[1]); 
+                  xNew = xpix(sourcCoo[1]); 
                   //xNew = xpix(sourcCooNew[1]);
 	          //xNew = (int)((picSize+picSize*sourcCoo[1]/x(picSize))/(2.0));
-		  xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
-	          //yNew = ypix(sourcCoo[2]);
+		  //xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
+	          yNew = ypix(sourcCoo[2]);
                   //yNew = ypix(sourcCooNew[2]);
                   //yNew = (int)((picSize-picSize*sourcCoo[2]/y(0))/(2.0)); 
-                  yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
-                  if(pixCount[xNew][yNew][0]!=0){
+                  //yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
+                  /*if(pixCount[xNew][yNew][0]!=0){
                     System.out.println(xNew + " " + sourcCoo[1] +  "      " + yNew + " " + sourcCoo[2]);
                     System.out.println(j + "  " + k); 
-                    }
+                    } */
                     
 		}
 		catch(Exception e) {
@@ -269,10 +268,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
     //System.out.println("xmax: " + xmax + "  xmin: " + xmin + "      ymax: " + ymax + "   ymin: " + ymin);
     //System.out.println("xmax: " + xMax + "  xmin: " + xMin + "      ymax: " + yMax + "   ymin: " + yMin);
     }
-
-
-
-
 
 
 @ @<Reset the panel@>=
