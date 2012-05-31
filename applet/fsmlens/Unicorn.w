@@ -24,7 +24,7 @@
       Complex complex;
       Complex complex1;
       Complex complex2;
-      BufferedImage imgInt;
+      BufferedImage imgInt = null;
       BufferedImage imageOrg = null;
       Illus illus;
       CurveBin curveBin;
@@ -178,7 +178,7 @@ import javax.imageio.metadata.*;
 
       System.out.println("unic/mpressed " + x1N+" / " + y1N);
 
-      double[] maxVal2 = new double[2];
+      double[] maxVal2 = new double[3];
       if(quadrLine.equals("Rectangle")){
         if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
           { g.setColor(Color.red); oneortwo=2;}
@@ -189,7 +189,7 @@ import javax.imageio.metadata.*;
         if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
-       // maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
+        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
 	for(int i=0; i<(subimageSize-2); i++)
  	  {
 	    for(int j=0; j<(subimageSize-2); j++)
@@ -342,7 +342,14 @@ import javax.imageio.metadata.*;
                 int kind;
                 if(exPoints[j].getExtrema() != "L") kind = 1;
                 else kind = 2;
-                if(equals==false) maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                if(imgInt != null){ 
+                  System.out.println("also erkannt hat er es schon");
+                  BufferedImage img = toBufferedImage(imgInt,picSize,picSize);
+                  if(equals==false) maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                  }
+                else{
+                  if(equals==false) maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                  }
                 System.out.println("das ist  ein punkt mit " + exPoints[j].getExtrema());
                 System.out.println("Koord sind: " + complex.real() + " "  + complex.imag());
                 }

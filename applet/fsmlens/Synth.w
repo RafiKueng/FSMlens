@@ -50,10 +50,10 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	  this.synthimg = synthimg;
           copyButton = new JButton("Copy"); 
           copyButton.addActionListener(this);
-	  //hook.add(copyButton);
+	  hook.add(copyButton);
           reconstButton = new JButton("Source");
           reconstButton.addActionListener(this);
-          //hook.add(reconstButton);
+          hook.add(reconstButton);
           resetButton = new JButton("Reset");
           resetButton.addActionListener(this);
           hook.add(resetButton);
@@ -112,14 +112,10 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
               if(rgbPix[j][k][0] != 0){           
                 sourcCoo[1] = x(j);
 	        sourcCoo[2] = y(k);
-                //sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
-	        //sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);                  
                   xNew = xpix(sourcCoo[1]);
 	          yNew = ypix(sourcCoo[2]);
-                  //xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
-                  //yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -162,15 +158,8 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 		try{
                   double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
-                  //sourcCooNew = home.sourCoord(sourcCoo);
                   xNew = xpix(sourcCoo[1]); 
-                  //xNew = xpix(sourcCooNew[1]);
-	          //xNew = (int)((picSize+picSize*sourcCoo[1]/x(picSize))/(2.0));
-		  //xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
 	          yNew = ypix(sourcCoo[2]);
-                  //yNew = ypix(sourcCooNew[2]);
-                  //yNew = (int)((picSize-picSize*sourcCoo[2]/y(0))/(2.0)); 
-                  //yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
                   /*if(pixCount[xNew][yNew][0]!=0){
                     System.out.println(xNew + " " + sourcCoo[1] +  "      " + yNew + " " + sourcCoo[2]);
                     System.out.println(j + "  " + k); 
