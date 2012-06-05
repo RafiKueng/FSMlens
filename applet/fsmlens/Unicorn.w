@@ -319,12 +319,13 @@ import javax.imageio.metadata.*;
         dataBase = curveBin.getData();
         double[] maxVal2 = new double[2];
         Complex point;
-        boolean equals = false;
+        boolean high = false;
         maxKoord.clear();
         for(int i = dataBase.size()-1; i>=0;i--){
           exPoints = dataBase.get(i).getExtendPoint();
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
+            System.out.println(exPoints[j].getExtrema());
             if(exPoints[j].getExtrema() != "H"){
                 x1N = (int)complex.real();
                 y1N = (int)complex.imag();

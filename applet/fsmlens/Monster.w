@@ -101,10 +101,10 @@
   synth = new Synth(this,unicorn,synthimg,picSize);
   FigDeck pd = new FigDeck();
   pd.setBackground(Color.red);
-  //pd.addFigure("pixellation",lenses.plotPix);
-  //pd.addFigure("mass",lenses.plotMass);
-  //pd.addFigure("potential",lenses.plotPoten);
-  //pd.addFigure("arrival time",lenses.plotArriv);
+  pd.addFigure("pixellation",lenses.plotPix);
+  pd.addFigure("mass",lenses.plotMass);
+  pd.addFigure("potential",lenses.plotPoten);
+  pd.addFigure("arrival time",lenses.plotArriv);
   //pd.add("North",synthimg.getPanel()); 
   pd.add("North",synth.getPanel()); 
   mainPane.add("East",pd);
