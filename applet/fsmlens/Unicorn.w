@@ -17,7 +17,7 @@
       @<set points@>
       @< Reset the curves@>
       @<sort maxKoord for illus@>
-
+      @<full check of rgb@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
@@ -192,7 +192,6 @@ import static java.lang.Math.*;
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
-        sort();
         repaint();
         }
         // if mouse is clicke a new cuveLine is drawn
@@ -319,7 +318,7 @@ import static java.lang.Math.*;
         rgbMatrix();
         //points = curveBin.getPoints();
         dataBase = curveBin.getData();
-        double[] maxVal2 = new double[2];
+        double[] maxVal2 = new double[3];
         Complex point;
         boolean high = false;
         maxKoord.clear();
@@ -331,23 +330,23 @@ import static java.lang.Math.*;
             if(exPoints[j].getExtrema() != "H"){
                 x1N = (int)complex.real();
                 y1N = (int)complex.imag();
+                g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
                 int kind;
                 if(exPoints[j].getExtrema() == "S") kind = 1;
                 else kind = 2;
                 if(imgInt != null){ 
                   BufferedImage img = null;
                   img = toBufferedImage(imgInt,picSize,picSize);
-                  maxVal2 = checkRGB(imgInt,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                  maxVal2 = checkRGBfull(imgInt,x1N-subimageSize/2,y1N-subimageSize/2,kind);
                   }
                 else{
-                  maxVal2 = checkRGB(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);                  
+                  maxVal2 = checkRGBfull(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);                  
                   }              
                 }
             }
         } 
         
         //illus.ghostWrite(curveBin.dataBase,picSize);
-        sort();
         setPoints();
         repaint();
     }
@@ -444,6 +443,27 @@ import static java.lang.Math.*;
     }
 
 
+@ @<full check of rgb@>=
+  public double[] checkRGBfull(BufferedImage pixIm,int xPos,int yPos, int kind)
+    { 
+    int rgbMin=0; int rgbMax=-100000000;
+    int xMax = 0; int yMax = 0;
+    for(int i = 0; i<subimageSize-2 ; i++)
+      for(int j = 0; j<subimageSize-2 ; j++)
+      {
+      if(pixIm.getRGB(xPos+i,yPos+j)<rgbMin) rgbMin = pixIm.getRGB(xPos+i,yPos+j);
+      if(pixIm.getRGB(xPos+i,yPos+j)>rgbMax){ rgbMax = pixIm.getRGB(xPos+i,yPos+j); xMax = i; yMax = j; }
+      }
+    rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xPos+xMax,yPos+yMax);
+    if(pixIm.getRGB(xPos+xMax,yPos+yMax)<-1000) rgbPix[xMax+xPos][yMax+yPos][0] = -1;
+    double[] maxVal = new double[3];
+    maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
+    maxVal[2] = kind;
+    maxKoord.add(maxVal);
+    return maxVal;
+    }
+
+
 @ @<sort maxKoord for illus@>=
    public void sort(){
    ArrayList<double[]> maxKoordProv = new ArrayList<double[]>();
@@ -486,7 +506,7 @@ import static java.lang.Math.*;
 @ @<set points@>=
   public void setPoints()
     {
-     //sort();
+     sort();
      illus.setKoord(maxKoord);
     }
     

@@ -197,8 +197,8 @@ public class CurveBin {
 		// vector where the new complex is
 		// perhaps use iterator
 		int q = this.findeClosest(event);
-		addPoint(event.add(new Complex(10, 10)));
-		addPoint(event.add(new Complex(-10, -10)));                  // perhaps these have to be
+		addPoint(event.add(new Complex(15, 15)));
+		addPoint(event.add(new Complex(-15, -15)));                  // perhaps these have to be
 									     // adjusted; they are just a
 									     // lucky guess of two points
 									     // near the first one

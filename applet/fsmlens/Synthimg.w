@@ -73,16 +73,12 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
                 sourcCoo[1] = x(j);
 	        sourcCoo[2] = y(k);
                 
-                //sourcCoo[1] = (j-(picSize)/2.0)*2.0/((double)(picSize-20));
-	        //sourcCoo[2] = ((picSize)/2.0-k)*2.0/((double)(picSize-20)); 
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);        
                  
                   xNew = xpix(sourcCoo[1]);
 	          yNew = ypix(sourcCoo[2]);
                   System.out.println("x koord: " + xNew + " y Koord: " + yNew);
-                  //xNew = (int)((picSize+(picSize-20)*sourcCoo[1])/2.0);
-                  //yNew = (int)((picSize-(picSize-20)*sourcCoo[2])/2.0); 
 		}
 		catch(Exception e) {
 		  xNew = j;

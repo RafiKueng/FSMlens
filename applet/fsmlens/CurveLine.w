@@ -41,7 +41,7 @@ public class CurveLine {
 		angle=angle(ext1,ext2);
 //		ext1=ext1.div(ext1.mod());
 //		ext1=ext2.div(ext2.mod());
-		if(angle>Math.PI/2.0 && angle<=Math.PI)
+		if(angle>=Math.PI/4.0 && angle<=3.0*Math.PI/4.0)
 		{
 			//there are two minimas
 			points[1].setExtrema("L");
@@ -73,7 +73,8 @@ public class CurveLine {
 	public double angle(Complex x, Complex y)
 	{
 		double sp=x.real()*y.real()+x.imag()*y.imag();
-		return Math.acos(sp/(x.modSQR()*y.modSQR()));
+		//return Math.acos(sp/(x.modSQR()*y.modSQR()));
+                return Math.acos(sp/(x.mod()*y.mod()));
 	}
 	public Complex vec(Complex x, Complex y)
 	{
