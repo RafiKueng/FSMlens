@@ -93,15 +93,20 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       		    pixCount[xNew][yNew][1] += 1;
                     System.out.println(xNew + " " + yNew + " \n");
                     pixCount[xNew][yNew][0] += rgbPix[j][k][0];
+                    for(int m=0;m<5;m++)
+                      for(int n=0;n<5;n++)
+                        {
+                         pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
+                        } 
 		  }                
                } 
    	    }
 	  }
-       for(int m=0;m<5;m++)
+       /* for(int m=0;m<5;m++)
           for(int n=0;n<5;n++)
             {
-            pixCount[xNew-1+m][yNew-1+n][0] = pixCount[xNew][yNew][0];
-            } 
+            pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
+            }  */
        
         unicorn.drawSource(xNew,yNew);
         makeAverage();

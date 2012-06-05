@@ -45,4 +45,9 @@ public class ComplexExtend {
 	{
 		return this.extrema;
 	}
+       
+        public void setExt(Complex pnt)
+        {
+                this.pnt.set(pnt);
+        }
 }

@@ -65,6 +65,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
+          String quadrLine2 = unicorn.quadrLine;
         }
 
 
@@ -76,14 +77,13 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       if (str.equals("Reset")) reset();
       if (str.equals("Source")) getSource();
       if (str.equals("Synth")) getPixPic();
- 
+      
     }
 
 @ @<set somer picture@>=
   public void setPic()
     {
-        System.out.println(x(0) + " " + x(picSize/2.0) + " " + x(picSize));
-	System.out.println(xpix(0) + " " + xpix(1) + " " + xpix(-1));
+        String choose = unicorn.quadrLine;
 	rgbPix = unicorn.getrgbMatrix();
          for(int i=0; i<picSize; i++) 
            {
@@ -92,7 +92,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
               image.setRGB(i,j,rgbPix[i][j][0]); 
  	      }
            }
-        unicorn.setPoints();
+        if(choose.equals("Rectangle")) unicorn.setPoints();
         repaint();
     }
 
@@ -102,7 +102,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         setPic();
         pixCount = new int[picSize][picSize][2];
         int xNew=0,yNew=0;
-        //rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3];     
         
         for(int j=0; j<picSize;j++)
@@ -126,27 +125,25 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       		    pixCount[xNew][yNew][1] += 1;
                     System.out.println(xNew + " " + yNew + " \n");
                     pixCount[xNew][yNew][0] += rgbPix[j][k][0];
+                    for(int m=0;m<5;m++)
+                      for(int n=0;n<5;n++)
+                        {
+                        pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
+                        } 
 		  }                
                } 
    	    }
 	  }
-        for(int m=0;m<5;m++)
-          for(int n=0;n<5;n++)
-            {
-            pixCount[xNew-1+m][yNew-1+n][0] = pixCount[xNew][yNew][0];
-            } 
+
         unicorn.drawSource(xNew,yNew);
         makeAverage(); 
-        //drawPic();
-        //repaint();
-        //return(pixCount);	
+
 
         createMaxMin();
-        //pixCount = synthimg.getAveragePix();   
-        //for(int j=0; j<picSize;j++)
+
+
         for(int j=xMin; j<=xMax;j++)
  	  {
-	  //for(int k=0; k<=picSize;k++)
           for(int k=yMin; k<yMax;k++)
 	    {
                 sourcCoo[1] = x(j); 
