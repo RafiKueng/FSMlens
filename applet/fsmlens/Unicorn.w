@@ -190,7 +190,7 @@ import static java.lang.Math.*;
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
         if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
-        BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
+        BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2); 
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
         repaint();
         }
@@ -330,7 +330,6 @@ import static java.lang.Math.*;
             if(exPoints[j].getExtrema() != "H"){
                 x1N = (int)complex.real();
                 y1N = (int)complex.imag();
-                g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
                 int kind;
                 if(exPoints[j].getExtrema() == "S") kind = 1;
                 else kind = 2;
@@ -448,8 +447,8 @@ import static java.lang.Math.*;
     { 
     int rgbMin=0; int rgbMax=-100000000;
     int xMax = 0; int yMax = 0;
-    for(int i = 0; i<subimageSize-2 ; i++)
-      for(int j = 0; j<subimageSize-2 ; j++)
+    for(int i = 0; i<subimageSize ; i++)
+      for(int j = 0; j<subimageSize ; j++)
       {
       if(pixIm.getRGB(xPos+i,yPos+j)<rgbMin) rgbMin = pixIm.getRGB(xPos+i,yPos+j);
       if(pixIm.getRGB(xPos+i,yPos+j)>rgbMax){ rgbMax = pixIm.getRGB(xPos+i,yPos+j); xMax = i; yMax = j; }
