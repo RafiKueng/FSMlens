@@ -1,0 +1,11 @@
+f := proc(t)
+  return  c1*t + c2*t^2 + c3*t^3 + c4*t^4 + c5*t^5
+end;
+
+df := proc(t)
+   return eval(diff(f(u),u),u=t)
+end;
+
+solve({f(-1)=a,f(1)=b,df(-1)=c-a,df(1)=c-b,df(0)=-c},
+      {c1,c2,c3,c4,c5});
+
