@@ -76,20 +76,20 @@
 @ @<Put control buttons to North@>=
   bresume = new JButton("resume");  bresume.addActionListener(this);
   JPanel cp = new JPanel();  @/
-  cp.setBackground(Color.black);
+//  cp.setBackground(Color.black);
   cp.add(runButton);
   cp.add(pauseButton); cp.add(bresume);
-  cp.setBackground(Color.black);
+//  cp.setBackground(Color.black);
   mainPane.add("North",cp);
 
 @ @<Put text panels to West@>=
   inp = new Illus(12,30);  @/
   err = new qgd.util.Console(16,30);  err.setEditable(false);  @/
   JPanel txt = new JPanel();  txt.setLayout(new BorderLayout());  @/
-  txt.setBackground(Color.black);
-  txt.add("North",inp);  @/
-  txt.add("South",err.getPanel());  @/
-  mainPane.add("West",txt);
+//  txt.setBackground(Color.black);
+  txt.add("East",inp);  @/
+  txt.add("West",err.getPanel());  @/
+  mainPane.add("South",txt);
 
 
 @ @<Put plots to East@>=
@@ -100,20 +100,20 @@
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
   FigDeck pd = new FigDeck();
-  pd.setBackground(Color.red);
+//  pd.setBackground(Color.red);
   pd.addFigure("pixellation",lenses.plotPix);
   pd.addFigure("mass",lenses.plotMass);
   pd.addFigure("potential",lenses.plotPoten);
   pd.addFigure("arrival time",lenses.plotArriv);
   //pd.add("North",synthimg.getPanel()); 
-  pd.add("North",synth.getPanel()); 
+//  pd.add("North",synth.getPanel()); 
   mainPane.add("East",pd);
 
 @ @<Put raw image in the middle@>=
   JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
   ip.setBackground(Color.black);
-  ip.add("North",unicorn.getPanel());
-  //ip.add("South",synth.getPanel());
+  ip.add("West",unicorn.getPanel());
+  ip.add("East",synth.getPanel());
   mainPane.add("Center",ip);
   unicorn.repaint();
 
