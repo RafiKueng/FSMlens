@@ -302,6 +302,7 @@ import static java.lang.Math.*;
         //points = curveBin.getPoints();
         dataBase = curveBin.getData();
         double[] maxVal2 = new double[3];
+        double[] masscenter = new double[2];
         Complex point;
         boolean high = false;
         maxKoord.clear();
@@ -310,6 +311,10 @@ import static java.lang.Math.*;
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
             System.out.println(exPoints[j].getExtrema());
+            if(exPoints[j].getExtrema() == "H"){
+                masscenter[0] = x(complex.real());
+                masscenter[1] = y(complex.imag());
+                }
             if(exPoints[j].getExtrema() != "H"){
                 x1N = (int)complex.real();
                 y1N = (int)complex.imag();
@@ -327,7 +332,7 @@ import static java.lang.Math.*;
                 }
             }
         } 
-        
+        sort(masscenter);
         //illus.ghostWrite(curveBin.dataBase,picSize);
         setPoints();
         repaint();
@@ -447,10 +452,18 @@ import static java.lang.Math.*;
 
 
 @ @<sort maxKoord for illus@>=
-   public void sort(){
+   public void sort(double[] masscenter){
+   double[] masscent = new double[2];
+   masscent = masscenter;
    ArrayList<double[]> maxKoordProv = new ArrayList<double[]>();
    double[] sort = new  double[3];
    Vector<Integer> length = new Vector<Integer>();
+   for(int i=0; i<maxKoord.size();i++){
+     sort = maxKoord.get(i);
+     sort[0] = sort[0]-masscent[0];
+     sort[1] = sort[1]-masscent[1]; 
+     maxKoord.set(i,sort);
+     }
    for(int i=0; i<maxKoord.size();i++){
        sort = maxKoord.get(i);
        int leng =(int) (sqrt(xpix(sort[0])*xpix(sort[0])+ypix(sort[1])*ypix(sort[1])));
@@ -488,7 +501,7 @@ import static java.lang.Math.*;
 @ @<set points@>=
   public void setPoints()
     {
-     sort();
+     //sort();
      illus.setKoord(maxKoord);
     }
     
