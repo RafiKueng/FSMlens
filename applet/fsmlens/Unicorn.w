@@ -296,23 +296,6 @@ import static java.lang.Math.*;
             repaint();
             /*TODO expand this in case of multiple curveBin */
             
-            /* erledigt
-            if(state)
-            {
-                //drawLine(x1,y1,x2,y2);
-
-                complex=new Complex(x2N,y2N);
-                cuveLines.update(complex,g);
-                cuveLines2.update(complex1,g);
-            }
-            else
-            {
-                complex1=new Complex(x2N,y2N); //*******************************
-                cuveLines.update(complex,g);
-                cuveLines2.update(complex1,g);
-            }
-            */
-            
         }
 
         rgbMatrix();
@@ -331,8 +314,8 @@ import static java.lang.Math.*;
                 x1N = (int)complex.real();
                 y1N = (int)complex.imag();
                 int kind;
-                if(exPoints[j].getExtrema() == "S") kind = 1;
-                else kind = 2;
+                if(exPoints[j].getExtrema() == "S") kind = 2;
+                else kind = 1;
                 if(imgInt != null){ 
                   BufferedImage img = null;
                   img = toBufferedImage(imgInt,picSize,picSize);
