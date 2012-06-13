@@ -78,7 +78,7 @@ import static java.lang.Math.*;
       rect.addActionListener(this);
       hook.add(choice);
       hook.add(rect);
-      hook.setBackground(Color.black);
+      //hook.setBackground(Color.black);
       addMouseListener(this);
       addMouseMotionListener(this);
       rgbMatrix();

@@ -61,7 +61,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           synthButton = new JButton("Synth");
           synthButton.addActionListener(this);
           hook.add(synthButton);
-          hook.setBackground(Color.black);
+          //hook.setBackground(Color.black);
           rgbPix = new int[picSize][picSize][1];
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
@@ -138,11 +138,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 
         unicorn.drawSource(xNew,yNew);
         makeAverage(); 
-
-
         createMaxMin();
-
-
         for(int j=xMin; j<=xMax;j++)
  	  {
           for(int k=yMin; k<yMax;k++)

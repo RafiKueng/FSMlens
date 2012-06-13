@@ -79,8 +79,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
  	          sourcCoo = home.sourCoord(sourcCoo);        
                  
                   xNew = xpix(sourcCoo[1]+masscent[0]);
-	          yNew = ypix(sourcCoo[2]+masscent[1]);
-                  System.out.println("x koord: " + xNew + " y Koord: " + yNew);
+	          yNew = ypix(sourcCoo[2]+masscent[1]);                 
 		}
 		catch(Exception e) {
 		  xNew = j;
