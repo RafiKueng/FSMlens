@@ -29,6 +29,7 @@
       BufferedImage imageOrg = null;
       Illus illus;
       CurveBin curveBin;
+      double[] masscenter = new double[2];
     }
 
 
@@ -59,6 +60,7 @@ import static java.lang.Math.*;
     Complex complex;
     Complex complex1;
     Complex complex2;
+    double[] masscenter = new double[2];
     //Vector<Complex> points = new Vector<Complex>();
 
 
@@ -302,7 +304,6 @@ import static java.lang.Math.*;
         //points = curveBin.getPoints();
         dataBase = curveBin.getData();
         double[] maxVal2 = new double[3];
-        double[] masscenter = new double[2];
         Complex point;
         boolean high = false;
         maxKoord.clear();
@@ -332,7 +333,7 @@ import static java.lang.Math.*;
                 }
             }
         } 
-        sort(masscenter);
+        sort();
         //illus.ghostWrite(curveBin.dataBase,picSize);
         setPoints();
         repaint();
@@ -452,16 +453,15 @@ import static java.lang.Math.*;
 
 
 @ @<sort maxKoord for illus@>=
-   public void sort(double[] masscenter){
+   public void sort(){
    double[] masscent = new double[2];
-   masscent = masscenter;
    ArrayList<double[]> maxKoordProv = new ArrayList<double[]>();
    double[] sort = new  double[3];
    Vector<Integer> length = new Vector<Integer>();
    for(int i=0; i<maxKoord.size();i++){
      sort = maxKoord.get(i);
-     sort[0] = sort[0]-masscent[0];
-     sort[1] = sort[1]-masscent[1]; 
+     sort[0] = sort[0]-masscenter[0];
+     sort[1] = sort[1]-masscenter[1]; 
      maxKoord.set(i,sort);
      }
    for(int i=0; i<maxKoord.size();i++){

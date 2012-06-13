@@ -31,6 +31,7 @@
         double[][][] rgbDouble;
         int picSize;
         int max,xMax,yMax;
+        double[] masscent = new double[2];
     }
 
 @ @<Code to generate synth pic@>=
@@ -63,21 +64,22 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
        
         int xNew=0,yNew=0;
         rgbPix = unicorn.getrgbMatrix();
-        double[] sourcCoo = new double[3];     
+        double[] sourcCoo = new double[3]; 
+        masscent = unicorn.masscenter;    
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
               
               if(rgbPix[j][k][0] != 0){             
-                sourcCoo[1] = x(j);
-	        sourcCoo[2] = y(k);
+                sourcCoo[1] = x(j)-masscent[0];
+	        sourcCoo[2] = y(k)-masscent[1];
                 
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);        
                  
-                  xNew = xpix(sourcCoo[1]);
-	          yNew = ypix(sourcCoo[2]);
+                  xNew = xpix(sourcCoo[1]+masscent[0]);
+	          yNew = ypix(sourcCoo[2]+masscent[1]);
                   System.out.println("x koord: " + xNew + " y Koord: " + yNew);
 		}
 		catch(Exception e) {
@@ -97,13 +99,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 		  }                
                } 
    	    }
-	  }
-       /* for(int m=0;m<5;m++)
-          for(int n=0;n<5;n++)
-            {
-            pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
-            }  */
-       
+	  }      
         unicorn.drawSource(xNew,yNew);
         makeAverage();
         //drawPic();

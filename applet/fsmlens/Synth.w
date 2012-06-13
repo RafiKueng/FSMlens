@@ -33,6 +33,7 @@ This file is not doing anything.
         int[][][] rgbPix;
         int[][][] pixCount;
         int picSize;
+        double[] masscent = new double[2];
     }
 
 @ @<Code to generate synth pic@>=
@@ -103,18 +104,18 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         pixCount = new int[picSize][picSize][2];
         int xNew=0,yNew=0;
         double[] sourcCoo = new double[3];     
-        
+        masscent = unicorn.masscenter;
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
               if(rgbPix[j][k][0] != 0){           
-                sourcCoo[1] = x(j);
-	        sourcCoo[2] = y(k);
+                sourcCoo[1] = x(j)-masscent[0];
+	        sourcCoo[2] = y(k)-masscent[1];
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);                  
-                  xNew = xpix(sourcCoo[1]);
-	          yNew = ypix(sourcCoo[2]);
+                  xNew = xpix(sourcCoo[1]+masscent[0]);
+	          yNew = ypix(sourcCoo[2]+masscent[1]);
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -146,13 +147,13 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
  	  {
           for(int k=yMin; k<yMax;k++)
 	    {
-                sourcCoo[1] = x(j); 
-	        sourcCoo[2] = y(k); 
+                sourcCoo[1] = x(j)-masscent[0]; 
+	        sourcCoo[2] = y(k)-masscent[1]; 
 		try{
                   double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
-                  xNew = xpix(sourcCoo[1]); 
-	          yNew = ypix(sourcCoo[2]);                   
+                  xNew = xpix(sourcCoo[1]+masscent[0]); 
+	          yNew = ypix(sourcCoo[2]+masscent[1]);                   
 		}
 		catch(Exception e) {
 		  xNew = j;
