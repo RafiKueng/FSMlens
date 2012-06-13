@@ -331,8 +331,8 @@ import static java.lang.Math.*;
                 x1N = (int)complex.real();
                 y1N = (int)complex.imag();
                 int kind;
-                if(exPoints[j].getExtrema() == "S") kind = 1;
-                else kind = 2;
+                if(exPoints[j].getExtrema() == "S") kind = 2;
+                else kind = 1;
                 if(imgInt != null){ 
                   BufferedImage img = null;
                   img = toBufferedImage(imgInt,picSize,picSize);
