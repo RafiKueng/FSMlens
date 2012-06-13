@@ -34,6 +34,7 @@ This file is not doing anything.
         int[][][] pixCount;
         int picSize;
         double[] masscent = new double[2];
+        String choose;
     }
 
 @ @<Code to generate synth pic@>=
@@ -84,7 +85,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<set somer picture@>=
   public void setPic()
     {
-        String choose = unicorn.quadrLine;
+        choose = unicorn.quadrLine;
 	rgbPix = unicorn.getrgbMatrix();
          for(int i=0; i<picSize; i++) 
            {
@@ -100,6 +101,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
+        choose = unicorn.quadrLine;
         setPic();
         pixCount = new int[picSize][picSize][2];
         int xNew=0,yNew=0;
@@ -112,10 +114,18 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
               if(rgbPix[j][k][0] != 0){           
                 sourcCoo[1] = x(j)-masscent[0];
 	        sourcCoo[2] = y(k)-masscent[1];
+                if(choose.equals("Rectangle")){
+                  sourcCoo[1] = x(j);
+	          sourcCoo[2] = y(k);
+                  }
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);                  
                   xNew = xpix(sourcCoo[1]+masscent[0]);
 	          yNew = ypix(sourcCoo[2]+masscent[1]);
+                  if(choose.equals("Rectangle")){
+                    xNew = xpix(sourcCoo[1]);
+	            yNew = ypix(sourcCoo[2]);
+                    }
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -126,8 +136,8 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       		    pixCount[xNew][yNew][1] += 1;
                     System.out.println(xNew + " " + yNew + " \n");
                     pixCount[xNew][yNew][0] += rgbPix[j][k][0];
-                    for(int m=0;m<5;m++)
-                      for(int n=0;n<5;n++)
+                    for(int m=0;m<3;m++)
+                      for(int n=0;n<3;n++)
                         {
                         pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
                         } 
@@ -145,11 +155,19 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	    {
                 sourcCoo[1] = x(j)-masscent[0]; 
 	        sourcCoo[2] = y(k)-masscent[1]; 
+                if(choose.equals("Rectangle")){
+                  sourcCoo[1] = x(j);
+	          sourcCoo[2] = y(k);
+                  }
 		try{
                   double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
                   xNew = xpix(sourcCoo[1]+masscent[0]); 
-	          yNew = ypix(sourcCoo[2]+masscent[1]);                   
+	          yNew = ypix(sourcCoo[2]+masscent[1]);   
+                   if(choose.equals("Rectangle")){
+                    xNew = xpix(sourcCoo[1]);
+	            yNew = ypix(sourcCoo[2]);
+                    }                
 		}
 		catch(Exception e) {
 		  xNew = j;

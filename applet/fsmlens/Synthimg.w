@@ -61,7 +61,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 @ @<set somer picture@>=
   public int[][][] setPixPic()
     {    
-       
+        String choose = unicorn.quadrLine;
         int xNew=0,yNew=0;
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3]; 
@@ -71,15 +71,22 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 	  for(int k=0; k<picSize;k++)
 	    {
               
-              if(rgbPix[j][k][0] != 0){             
+              if(rgbPix[j][k][0] != 0){       
+   
                 sourcCoo[1] = x(j)-masscent[0];
 	        sourcCoo[2] = y(k)-masscent[1];
-                
+                if(choose.equals("Rectangle")){ 
+                  sourcCoo[1] = x(j);
+	          sourcCoo[2] = y(k);
+                  }
 		try{
  	          sourcCoo = home.sourCoord(sourcCoo);        
-                 
                   xNew = xpix(sourcCoo[1]+masscent[0]);
-	          yNew = ypix(sourcCoo[2]+masscent[1]);                 
+	          yNew = ypix(sourcCoo[2]+masscent[1]);    
+                  if(choose.equals("Rectangle")){ 
+                    xNew = xpix(sourcCoo[1]);
+	            yNew = ypix(sourcCoo[2]);   
+                    }                          
 		}
 		catch(Exception e) {
 		  xNew = j;
