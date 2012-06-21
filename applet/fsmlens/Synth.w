@@ -35,6 +35,7 @@ This file is not doing anything.
         int picSize;
         double[] masscent = new double[2];
         String choose;
+        int surSize = 3;
     }
 
 @ @<Code to generate synth pic@>=
@@ -42,6 +43,7 @@ JButton copyButton;
 JButton resetButton;
 JButton reconstButton;
 JButton synthButton;
+TextField sourcesize;
 public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
         { super(picSize,picSize);
           this.picSize = picSize;
@@ -62,6 +64,9 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           synthButton = new JButton("Synth");
           synthButton.addActionListener(this);
           hook.add(synthButton);
+          sourcesize = new TextField("3",3);
+          sourcesize.addActionListener(this);
+          hook.add(sourcesize);
           //hook.setBackground(Color.black);
           rgbPix = new int[picSize][picSize][1];
           image = new BufferedImage(wd,ht,1);
@@ -75,25 +80,31 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   public void actionPerformed(ActionEvent event)
     { 
       String str = event.getActionCommand();
+      Object obj = event.getSource();
       if (str.equals("Copy")) setPic();
       if (str.equals("Reset")) reset();
       if (str.equals("Source")) getSource();
       if (str.equals("Synth")) getPixPic();
-      
+      if (obj instanceof TextField) {
+        try{
+          surSize = Integer.parseInt(str);
+          synthimg.setsurSize(Integer.parseInt(str));
+          }
+        catch(Exception e) {
+          surSize = 3;
+          synthimg.setsurSize(3);
+          }
+        
+        }
     }
 
 @ @<set somer picture@>=
   public void setPic()
     {
+        g.clearRect(0,0,picSize,picSize);
         choose = unicorn.quadrLine;
 	rgbPix = unicorn.getrgbMatrix();
-         for(int i=0; i<picSize; i++) 
-           {
-            for(int j=0; j<picSize; j++)
-    	      {
-              image.setRGB(i,j,rgbPix[i][j][0]); 
- 	      }
-           }
+        drawPic();
         if(choose.equals("Rectangle")) unicorn.setPoints();
         repaint();
     }
@@ -136,8 +147,8 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       		    pixCount[xNew][yNew][1] += 1;
                     System.out.println(xNew + " " + yNew + " \n");
                     pixCount[xNew][yNew][0] += rgbPix[j][k][0];
-                    for(int m=0;m<3;m++)
-                      for(int n=0;n<3;n++)
+                    for(int m=0;m<surSize;m++)
+                      for(int n=0;n<surSize;n++)
                         {
                         pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
                         } 
@@ -264,7 +275,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   public void reset()
     {
     g.clearRect(0,0,picSize,picSize);
-    //resetMatrix();
     unicorn.reset();
     synthimg.reset();
     unicorn.resetCurv();

@@ -21,6 +21,7 @@
         @<find maximum in the pix@>
         @<make a average over the pix@>
         @<get the average pixel@>
+        @<set source size from synth@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -32,6 +33,7 @@
         int picSize;
         int max,xMax,yMax;
         double[] masscent = new double[2];
+        int surSize = 3;
     }
 
 @ @<Code to generate synth pic@>=
@@ -97,8 +99,8 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       		    pixCount[xNew][yNew][1] += 1;
                     System.out.println(xNew + " " + yNew + " \n");
                     pixCount[xNew][yNew][0] += rgbPix[j][k][0];
-                    for(int m=0;m<5;m++)
-                      for(int n=0;n<5;n++)
+                    for(int m=0;m<surSize;m++)
+                      for(int n=0;n<surSize;n++)
                         {
                          pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
                         } 
@@ -176,6 +178,11 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     return(pixCount);
     }
 
+@ @<set source size from synth@>=
+  public void setsurSize(int surSize)
+    {
+    this.surSize = surSize; 
+    }
 
 @ @<Reset the panel@>=
   public void reset()
