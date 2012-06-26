@@ -92,7 +92,8 @@ public class CurveLine {
 		inPoints[1].printNumber();
 		inPoints[2].printNumber();
 		System.out.print("\n");
-        */
+       		*/
+
 
 		Complex temp1 = new Complex();
 		Complex temp2 = new Complex();
@@ -117,10 +118,10 @@ public class CurveLine {
 		Complex cen = temp1.add(A);
 
 		Complex a = inPoints[0].subtract(cen);
-		Complex b = inPoints[1].subtract(cen);// first other point minima (H) or
-												// minima (L)
-		Complex c = inPoints[2].subtract(cen);// seccond other point minima (H)
-												// or minima (L)
+		Complex b = inPoints[1].subtract(cen);	// first other point minima (H) or
+							// minima (L)
+		Complex c = inPoints[2].subtract(cen);	// seccond other point minima (H)
+							// or minima (L)
 
 		temp1 = b.div(a);
 		temp1 = temp1.pow(1.5);
@@ -132,12 +133,13 @@ public class CurveLine {
 		temp1 = a.times(temp1);
 		c = temp1.add(cen);
 		a = inPoints[0];
-
+		this.bezirLines0=serpent(a,b,c,cen);
+		this.bezirLines1=serpent(a,c,b,cen);
 		// /*#create three "ovals" in the initially given place z
 		// self.pnt[0]=self.point(z[0])
 		// self.pnt[1]=self.point(z[1])
 		// self.pnt[2]=self.point(z[2])*/
-
+		/*
 		temp1 = a.subtract(cen);
 		double r = temp1.mod(); // some sort of radius??
 		temp2 = b.subtract(a);
@@ -152,31 +154,58 @@ public class CurveLine {
 		Complex dc = (c.subtract(cen)).times(0.25 * cl).div(r);
 		Complex dzc = ((inPoints[2].subtract(cen)).times(cl).times(0.5)).div(r);
 
-		this.bezirLines0 = this.bezier(a, inPoints[1].add(dzb), b.add(db),
-				b); // draw Bezir curves
+		this.bezirLines0 = this.bezier(a, inPoints[1].add(dzb), b.add(db),b); // draw Bezir curves
 		//drawLine(bezirLines0);
-		this.bezirLines1 = this.bezier(a, inPoints[1].subtract(dzb), b
-				.subtract(db), b);
+		this.bezirLines1 = this.bezier(a, inPoints[1].subtract(dzb), b.subtract(db), b);
 		//drawLine(bezirLines1);
-		this.bezirLines2 = this.bezier(a, inPoints[2].add(dzc), c.add(dc),
-				c);
+		this.bezirLines2 = this.bezier(a, inPoints[2].add(dzc), c.add(dc),c);
 		//drawLine(bezirLines2);
-		this.bezirLines3 = this.bezier(a, inPoints[2].subtract(dzc), c
-				.subtract(dc), c);
+		this.bezirLines3 = this.bezier(a, inPoints[2].subtract(dzc), c.subtract(dc), c);
 		//drawLine(bezirLines3);
-
 		// draw Point the three points inPoints 0-2
+		*/
 		/*
-        if (activeStat)
+	        if (activeStat)
 			g.setColor(Color.red);
 		else
 			g.setColor(Color.blue);
 		//point(inPoints[0]);
 		//point(inPoints[1]);
 		//point(inPoints[2]);
-        */
+	        */
+		
 	}
-	
+	private Vector<Complex> serpent(Complex S, Complex A, Complex B, Complex C)
+	{
+		Vector<Complex> lines = new Vector<Complex>();
+		Complex a = A.subtract(S);
+    		Complex	b = B.subtract(S);
+    		Complex	c = C.subtract(S);
+    		Complex	W []= [ S, b-0.5*(a+c) , 0.75*a+1.25*b , 0.5*(c-b) , -0.25*a-0.75*b ];
+		Complex temp1=a.times(0.75).add(b.times(1.25));
+		Complex temp2=a.times(-1).add((b.add(c)).times(1.5));
+		Complex temp3=a.times(-0.25).subtract(b.times(-0.75));
+    		Complex	[] W = {S, c.times(-1) , temp1 , temp2 , temp3 , c.times(-0.5).add(a.times(0.5).subtract(b))};
+    		for(int n=0;n<100;n++)
+		{
+        		double t = 0.02*(n-50);
+        		Complex w=new Complex();
+        		for(int i=0;i<6;i++)
+        		{
+        			w=w.add(W[i].times(Math.pow(t, i)));
+        		}
+        		
+        		lines.add(w);
+        		//w = W[0] + W[1]*t + W[2]*t**2 + W[3]*t**3 + W[4]*t**4 + W[5]*t**5
+        		//if(n > 0)
+        		//{
+            	//		canv.create_line(wo.real,wo.imag,w.real,w.imag)
+        		//}
+        		//Complex wo = w;
+		}
+    	return lines;
+	}
+
 	private Vector<Complex> bezier(Complex p1, Complex p2, Complex p3, Complex p4)
 	{
 		Complex wNext;
@@ -202,8 +231,8 @@ public class CurveLine {
 		Vector<Complex> theCurve=new Vector<Complex>();
 		theCurve.addAll(this.bezirLines0);
 		theCurve.addAll(this.bezirLines1);
-		theCurve.addAll(this.bezirLines2);
-		theCurve.addAll(this.bezirLines3);
+		//theCurve.addAll(this.bezirLines2);
+		//theCurve.addAll(this.bezirLines3);
 		return theCurve;
 	}
 	public void printCurves()

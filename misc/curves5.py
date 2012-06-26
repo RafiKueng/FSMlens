@@ -43,13 +43,16 @@ def point(z,col="black"):
     
 
 
-def serpent(S,A,B,C):
+def serpent(S,A,B,C): #S,A,B,C are complex
+    #print("this are the parameters for serpent")
+    #print(S)
+    #print(A)
+    #print("...")
     a = A - S
     b = B - S
     c = C - S
-    W = [ S, b-0.5*(a+c) , 0.75*a+1.25*b , 0.5*(c-b) , -0.25*a-0.75*b ]
-    W = [ S, -c , 0.75*a +1.25*b , -a + 1.5*(b+c) , -.25*a -.75*b ,
-          -0.5*c + 0.5*a - b ]
+    #W = [ S, b-0.5*(a+c) , 0.75*a+1.25*b , 0.5*(c-b) , -0.25*a-0.75*b ] #what is this fore if it is ower written in the next line????
+    W = [ S, -c , 0.75*a +1.25*b , -a + 1.5*(b+c) , -.25*a -.75*b , -0.5*c + 0.5*a - b ]
     for n in range(101):
         t = 0.02*(n-50)
         w = W[0] + W[1]*t + W[2]*t**2 + W[3]*t**3 + W[4]*t**4 + W[5]*t**5
