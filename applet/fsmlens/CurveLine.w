@@ -181,11 +181,11 @@ public class CurveLine {
 		Complex a = A.subtract(S);
     		Complex	b = B.subtract(S);
     		Complex	c = C.subtract(S);
-    		Complex	W []= [ S, b-0.5*(a+c) , 0.75*a+1.25*b , 0.5*(c-b) , -0.25*a-0.75*b ];
+    		// Complex	W []= [ S, b-0.5*(a+c) , 0.75*a+1.25*b , 0.5*(c-b) , -0.25*a-0.75*b ];
 		Complex temp1=a.times(0.75).add(b.times(1.25));
 		Complex temp2=a.times(-1).add((b.add(c)).times(1.5));
-		Complex temp3=a.times(-0.25).subtract(b.times(-0.75));
-    		Complex	[] W = {S, c.times(-1) , temp1 , temp2 , temp3 , c.times(-0.5).add(a.times(0.5).subtract(b))};
+		Complex temp3=a.times(-0.25).subtract(b.times(0.75));
+    		Complex	[] W = {S, c.times(-1) , temp1 , temp2 , temp3 , c.times(-0.5).add((a.times(0.5)).subtract(b))};
     		for(int n=0;n<100;n++)
 		{
         		double t = 0.02*(n-50);
