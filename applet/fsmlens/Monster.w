@@ -22,6 +22,13 @@
   import java.text.*;
   import java.awt.*;
   import java.util.*;
+  import java.awt.Dimension;
+  import java.awt.Graphics;
+  import java.awt.Image;
+  
+  import javax.swing.ImageIcon;
+  import javax.swing.JFrame;
+  import javax.swing.JPanel;
 
 @ @<Layout for the |Monster| GUI@>=
   int threads=8;
@@ -62,7 +69,6 @@
 @ @<Managing the buttons in |Monster|@>=
   boolean completed;
   JButton bresume;
-  CuveLines cuveLines;
   Unicorn unicorn;
   Synth synth;
   Synthimg synthimg;
@@ -74,34 +80,34 @@
   cp.add(pauseButton); cp.add(bresume);
   mainPane.add("North",cp);
 
-
 @ @<Put text panels to West@>=
-  inp = new Illus(12,30);  @/
-  err = new qgd.util.Console(16,30);  err.setEditable(false);  @/
+  inp = new Illus(10,30);  @/
+  err = new qgd.util.Console(12,30);  err.setEditable(false);  @/
   JPanel txt = new JPanel();  txt.setLayout(new BorderLayout());  @/
-  txt.add("North",inp);  @/
-  txt.add("South",err.getPanel());  @/
-  mainPane.add("West",txt);
+  txt.add("East",err.getPanel());
+  txt.add("West",inp);
+  mainPane.add("South",txt);
 
 
 @ @<Put plots to East@>=
-  int picSize = 300;
-  //cuveLines = new CuveLines();
-  unicorn = new Unicorn(this,picSize);
+
+  int picSize = 400;
+  unicorn = new Unicorn(this,picSize,inp);
+
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
-  FigDeck pd = new FigDeck();  @/
+  FigDeck pd = new FigDeck();
   pd.addFigure("pixellation",lenses.plotPix);
   pd.addFigure("mass",lenses.plotMass);
   pd.addFigure("potential",lenses.plotPoten);
   pd.addFigure("arrival time",lenses.plotArriv);
-//  pd.add("North",synthimg.getPanel()); 
   mainPane.add("East",pd);
 
 @ @<Put raw image in the middle@>=
   JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
-  ip.add("North",unicorn.getPanel());
-  ip.add("South",synth.getPanel());
+  //ip.setBackground(Color.black);
+  ip.add("West",unicorn.getPanel());
+  ip.add("East",synth.getPanel());
   mainPane.add("Center",ip);
   unicorn.repaint();
 
@@ -152,7 +158,14 @@
         }
       err.setText(new String());
       try
-        { lenses.setup(inp.getText()); inp.save();
+        { 
+          try{
+            lenses.todo(unicorn.curveBin.dataBase);
+            }
+          catch(Exception e) {
+            System.out.println("No CurveBin generated");
+            }
+          lenses.setup(inp.getText()); inp.save();
           setGUI(false,false,false);
           super.startRun();
         }
@@ -160,6 +173,7 @@
         { message(ex.getMessage());
           setWaiting();
         }
+       
     }
 
 

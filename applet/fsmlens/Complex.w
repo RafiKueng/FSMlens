@@ -3,16 +3,16 @@
 @(Complex.java@>=
   package fsmlens;
 
-public class Complex {
+public class Complex implements Cloneable{
 	public static Complex I =new Complex(0,1);
 	public static Complex R=new Complex(1,0);
 	
 	
-	double re=0;
-	double im=0;
+	public double re=0;
+	public double im=0;
 	Complex()
 	{
-		//Complex number has real and imaginary part zero!!!
+		//Complex number has real and imag part zero!!!
 	}
 	
 	Complex(double re, double im)
@@ -26,7 +26,7 @@ public class Complex {
 		this.im=z[1];
 	}
 	
-	public double imaginary()
+	public double imag()
 	{
 		return im;
 	}
@@ -34,6 +34,15 @@ public class Complex {
 	{
 		return re;
 	}
+
+        public boolean equals(Complex z)
+        {
+           if((z.real() == this.re) && (z.imag() == this.im))
+           return true;
+           else
+           return false;
+        }
+     
 	
 	public Complex add(double x)
 	{
@@ -43,7 +52,7 @@ public class Complex {
 	
 	public Complex add(Complex z)
 	{
-		Complex zTot=new Complex(z.real()+this.re, z.imaginary()+this.im);
+		Complex zTot=new Complex(z.real()+this.re, z.imag()+this.im);
 		return zTot;
 		
 	}
@@ -57,14 +66,19 @@ public class Complex {
 	public Complex subtract(Complex z)
 	{
 
-		Complex zTot=new Complex(this.re-z.real(),this.im-z.imaginary());
+		Complex zTot=new Complex(this.re-z.real(),this.im-z.imag());
 
 		return zTot;
+	}
+
+	void set(Complex z)
+	{
+                re = z.real(); im = z.imag();
 	}
 	
 	public Complex times(Complex w) {
 
-        return new Complex(this.re*w.real()-this.im*w.imaginary(),this.re*w.imaginary()+this.im*w.real());
+        return new Complex(this.re*w.real()-this.im*w.imag(),this.re*w.imag()+this.im*w.real());
     }
 	public Complex times(double a)
 	{
@@ -107,9 +121,19 @@ public class Complex {
 	}
 	public void printNumber()
 	{
-		System.out.print(this.re+"+i"+this.im+" ");
+		System.out.print("("+this.re+","+this.im+") ");
 	}
-	
-
+	public Complex clone()
+          {
+          try
+            {
+             return (Complex) super.clone();
+            }
+          catch (CloneNotSupportedException e ) {
+            throw new InternalError();
+            }
+          }
+   
+    
 }
 

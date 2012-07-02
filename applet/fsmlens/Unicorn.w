@@ -7,13 +7,17 @@
     { @<Code to read and show raw lenses@>
       @<Drawing curves with the mouse@>
       @<get the Picture out@>
-      @<get the x pos@>
-      @<get the y pos@>
       @<init rgb matrix@>
       @<Reset the array@>
       @<get the RGB matrix out@>
       @<Drawing the source@>
       @<check rgb@>
+      @<get max Koordinate@>
+      @<get choosen picture@>
+      @<set points@>
+      @< Reset the curves@>
+      @<sort maxKoord for illus@>
+      @<full check of rgb@>
       String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
@@ -21,22 +25,29 @@
       Complex complex;
       Complex complex1;
       Complex complex2;
+      BufferedImage imgInt = null;
+      BufferedImage imageOrg = null;
+      Illus illus;
+      CurveBin curveBin;
+      double[] masscenter = new double[2];
     }
 
 
+
 @ @<Imports for |Unicorn|@>=
-  import qgd.util.*;
-  import java.awt.*;
-  import javax.swing.*;
-  import java.awt.event.*;
-  import java.awt.image.*;
-  import java.awt.Graphics.*;
-  import java.lang.Object.*;
-  import java.util.*;
-  import java.io.*;
-  import javax.imageio.*; 
-  import javax.imageio.stream.*;
-  import javax.imageio.metadata.*;
+import qgd.util.*;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.awt.Graphics.*;
+import java.lang.Object.*;
+import java.util.*;
+import java.io.*;
+import javax.imageio.*; 
+import javax.imageio.stream.*;
+import javax.imageio.metadata.*;
+import static java.lang.Math.*;
 
 
 
@@ -45,19 +56,21 @@
     String quadrLine="Line"; 
     int x1N,y1N, picSize; 
     double x2N,y2N;
-    //double x1N,y1N;
     int[][][] rgbPix;
     Complex complex;
     Complex complex1;
     Complex complex2;
+    double[] masscenter = new double[2];
+    //Vector<Complex> points = new Vector<Complex>();
 
 
 @ @<Code to read and show raw lenses@>=
-  public Unicorn(Monster home, int picSize)
+  public Unicorn(Monster home, int picSize, Illus illus)
     { super(picSize,picSize);
       this.home = home;
       //this.cuveLines = cuveLines;
       this.picSize = picSize; 
+      this.illus = illus;
       rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
       rect = new JComboBox();
@@ -65,12 +78,13 @@
       rect.addActionListener(this);
       hook.add(choice);
       hook.add(rect);
+      //hook.setBackground(Color.black);
       addMouseListener(this);
       addMouseMotionListener(this);
       rgbMatrix();
       @<Initialize fields in |Unicorn|@>
-    }
 
+    }
 
 @ @<Code to read and show raw lenses@>=
   JComboBox choice;
@@ -79,28 +93,33 @@
     { showImage((String) choice.getSelectedItem());
       quadrLine = ((String) rect.getSelectedItem());
       repaint();
-    }
+    }    
 
 
+    
 @ @<Initialize fields in |Unicorn|@>=
-  choice.addItem("PG1115V.gif");
-  choice.addItem("Q0047V.gif");
-  choice.addItem("PG1115V_gray.gif");
-  choice.addItem("PG1115V_gray.jpg");
-  choice.addItem("EinsteinCross.png");
-  choice.addItem("pngTranspDemo.png");
-  rect.addItem("Line");
-  rect.addItem("Rectangle");
+        choice.addItem("PG1115V.gif");
+        choice.addItem("Q0047V.gif");
+        choice.addItem("PG1115V_gray.gif");
+        choice.addItem("PG1115V_gray.jpg");
+        choice.addItem("EinsteinCross.png");
+        choice.addItem("pngTranspDemo.png");
+
+        rect.addItem("Line");
+        rect.addItem("Rectangle");
+  
 
 
+  
+ 
 @ @<Code to read and show raw lenses@>=
+
   Monster home;
   Graphics g;
-  CuveLines cuveLines; //Global cuveLine
-  CuveLines cuveLines2;
+  //CuveLines cuveLines; //Global cuveLine
+  //CuveLines cuveLines2;
   Image img;
   BufferedImage imgrect = null;
-  BufferedImage imageOrg;
   BufferedImage intensity = null;
   
   void showImage(String str)
@@ -120,198 +139,279 @@
 @ @<check if there is alpha channel with intensity@>=
       /* if this img has an alpha channel, extract it and save it under */
       /* author: rk */
-
       if (hasAlpha(img)) {
-        System.out.println("this has alpha channel");
         intensity = extractAlpha(img,wd,ht);
-        image = intensity;
+        imgInt = toBufferedImage(intensity,picSize,picSize);
       }
+      else imgInt = null;
 
 
 
-@ @<Drawing curves with the mouse@>=
-  public void mouseEntered(MouseEvent event) { }
-  public void mouseExited(MouseEvent event) { }
-  public void mouseReleased(MouseEvent event) { }
-  public void mouseMoved(MouseEvent event) { }
 
 
 @ @<Drawing curves with the mouse@>=
-  public void mouseClicked(MouseEvent event)
-    { System.out.println("click on "+x(event.getX())+" "+y(event.getY()));
+    public void mouseEntered(MouseEvent event) { }
+    public void mouseExited(MouseEvent event) { }
+    public void mouseReleased(MouseEvent event) { }
+    public void mouseMoved(MouseEvent event) { }
+
+
+@ @<Drawing curves with the mouse@>=
+    public void mouseClicked(MouseEvent event)
+    {
+        //System.out.println("click on "+x(event.getX())+" "+y(event.getY()));
     }
 
 
 @ @<Drawing curves with the mouse@>=
   double x1,y1,x2,y2;
   boolean state=true;
+  double oneortwo;
   int subimageSize;
   public void mousePressed(MouseEvent event)
     { 
+      oneortwo = 1;
       subimageSize = 25;
       drawAxes(1);
       x1N = event.getX();
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
-      double[] maxVal2 = new double[2];
+
+      int mouseModif = event.getModifiers();
+
+      System.out.println("unic/mpressed " + x1N+" / " + y1N);
+
+      double[] maxVal2 = new double[3];
       if(quadrLine.equals("Rectangle")){
-        g.setColor(Color.blue);
+        if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
+          { g.setColor(Color.red); oneortwo=2;}
+        else if(event.getButton()==MouseEvent.BUTTON2 || mouseModif==24)
+          { g.setColor(Color.green); oneortwo=3;}
+        else{ g.setColor(Color.blue); oneortwo = 1;}
         g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
-        imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
-        BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2);
-        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2);
-	for(int i=0; i<(subimageSize-2); i++)
- 	  {
-	    for(int j=0; j<(subimageSize-2); j++)
-	      {
-              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-10000000  || img.getRGB(i,j)<-12500000)) 
-              //if(rgbPix[x1N+i][y1N+j][0] == 0 && (img.getRGB(i,j)>-1350000)) 
-              //if(rgbPix[x1N+i][y1N+j][0] == 0)
-       	        //rgbPix[x1N+i][y1N+j][0] = img.getRGB(i,j);      
-                        
- 	      }
- 	  }
+        if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
+        else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
+        BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2); 
+        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
         repaint();
         }
-// if mouse is clicke a new cuveLine is drawn
-	if(quadrLine.equals("Line")){
-
-		if(event.getButton()==MouseEvent.BUTTON3){
-			System.out.println("in Mous Event Button 3 pressed");
-			state=!state;
-		}
-		if(CuveLines.COUNT==0){
-		complex1=new Complex(x2N,y2N);
-		cuveLines=new CuveLines(home);  //***********************
-		cuveLines.update(complex1,g);	
-		}
-		
-		else if(CuveLines.COUNT==1 && event.getButton()==MouseEvent.BUTTON3 ){
-		complex1=new Complex(x2N,y2N);
-		cuveLines2=new CuveLines(home);  //***********************
-		cuveLines2.update(complex1,g);}
+        // if mouse is clicke a new cuveLine is drawn
+      if(quadrLine.equals("Line")){
+            System.out.println("unic/mpres/line " + event.getButton());
+            
+            if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
+            {
+                System.out.println("in Mouse Event Button 3 pressed");
+                //state=!state;
                 
-                else if(CuveLines.COUNT==2){
-                if(state) {cuveLines.setActive(); cuveLines2.setInactive();}
-                else {cuveLines2.setActive(); cuveLines.setInactive();}
-                cuveLines.update();	
-                cuveLines2.update();
-                }
+                /* TODO select the CurveBin whitch is selected and should be modified */
+                
+            }
+            
+            Complex mouseClickLocation = new Complex(x1N,y1N);
+            
+            if(curveBin == null)
+            {
+                System.out.println("unic/mpres/line/if1 ");
+                
+                curveBin = new CurveBin(mouseClickLocation,g);            
 
-      	repaint();
-	}
+                /*TODO check if this g remains valid (or is a new one created every time on update...)*/
+            }
+            
+            else if (event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
+            {
+                System.out.println("unic/mpres/line/if2 ");
+                curveBin.expandCurve(mouseClickLocation);
+            }
+            
+            else if (event.getButton()==MouseEvent.BUTTON1 || mouseModif==18)
+            {
+                System.out.println("unic/mpres/line/if3 ");
+                curveBin.updatePoint(mouseClickLocation);
+            }
+            
+            
+            else 
+            {
+                System.out.println("!!!!!! Error, this else should never occur... in MousePressed");
+            }
+
+            repaint();
+        }
+        
+        System.out.println("unic/mousepressed: printing points");
+        if(curveBin!=null){
+          curveBin.printPoints();
+          }       
     }
 
 //@ @<Drawing curves with the mouse@>=
 //
-/*  public void keyTyped(KeyEvent e)
-{
-	System.out.println("in Key Event");
+/*
+    public void keyTyped(KeyEvent e)
+    {
+        System.out.println("in Key Event");
 
-	if(e.getKeyChar()=='n')
-	{
-		System.out.println("in Key Event if");
-		state=!state;	
-	} 
-}
-  public void keyReleased(KeyEvent e)
-{System.out.println("in Key Event Pressed");}
- public void keyPressed(KeyEvent e)
-{System.out.println("in Key Event Pressed");}
+        if(e.getKeyChar()=='n')
+        {
+            System.out.println("in Key Event if");
+            state=!state;	
+        } 
+    }
+
+    public void keyReleased(KeyEvent e)
+    {
+        System.out.println("in Key Event Pressed");
+    }
+    
+    public void keyPressed(KeyEvent e)
+    {
+        System.out.println("in Key Event Pressed");
+    }
+
 */
 
+
 @ @<Drawing curves with the mouse@>=
-  public void mouseDragged(MouseEvent event)
-    { reset();
-      erase();
-      drawAxes(1);
-      x2N = event.getX();
-      y2N = event.getY();
-      x2 = x(x2N);
-      y2 = y(y2N);
-      if(quadrLine.equals("Line"))
-	if(state)
-	{
-        //drawLine(x1,y1,x2,y2);
+    Complex mouseDraggedLocation;
+    Vector<Complex> points = new Vector<Complex>();
+    Vector<CurveLine> dataBase = new Vector<CurveLine>();
+    ComplexExtend[] exPoints = new ComplexExtend[3];
+    public void mouseDragged(MouseEvent event)
+    {
+        reset();
+        //erase();
+        drawAxes(1);
+        x2N = event.getX();
+        y2N = event.getY();
+       
+       
+        mouseDraggedLocation = new Complex(x2N,y2N);
+        
+        if(quadrLine.equals("Line"))
+        {
+            
+         
+            curveBin.updatePoint(mouseDraggedLocation,g);
+            repaint();
+            /*TODO expand this in case of multiple curveBin */
+            
+        }
 
-		complex=new Complex(x2N,y2N);
-		cuveLines.update(complex,g);
-		if (cuveLines2 != null)
-          	  cuveLines2.update(complex1,g);
-	}
-	else
-	{
-		complex1=new Complex(x2N,y2N); //*******************************
-		cuveLines.update(complex,g);
-		if (cuveLines2 != null)
-        	  cuveLines2.update(complex1,g);
-
-	}
-      repaint();	
+        rgbMatrix();
+        //points = curveBin.getPoints();
+        dataBase = curveBin.getData();
+        double[] maxVal2 = new double[3];
+        Complex point;
+        boolean high = false;
+        maxKoord.clear();
+        for(int i = dataBase.size()-1; i>=0;i--){
+          exPoints = dataBase.get(i).getExtendPoint();
+          for( int j=0; j<3; j++){
+            complex = exPoints[j].getPnt();
+            System.out.println(exPoints[j].getExtrema());
+            if(exPoints[j].getExtrema() == "H"){
+                masscenter[0] = x(complex.real());
+                masscenter[1] = y(complex.imag());
+                }
+            if(exPoints[j].getExtrema() != "H"){
+                x1N = (int)complex.real();
+                y1N = (int)complex.imag();
+                int kind;
+                if(exPoints[j].getExtrema() == "S") kind = 2;
+                else kind = 1;
+                if(imgInt != null){ 
+                  BufferedImage img = null;
+                  img = toBufferedImage(imgInt,picSize,picSize);
+                  maxVal2 = checkRGBfull(imgInt,x1N-subimageSize/2,y1N-subimageSize/2,kind);
+                  }
+                else{
+                  maxVal2 = checkRGBfull(image,x1N-subimageSize/2,y1N-subimageSize/2,kind);                  
+                  }              
+                }
+            }
+        } 
+        sort();
+        //illus.ghostWrite(curveBin.dataBase,picSize);
+        setPoints();
+        repaint();
     }
-//@ @<Creating a new instance of Cuve lines and draw new curves@>=
-//  public void newDraw()
-//  {
-//	component.getAction
-//  }
+
+    
+@ @<Creating a new instance of Cuve lines and draw new curves@>=
+/*
+    public void newDraw()
+    {
+        component.getAction
+    }
+*/
+
+
 
 @ @<Drawing the source@>=
-  public void drawSource(int xMax, int yMax)
+    public void drawSource(int xMax, int yMax)
     {
-    g.setColor(Color.white);
-    g.fillOval(xMax,yMax,10,10);
-    repaint();
+        g.setColor(Color.white);
+        g.fillOval(xMax,yMax,10,10);
+        repaint();
     }
 
 
 @ @<Reset the array@>=
-  public void reset()
+    public void reset()
     {
     showImage((String) choice.getSelectedItem());
-    repaint();
+    repaint();    
     rgbMatrix();
+    maxKoord.clear();
+    //imageOrg = null;
     }
 
+@ @< Reset the curves@>=
+    public void resetCurv(){
+      if(curveBin!=null){
+        curveBin.reset();
+        curveBin = null;
+        points.clear();
+        }
+    }
+
+
 @ @<init rgb matrix@>=
-  private void rgbMatrix()
+    private void rgbMatrix()
     {
     for(int i=0; i<picSize; i++) 
       {
         for(int j=0; j<picSize; j++)
     	  {
           rgbPix[i][j][0] = 0;
+          rgbPix[i][j][1] = 0;
  	  }
       }
+
     }
+
+    
 
 @ @<get the RGB matrix out@>=
-  public int[][][] getrgbMatrix()
+    public int[][][] getrgbMatrix()
     {
-      return(rgbPix);
+        return(rgbPix);
     }
 
-
+    
 @ @<get the Picture out@>=
-  public BufferedImage getImage()
+    public BufferedImage getImage()
     {
-    return(image);
+        return(image);
     }
 
-@ @<get the x pos@>=
-  public int getXpos()
-    {
-     return((int)x1N);
-    }
-
-@ @<get the y pos@>=
-  public int getYpos()
-    {
-     return((int)y1N);
-    }
 
 @ @<check rgb@>=
-  public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos)
+  ArrayList<double[]> maxKoord = new ArrayList<double[]>();
+  public double[] checkRGB(BufferedImage pixIm,int xPos,int yPos, int kind)
     { 
     int rgbMin=0; int rgbMax=-100000000;
     int xMax = 0; int yMax = 0;
@@ -321,18 +421,87 @@
       if(pixIm.getRGB(i,j)<rgbMin) rgbMin = pixIm.getRGB(i,j);
       if(pixIm.getRGB(i,j)>rgbMax){ rgbMax = pixIm.getRGB(i,j); xMax = i; yMax = j; }
       }
-    //System.out.println("RGB min ist: " + rgbMin);
-    //System.out.println("RGB max ist: " + rgbMax);
-    //System.out.println("x max ist: " + xMax);
-    //System.out.println("y max ist: " + yMax);
     rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xMax,yMax);
-    double[] maxVal = new double[2];
+    if(pixIm.getRGB(xMax,yMax)<-1000) rgbPix[xMax+xPos][yMax+yPos][0] = -1;
+    double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
+    maxVal[2] = kind;
+    maxKoord.add(maxVal);
     return maxVal;
     }
 
 
+@ @<full check of rgb@>=
+  public double[] checkRGBfull(BufferedImage pixIm,int xPos,int yPos, int kind)
+    { 
+    int rgbMin=0; int rgbMax=-100000000;
+    int xMax = 0; int yMax = 0;
+    for(int i = 0; i<subimageSize ; i++)
+      for(int j = 0; j<subimageSize ; j++)
+      {
+      if(pixIm.getRGB(xPos+i,yPos+j)<rgbMin) rgbMin = pixIm.getRGB(xPos+i,yPos+j);
+      if(pixIm.getRGB(xPos+i,yPos+j)>rgbMax){ rgbMax = pixIm.getRGB(xPos+i,yPos+j); xMax = i; yMax = j; }
+      }
+    rgbPix[xMax+xPos][yMax+yPos][0] = pixIm.getRGB(xPos+xMax,yPos+yMax);
+    if(pixIm.getRGB(xPos+xMax,yPos+yMax)<-1000) rgbPix[xMax+xPos][yMax+yPos][0] = -1;
+    double[] maxVal = new double[3];
+    maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
+    maxVal[2] = kind;
+    maxKoord.add(maxVal);
+    return maxVal;
+    }
 
 
+@ @<sort maxKoord for illus@>=
+   public void sort(){
+   double[] masscent = new double[2];
+   ArrayList<double[]> maxKoordProv = new ArrayList<double[]>();
+   double[] sort = new  double[3];
+   Vector<Integer> length = new Vector<Integer>();
+   for(int i=0; i<maxKoord.size();i++){
+     sort = maxKoord.get(i);
+     sort[0] = sort[0]-masscenter[0];
+     sort[1] = sort[1]-masscenter[1]; 
+     maxKoord.set(i,sort);
+     }
+   for(int i=0; i<maxKoord.size();i++){
+       sort = maxKoord.get(i);
+       int leng =(int) (sqrt(xpix(sort[0])*xpix(sort[0])+ypix(sort[1])*ypix(sort[1])));
+       if(length.contains(leng)==false){
+         if(sort[2]==1) maxKoordProv.add(sort);
+         length.add(leng);
+         }
+     }
+   Vector<Integer> length2 = new Vector<Integer>();
+   for(int i=0; i<maxKoord.size();i++){
+       sort = maxKoord.get(i);
+       int leng = (int) (sqrt(xpix(sort[0])*xpix(sort[0])+ypix(sort[1])*ypix(sort[1])));
+       if(length2.contains(leng)==false){
+         if(sort[2]==2) maxKoordProv.add(sort);
+         length2.add(leng);
+         }
+       }     
+   maxKoord = maxKoordProv;
+   }
 
 
+@ @<get max Koordinate@>=
+  public ArrayList<double[]> getPointKoord()
+    {
+    return(maxKoord);
+    }
+
+@ @<get choosen picture@>=
+  public String getChoose()
+    {
+    String choo = ((String) choice.getSelectedItem());
+    return(choo);
+    }
+
+@ @<set points@>=
+  public void setPoints()
+    {
+     //sort();
+     illus.setKoord(maxKoord);
+    }
+    

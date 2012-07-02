@@ -21,6 +21,7 @@
         @<find maximum in the pix@>
         @<make a average over the pix@>
         @<get the average pixel@>
+        @<set source size from synth@>
         Graphics g;
         Unicorn unicorn;
         Monster home;
@@ -31,6 +32,8 @@
         double[][][] rgbDouble;
         int picSize;
         int max,xMax,yMax;
+        double[] masscent = new double[2];
+        int surSize = 3;
     }
 
 @ @<Code to generate synth pic@>=
@@ -58,22 +61,34 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     }
 
 @ @<set somer picture@>=
-  public void setPixPic()
+  public int[][][] setPixPic()
     {    
+        String choose = unicorn.quadrLine;
+        int xNew=0,yNew=0;
         rgbPix = unicorn.getrgbMatrix();
-        double[] sourcCoo = new double[3];     
+        double[] sourcCoo = new double[3]; 
+        masscent = unicorn.masscenter;    
         for(int j=0; j<picSize;j++)
  	  {
 	  for(int k=0; k<picSize;k++)
 	    {
-              if(rgbPix[j][k][0] != 0){              
-                sourcCoo[1] = x(j);
-	        sourcCoo[2] = y(k);
-		int xNew,yNew;
+              
+              if(rgbPix[j][k][0] != 0){       
+   
+                sourcCoo[1] = x(j)-masscent[0];
+	        sourcCoo[2] = y(k)-masscent[1];
+                if(choose.equals("Rectangle")){ 
+                  sourcCoo[1] = x(j);
+	          sourcCoo[2] = y(k);
+                  }
 		try{
- 	          sourcCoo = home.sourCoord(sourcCoo);
-                  xNew = xpix(sourcCoo[1]);
-	          yNew = ypix(sourcCoo[2]);
+ 	          sourcCoo = home.sourCoord(sourcCoo);        
+                  xNew = xpix(sourcCoo[1]+masscent[0]);
+	          yNew = ypix(sourcCoo[2]+masscent[1]);    
+                  if(choose.equals("Rectangle")){ 
+                    xNew = xpix(sourcCoo[1]);
+	            yNew = ypix(sourcCoo[2]);   
+                    }                          
 		}
 		catch(Exception e) {
 		  xNew = j;
@@ -81,22 +96,23 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 		}
 	        if(xNew>=0 && xNew<picSize && yNew>=0 && yNew<picSize)
 		  {
-                  if(rgbPix[j][k][0]>-1000000){
-                    pixCount[xNew][yNew][0] += 1000;
-                    pixCount[xNew][yNew][1] += 1000*rgbPix[j][k][0];
-                    }
-                  else{
-		    pixCount[xNew][yNew][0] += 1;
-                    pixCount[xNew][yNew][1] += rgbPix[j][k][0];
-                    }
-		 }
-                
+      		    pixCount[xNew][yNew][1] += 1;
+                    System.out.println(xNew + " " + yNew + " \n");
+                    pixCount[xNew][yNew][0] += rgbPix[j][k][0];
+                    for(int m=0;m<surSize;m++)
+                      for(int n=0;n<surSize;n++)
+                        {
+                         pixCount[xNew-m/2+m][yNew-n/2+n][0] = pixCount[xNew][yNew][0];
+                        } 
+		  }                
                } 
    	    }
-	  }
+	  }      
+        unicorn.drawSource(xNew,yNew);
         makeAverage();
-        drawPic();
-        repaint();	
+        //drawPic();
+        //repaint();
+        return(pixCount);	
     }
 
 @ @<Draw the source plane@>=
@@ -106,7 +122,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       for(int j=0; j<picSize; j++)
         { 
         if(pixCount[i][j][0] != 0)
-          image.setRGB(i,j,pixCount[i][j][1]);  
+          image.setRGB(i,j,pixCount[i][j][0]);  
         }
     }
 
@@ -132,9 +148,9 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
       {
         for(int j=0; j<picSize; j++)
     	  {
-          if(pixCount[i][j][0]>max)
+          if(pixCount[i][j][1]>max)
             {
-            max = pixCount[i][j][0];
+            max = pixCount[i][j][1];
             xMax = i; yMax = j;
             }
  	  }
@@ -144,25 +160,16 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 @ @<make a average over the pix@>=
   private void makeAverage()
     {
-    int xAver = 0, yAver = 0, totalCount = 1;
     for(int i=0; i<picSize; i++) 
       {
         for(int j=0; j<picSize; j++)
     	  {
-          if(pixCount[i][j][0]>0)
-            {
-            xAver += i * pixCount[i][j][0];
-            yAver += j * pixCount[i][j][0];
-            totalCount += pixCount[i][j][0];        
-            pixCount[i][j][1] = pixCount[i][j][1]/pixCount[i][j][0];
-            
+          if(pixCount[i][j][1]>0)
+            {       
+            pixCount[i][j][0] = pixCount[i][j][0]/pixCount[i][j][1];           
             }
  	  }
       }
-    xAver = xAver/totalCount;
-    yAver = yAver/totalCount;
-    //g.fillOval(xAver,yAver,10,10);
-    //unicorn.drawSource(xAver,yAver);
     }
 
 @ @<get the average pixel@>=
@@ -171,6 +178,11 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
     return(pixCount);
     }
 
+@ @<set source size from synth@>=
+  public void setsurSize(int surSize)
+    {
+    this.surSize = surSize; 
+    }
 
 @ @<Reset the panel@>=
   public void reset()
