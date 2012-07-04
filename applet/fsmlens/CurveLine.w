@@ -29,12 +29,19 @@ public class CurveLine {
 		this.points[2]=new ComplexExtend(i2);
 	}
 
+        @<Methods in |CurveLine|@>
+  
+}
+
+@ @<Methods in |CurveLine|@>=
+
         Complex[] getPoints()
           { Complex[] p = new Complex[3];
             for (int k=0; k<3; k++)  p[k] = points[k].getPnt();
             return p;
           }
 	
+@ @<Methods in |CurveLine|@>=
 	public void updateExtrema()
 	{
 		double angle;
@@ -79,6 +86,8 @@ public class CurveLine {
 	{
 		return x.subtract(y);
 	}
+
+@ @<Methods in |CurveLine|@>=
 	private void calcNodes() {
 		updateExtrema();//<----------------------------------------Perhaps is better to calle this update function in some other place
 		Complex inPoints[]=new Complex[3];
@@ -180,6 +189,8 @@ public class CurveLine {
 		theCurve.addAll(this.bezirLines3);
 		return theCurve;
 	}
+
+@ @<Methods in |CurveLine|@>=
 	public void printCurves()
 	{
 		System.out.println("this curveLine hos the following points: ");
@@ -190,5 +201,3 @@ public class CurveLine {
 		}
 		System.out.println();
 	}
-  
-}
