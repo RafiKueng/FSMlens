@@ -49,8 +49,11 @@ public class CurveBin {
 	}
         
 
-	
+        @<Methods in |CurveBin|@>
+}
 
+
+@ @<Methods in |CurveBin|@>=
 	/*
 	 * add a Curve consisting of a saddle point and two max/min or a max and a
 	 * min to the data base with all the curves
@@ -82,6 +85,7 @@ public class CurveBin {
 		return q;
 	}
 
+@ @<Methods in |CurveBin|@>=
 	// TODO: missing still a function that draws the point using the coordinates
 	// of a given complex number
 	/*
@@ -99,6 +103,7 @@ public class CurveBin {
 
 	}
 
+@ @<Methods in |CurveBin|@>=
 	// TODO: create a function which draws the bezier lines; perhaps also
 	// calculates them according to given nodes
 	private void drawCurve() {
@@ -121,7 +126,7 @@ public class CurveBin {
 
 
 
-
+@ @<Methods in |CurveBin|@>=
 
 	public void draw() {
 		this.drawCurve();
@@ -147,6 +152,7 @@ public class CurveBin {
           return dataBase;
         }
 
+@ @<Methods in |CurveBin|@>=
 	// updating the point closest to a given event with the coordinates of the
 	// given event
 	public void updatePoint(Complex event, Graphics g) {
@@ -168,6 +174,7 @@ public class CurveBin {
 		return dataBase.get(index);
 	}
 
+@ @<Methods in |CurveBin|@>=
 	public void printPoints() {
 		System.out.println("the points used at the moment are: ");
 		for (int i = 0; i < points.size(); i++) {
@@ -179,6 +186,8 @@ public class CurveBin {
                    }
 		System.out.println();
 	}
+
+@ @<Methods in |CurveBin|@>=
 	/*
 	 * this function uses a given mouse event and expands the closest
 	 * maxima/minima in to a saddle point and to maximas/minias
@@ -212,7 +221,5 @@ public class CurveBin {
           points.clear();
           dataBase.clear();        
         }
-
-}																			
 
 

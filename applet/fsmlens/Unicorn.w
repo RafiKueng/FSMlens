@@ -52,18 +52,6 @@ import static java.lang.Math.*;
 
 
 
-@ @<Init variables for |Unicorn|@>=
-    String quadrLine="Line"; 
-    int x1N,y1N, picSize; 
-    double x2N,y2N;
-    int[][][] rgbPix;
-    Complex complex;
-    Complex complex1;
-    Complex complex2;
-    double[] masscenter = new double[2];
-    //Vector<Complex> points = new Vector<Complex>();
-
-
 @ @<Code to read and show raw lenses@>=
   public Unicorn(Monster home, int picSize, Illus illus)
     { super(picSize,picSize);
@@ -136,9 +124,9 @@ import static java.lang.Math.*;
 
     
     
-@ @<check if there is alpha channel with intensity@>=
-      /* if this img has an alpha channel, extract it and save it under */
-      /* author: rk */
+@ If this img has an alpha channel, extract it and save it under
+(author: rk)
+@<check if there is alpha channel with intensity@>=
       if (hasAlpha(img)) {
         intensity = extractAlpha(img,wd,ht);
         imgInt = toBufferedImage(intensity,picSize,picSize);
@@ -247,31 +235,6 @@ import static java.lang.Math.*;
           }       
     }
 
-//@ @<Drawing curves with the mouse@>=
-//
-/*
-    public void keyTyped(KeyEvent e)
-    {
-        System.out.println("in Key Event");
-
-        if(e.getKeyChar()=='n')
-        {
-            System.out.println("in Key Event if");
-            state=!state;	
-        } 
-    }
-
-    public void keyReleased(KeyEvent e)
-    {
-        System.out.println("in Key Event Pressed");
-    }
-    
-    public void keyPressed(KeyEvent e)
-    {
-        System.out.println("in Key Event Pressed");
-    }
-
-*/
 
 
 @ @<Drawing curves with the mouse@>=
@@ -340,15 +303,6 @@ import static java.lang.Math.*;
     }
 
     
-@ @<Creating a new instance of Cuve lines and draw new curves@>=
-/*
-    public void newDraw()
-    {
-        component.getAction
-    }
-*/
-
-
 
 @ @<Drawing the source@>=
     public void drawSource(int xMax, int yMax)

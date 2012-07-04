@@ -73,6 +73,8 @@ public class CurveLine {
 			
 		}
 	}
+
+@ @<Methods in |CurveLine|@>=
 	public double crossP(Complex x, Complex y)
 	{
 		return (x.real()*y.imag()-x.imag()*y.real());
@@ -161,6 +163,7 @@ public class CurveLine {
 		// draw Point the three points inPoints 0-2
 	}
 	
+@ @<Methods in |CurveLine|@>=
 	private Vector<Complex> bezier(Complex p1, Complex p2, Complex p3, Complex p4)
 	{
 		Complex wNext;
