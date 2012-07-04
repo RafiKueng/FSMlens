@@ -39,8 +39,6 @@ public class CurveLine {
 		Complex ext1=vec(points[0].getPnt(),points[1].getPnt());
 		Complex ext2=vec(points[0].getPnt(),points[2].getPnt());
 		angle=angle(ext1,ext2);
-//		ext1=ext1.div(ext1.mod());
-//		ext1=ext2.div(ext2.mod());
 		if(angle>=Math.PI/4.0 && angle<=3.0*Math.PI/4.0)
 		{
 			//there are two minimas
@@ -73,7 +71,6 @@ public class CurveLine {
 	public double angle(Complex x, Complex y)
 	{
 		double sp=x.real()*y.real()+x.imag()*y.imag();
-		//return Math.acos(sp/(x.modSQR()*y.modSQR()));
                 return Math.acos(sp/(x.mod()*y.mod()));
 	}
 	public Complex vec(Complex x, Complex y)
@@ -87,12 +84,6 @@ public class CurveLine {
 		{
 			inPoints[i]=points[i].getPnt();
 		}
-		/*
-		inPoints[0].printNumber();
-		inPoints[1].printNumber();
-		inPoints[2].printNumber();
-		System.out.print("\n");
-        */
 
 		Complex temp1 = new Complex();
 		Complex temp2 = new Complex();
@@ -133,11 +124,6 @@ public class CurveLine {
 		c = temp1.add(cen);
 		a = inPoints[0];
 
-		// /*#create three "ovals" in the initially given place z
-		// self.pnt[0]=self.point(z[0])
-		// self.pnt[1]=self.point(z[1])
-		// self.pnt[2]=self.point(z[2])*/
-
 		temp1 = a.subtract(cen);
 		double r = temp1.mod(); // some sort of radius??
 		temp2 = b.subtract(a);
@@ -154,33 +140,19 @@ public class CurveLine {
 
 		this.bezirLines0 = this.bezier(a, inPoints[1].add(dzb), b.add(db),
 				b); // draw Bezir curves
-		//drawLine(bezirLines0);
 		this.bezirLines1 = this.bezier(a, inPoints[1].subtract(dzb), b
 				.subtract(db), b);
-		//drawLine(bezirLines1);
 		this.bezirLines2 = this.bezier(a, inPoints[2].add(dzc), c.add(dc),
 				c);
-		//drawLine(bezirLines2);
 		this.bezirLines3 = this.bezier(a, inPoints[2].subtract(dzc), c
 				.subtract(dc), c);
-		//drawLine(bezirLines3);
 
 		// draw Point the three points inPoints 0-2
-		/*
-        if (activeStat)
-			g.setColor(Color.red);
-		else
-			g.setColor(Color.blue);
-		//point(inPoints[0]);
-		//point(inPoints[1]);
-		//point(inPoints[2]);
-        */
 	}
 	
 	private Vector<Complex> bezier(Complex p1, Complex p2, Complex p3, Complex p4)
 	{
 		Complex wNext;
-		//Complex wLast;
 		Vector<Complex> Lines = new Vector<Complex>();
 		double t;
 		double scale=0.01;
