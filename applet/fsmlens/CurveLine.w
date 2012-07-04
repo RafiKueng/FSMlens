@@ -16,7 +16,6 @@ import java.util.Vector;
 
 
 public class CurveLine {
-//	Complex[] inPoints = new Complex[3];
 	private Vector<Complex> bezirLines0=new Vector<Complex>();
 	private Vector<Complex> bezirLines1=new Vector<Complex>();
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
@@ -28,9 +27,6 @@ public class CurveLine {
 		this.points[0]=new ComplexExtend(i0,"S");
 		this.points[1]=new ComplexExtend(i1);
 		this.points[2]=new ComplexExtend(i2);
-//                this.inPoints[0] = i0;
-//                this.inPoints[1] = i1;
-//                this.inPoints[2] = i2;
 	}
 
         Complex[] getPoints()
@@ -195,9 +191,4 @@ public class CurveLine {
 		System.out.println();
 	}
   
-        public ComplexExtend[] getExtendPoint(){
-          return points;
-        }
-   
-
 }

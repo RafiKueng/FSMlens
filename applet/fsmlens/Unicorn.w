@@ -92,7 +92,7 @@ import static java.lang.Math.*;
   public void actionPerformed(ActionEvent event)
     { showImage((String) choice.getSelectedItem());
       quadrLine = ((String) rect.getSelectedItem());
-      repaint();
+      System.out.println("repainting"); repaint();
     }    
 
 
@@ -194,7 +194,7 @@ import static java.lang.Math.*;
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2); 
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
-        repaint();
+        System.out.println("repainting"); repaint();
         }
         // if mouse is clicke a new cuveLine is drawn
       if(quadrLine.equals("Line")){
@@ -238,7 +238,7 @@ import static java.lang.Math.*;
                 System.out.println("!!!!!! Error, this else should never occur... in MousePressed");
             }
 
-            repaint();
+            System.out.println("repainting"); repaint();
         }
         
         System.out.println("unic/mousepressed: printing points");
@@ -295,7 +295,7 @@ import static java.lang.Math.*;
             
          
             curveBin.updatePoint(mouseDraggedLocation,g);
-            repaint();
+            System.out.println("repainting"); repaint();
             /*TODO expand this in case of multiple curveBin */
             
         }
@@ -308,7 +308,7 @@ import static java.lang.Math.*;
         boolean high = false;
         maxKoord.clear();
         for(int i = dataBase.size()-1; i>=0;i--){
-          exPoints = dataBase.get(i).getExtendPoint();
+          exPoints = dataBase.get(i).points;
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
             System.out.println(exPoints[j].getExtrema());
@@ -336,7 +336,7 @@ import static java.lang.Math.*;
         sort();
         //illus.ghostWrite(curveBin.dataBase,picSize);
         setPoints();
-        repaint();
+        System.out.println("repainting"); repaint();
     }
 
     
@@ -355,7 +355,7 @@ import static java.lang.Math.*;
     {
         g.setColor(Color.white);
         g.fillOval(xMax,yMax,10,10);
-        repaint();
+        System.out.println("repainting"); repaint();
     }
 
 
@@ -363,7 +363,7 @@ import static java.lang.Math.*;
     public void reset()
     {
     showImage((String) choice.getSelectedItem());
-    repaint();    
+    System.out.println("repainting"); repaint();    
     rgbMatrix();
     maxKoord.clear();
     //imageOrg = null;
