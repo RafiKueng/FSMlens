@@ -107,14 +107,14 @@
 
 @ @<Work out image order, and write into |strb|@>=
   Complex cen;
-  Complex[] p = scurves.get(0).inPoints;
+  Complex[] p = scurves.get(0).getPoints();
   if (p[0].subtract(p[1]).mod() < p[0].subtract(p[2]).mod()) cen = p[1];
   else cen = p[2];
   System.out.print("center at ");
   cen.printNumber();
   if (scurves.size()==2)
     { strb.append("multi 4 1.5 \n");
-      p = scurves.get(1).inPoints;
+      p = scurves.get(1).getPoints();
       if (p[1].subtract(p[0]).mod() < p[2].subtract(p[0]).mod())
         { writenum(p[2].subtract(cen),strb); strb.append(" 1\n");
           writenum(p[1].subtract(cen),strb); strb.append(" 1\n");
@@ -124,7 +124,7 @@
           writenum(p[2].subtract(cen),strb); strb.append(" 1\n");
         }
       writenum(p[0].subtract(cen),strb); strb.append(" 2\n");
-      p = scurves.get(0).inPoints;
+      p = scurves.get(0).getPoints();
       writenum(p[0].subtract(cen),strb); strb.append(" 2\n");
     }
   System.out.println("Image data");

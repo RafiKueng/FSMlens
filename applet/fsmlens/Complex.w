@@ -10,6 +10,7 @@ public class Complex implements Cloneable{
 	
 	public double re=0;
 	public double im=0;
+	private String extrema;
 	Complex()
 	{
 		//Complex number has real and imag part zero!!!
@@ -133,7 +134,25 @@ public class Complex implements Cloneable{
             throw new InternalError();
             }
           }
-   
-    
+   	public void setExtrema(String ext)
+	{
+		ext=ext.toUpperCase();
+		if(ext=="L"||ext=="H"||ext=="S")
+		{
+			this.extrema=ext;
+		}
+		else
+		{
+			System.out.print("String has to be L for minima; M for maxima; S for saddle point");
+		}
+        }
+    	public String getExtrema()
+	{
+		return this.extrema;
+	}
+	public Complex getPnt()
+	{
+		return this;
+	}
 }
 
