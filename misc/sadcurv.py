@@ -3,13 +3,17 @@ from Tkinter import *
 
 root = Tk()
 
-H = 6
+H = 4
 W = 2*H-1
 
 M = [ 200+200j , 50+0j , -50+0j ]
 
 r = W*[0j]
 z = W*[M[0]]
+
+for k in range(1,H):
+    r[k] = exp(2j*pi*k/H)
+    r[k+W/2] = exp(2j*pi*k/H)
 
 def refresh():
     z[0] = M[0]
@@ -21,14 +25,6 @@ def refresh():
             if (M[2]/M[1]).real < 0:
                 dr = dr.conjugate()
             z[k] = M[0] + M[2] * (1 - dr)
-
-
-
-for k in range(1,H):
-    r[k] = exp(2j*pi*k/H)
-    r[k+W/2] = exp(2j*pi*k/H)
-
-refresh()
 
 def cabs(w):
     return w.real*w.real + w.imag*w.imag
@@ -44,18 +40,19 @@ def point(z,r=2,col="black"):
 
 def draw():
     canv.delete(ALL)
-    curv(z,0,1,10,2)
+    refresh()
+    curv(z,0,1,-1,2)
     curv(z,1,2,0,3)
-    curv(z,2,3,1,4)
-    curv(z,3,4,2,5)
-    curv(z,4,5,3,0)
-    curv(z,5,0,4,6)
-    curv(z,0,6,5,7)
-    curv(z,6,7,0,8)
-    curv(z,7,8,6,9)
-    curv(z,8,9,7,10)
-    curv(z,9,10,8,0)
-    curv(z,10,0,9,1)
+    for k in range(2,H-2):
+        curv(z,k,k+1,k-1,k+2)
+    curv(z,H-2,H-1,H-3,0)
+    curv(z,H-1,0,H-2,H)
+    curv(z,0,H,H-1,H+1)
+    curv(z,H,H+1,0,H+2)
+    for k in range(H+1,2*H-3):
+        curv(z,k,k+1,k-1,k+2)
+    curv(z,-2,-1,-3,0)
+    curv(z,-1,0,-2,1)
 
 def curv(z,i,j,k,l):
     a = z[i]
@@ -107,7 +104,6 @@ def moved(event):
             r[q] = 1 - (w-M[0])/M[2]
             if (M[2]/M[1]).real < 0:
                 r[q] = r[q].conjugate()
-    refresh()
     draw()
 
 
