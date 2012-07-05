@@ -50,6 +50,7 @@ public class CurveBin {
         
 
         @<Methods in |CurveBin|@>
+        @<Further methods in |CurveBin|@>
 }
 
 
@@ -79,7 +80,7 @@ vector points which is closest to the given number.
 				q = p;
 			}
 		}
-                System.out.println("q ist: " + q);
+                System.out.println("closest point"+q+" "+dsmin);
 		return q;
 	}
 
@@ -155,14 +156,13 @@ calculates them according to given nodes
 @ Updating the point closest to a given event with the coordinates of
 the given event
 
-@<Methods in |CurveBin|@>=
+@<Old methods in |CurveBin|@>=
 	public void updatePoint(Complex event, Graphics g) {
 		this.g = g;
 		int q = this.findeClosest(event);
 		points.get(q).set(event);
                 this.draw();
 	}
-
 	public void updatePoint(Complex event) {
 		int q = this.findeClosest(event);
 
@@ -171,6 +171,7 @@ the given event
 		this.draw();
 	}
 
+@ @<Methods in |CurveBin|@>=
 	public CurveLine getCurve(int index) {
 		return dataBase.get(index);
 	}
@@ -225,3 +226,11 @@ added at the end of the vector
         }
 
 
+
+@ @<Further methods in |CurveBin|@>=
+	public void updatePoint(Complex event, Graphics g) {
+		this.g = g;
+		int q = this.findeClosest(event);
+		points.get(q).set(event);
+                this.draw();
+	}

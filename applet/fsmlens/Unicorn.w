@@ -3,7 +3,7 @@
 @(Unicorn.java@>=
   package fsmlens;
   @<Imports for |Unicorn|@>
-  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener//, KeyListener
+  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener
     { @<Code to read and show raw lenses@>
       @<Drawing curves with the mouse@>
       @<get the Picture out@>
@@ -217,7 +217,7 @@ import static java.lang.Math.*;
             else if (event.getButton()==MouseEvent.BUTTON1 || mouseModif==18)
             {
                 System.out.println("unic/mpres/line/if3 ");
-                curveBin.updatePoint(mouseClickLocation);
+//                curveBin.updatePoint(mouseClickLocation);
             }
             
             
