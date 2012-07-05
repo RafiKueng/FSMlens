@@ -352,14 +352,14 @@ import static java.lang.Math.*;
 @ @<get the RGB matrix out@>=
     public int[][][] getrgbMatrix()
     {
-        return(rgbPix);
+        return rgbPix;
     }
 
     
 @ @<get the Picture out@>=
     public BufferedImage getImage()
     {
-        return(image);
+        return image ;
     }
 
 
@@ -420,7 +420,9 @@ import static java.lang.Math.*;
      }
    for(int i=0; i<maxKoord.size();i++){
        sort = maxKoord.get(i);
-       int leng =(int) (sqrt(xpix(sort[0])*xpix(sort[0])+ypix(sort[1])*ypix(sort[1])));
+       double sxy = sqrt(xpix(sort[0])*xpix(sort[0])+
+                    ypix(sort[1])*ypix(sort[1]));
+       int leng = (int) sxy;
        if(length.contains(leng)==false){
          if(sort[2]==1) maxKoordProv.add(sort);
          length.add(leng);
@@ -429,7 +431,9 @@ import static java.lang.Math.*;
    Vector<Integer> length2 = new Vector<Integer>();
    for(int i=0; i<maxKoord.size();i++){
        sort = maxKoord.get(i);
-       int leng = (int) (sqrt(xpix(sort[0])*xpix(sort[0])+ypix(sort[1])*ypix(sort[1])));
+       double sxy = sqrt(xpix(sort[0])*xpix(sort[0])+
+                         ypix(sort[1])*ypix(sort[1]));
+       int leng = (int) sxy;
        if(length2.contains(leng)==false){
          if(sort[2]==2) maxKoordProv.add(sort);
          length2.add(leng);
@@ -440,22 +444,21 @@ import static java.lang.Math.*;
 
 
 @ @<get max Koordinate@>=
-  public ArrayList<double[]> getPointKoord()
+  ArrayList<double[]> getPointKoord()
     {
-    return(maxKoord);
+    return maxKoord;
     }
 
 @ @<get choosen picture@>=
   public String getChoose()
     {
     String choo = ((String) choice.getSelectedItem());
-    return(choo);
+    return choo;
     }
 
 @ @<set points@>=
   public void setPoints()
     {
-     //sort();
      illus.setKoord(maxKoord);
     }
     

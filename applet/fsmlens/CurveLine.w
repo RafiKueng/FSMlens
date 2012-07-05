@@ -54,7 +54,7 @@ public class CurveLine {
 			points[1].setExtrema("L");
 			points[2].setExtrema("L");
 		
-		}else //{angle>Math.PI && angle<2*Mathe.PI || angle<=0 && angle >Math.PI/2.0}
+		}else
 		{
 			//there is a maximum and a minimuma ->the point that is closer to the saddle point is a maximum
 			double dis1=ext1.mod();

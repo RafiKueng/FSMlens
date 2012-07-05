@@ -53,11 +53,10 @@ public class CurveBin {
 }
 
 
-@ @<Methods in |CurveBin|@>=
-	/*
-	 * add a Curve consisting of a saddle point and two max/min or a max and a
-	 * min to the data base with all the curves
-	 */
+@ Add a Curve consisting of a saddle point and two max/min or a max
+and a min to the data base with all the curves.
+
+@<Methods in |CurveBin|@>=
 	private void addCurve(Complex i0, Complex i1, Complex i2) {
 		CurveLine newTemp = new CurveLine(i0, i1, i2);
 		dataBase.add(newTemp);
@@ -65,11 +64,10 @@ public class CurveBin {
 	}
 
 	
+@ Takes a complex number and returns the index of the point in the
+vector points which is closest to the given number.
 
-	/*
-	 * takes a complex number and returns the index of the point in the vector
-	 * points which is closest to the given number
-	 */
+@<Methods in |CurveBin|@>=
 	private int findeClosest(Complex event) {
 		double ds = 0;
 		double dsmin = (event.subtract(points.get(0))).modSQR();
@@ -85,14 +83,15 @@ public class CurveBin {
 		return q;
 	}
 
+@ TODO: missing still a function that draws the point using the
+coordinates of a given complex number
+
+@<TODO Methods in |CurveBin|@>=
+  public void redrawPoint(int index) { Complex temp=points.get(index); int
+	x=(int)(temp.real()); int y=(int)(temp.imag());
+	g.fillOval(x-5,y-5,10,10); }
+
 @ @<Methods in |CurveBin|@>=
-	// TODO: missing still a function that draws the point using the coordinates
-	// of a given complex number
-	/*
-	 * public void redrawPoint(int index) { Complex temp=points.get(index); int
-	 * x=(int)(temp.real()); int y=(int)(temp.imag());
-	 * g.fillOval(x-5,y-5,10,10); }
-	 */
 	private void drawPoints() {
 		for (int i = 0; i < points.size(); i++) {
 			Complex temp = points.get(i);
@@ -103,9 +102,10 @@ public class CurveBin {
 
 	}
 
-@ @<Methods in |CurveBin|@>=
-	// TODO: create a function which draws the bezier lines; perhaps also
-	// calculates them according to given nodes
+@ TODO: create a function which draws the bezier lines; perhaps also
+calculates them according to given nodes
+
+@<Methods in |CurveBin|@>=
 	private void drawCurve() {
 		Iterator<CurveLine> iter = dataBase.iterator();
 		while (iter.hasNext()) {
@@ -152,9 +152,10 @@ public class CurveBin {
           return dataBase;
         }
 
-@ @<Methods in |CurveBin|@>=
-	// updating the point closest to a given event with the coordinates of the
-	// given event
+@ Updating the point closest to a given event with the coordinates of
+the given event
+
+@<Methods in |CurveBin|@>=
 	public void updatePoint(Complex event, Graphics g) {
 		this.g = g;
 		int q = this.findeClosest(event);
@@ -187,15 +188,10 @@ public class CurveBin {
 		System.out.println();
 	}
 
-@ @<Methods in |CurveBin|@>=
-	/*
-	 * this function uses a given mouse event and expands the closest
-	 * maxima/minima in to a saddle point and to maximas/minias
-	 * 
-	 * @param event a complex number holding the x and y position where the mous
-	 * was clicked
-	 */
-	public void expandCurve(Complex event) {
+@ This function uses a given mouse event and expands the closest
+maxima/minima in to a saddle point and to maximas/minias param event a
+complex number holding the x and y position where the mous was clicked
+
 		// expand the point in the vector
 		// 1)find the number which corresponds to event
 		// 2a)update the flag of the found number
@@ -205,15 +201,21 @@ public class CurveBin {
 		// the flag should now hold the number which indicates the spot in the
 		// vector where the new complex is
 		// perhaps use iterator
+
+Perhaps these have to be adjusted; they are just a lucky guess of two
+points near the first one.
+
+The fist point is given and the second and third are the ones we just
+added at the end of the vector
+
+
+@<Methods in |CurveBin|@>=
+	public void expandCurve(Complex event) {
 		int q = this.findeClosest(event);
 		addPoint(event.add(new Complex(15, 15)));
-		addPoint(event.add(new Complex(-15, -15)));                  // perhaps these have to be
-									     // adjusted; they are just a
-									     // lucky guess of two points
-									     // near the first one
-		int size = points.size();                                    // find the current size of the vector
+		addPoint(event.add(new Complex(-15, -15)));
+		int size = points.size();
 		addCurve(points.get(q), points.get(size - 1), points.get(size - 2)); 
-                //the fist point is given and the second and third are the ones we just added at the end of the vector//   
 		this.draw();
 	}
 
