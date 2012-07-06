@@ -19,6 +19,7 @@ import java.util.Vector;
 public class CurveBin {
 
 	private Vector<Complex> points = new Vector<Complex>();
+	Vector<Complex> zps = new Vector<Complex>();
 
 	Vector<CurveLine> dataBase = new Vector<CurveLine>();
 	private Graphics g;
@@ -58,6 +59,8 @@ and a min to the data base with all the curves.
 @<Methods in |CurveBin|@>=
 	private void addCurve(Complex i0, Complex i1, Complex i2) {
 		CurveLine newTemp = new CurveLine(i0, i1, i2);
+                for (int k=1; k<newTemp.curvW; k++)
+                  zps.add(newTemp.zp[k]);
 		dataBase.add(newTemp);
 
 	}
@@ -190,12 +193,34 @@ added at the end of the vector
 
 
 @ @<Further methods in |CurveBin|@>=
-	public void updatePoint(Complex event, Graphics g) {
-		this.g = g;
-		int q = this.findeClosest(event);
-		points.get(q).set(event);
-                this.draw();
-	}
+  public void updatePoint(Complex event, Graphics g)
+    { this.g = g;
+      int q=0,qz=0; double ds=0,dsmin=0,dsminz=0;
+      for (int p = 0; p < points.size(); p++)
+        { ds = (event.subtract(points.get(p))).modSQR();
+          if (p == 0 || ds < dsmin)
+            { dsmin = ds; q = p;
+            }
+        }
+      for (int p = 0; p < zps.size(); p++)
+        { ds = (event.subtract(zps.get(p))).modSQR();
+          if (p == 0 || ds < dsminz)
+            { dsminz = ds; qz = p;
+            }
+        }
+      if (dsmin < dsminz)
+        { points.get(q).set(event);
+          for (int s=0; s<dataBase.size(); s++)
+            dataBase.get(s).zp_recalc();
+        }
+      else
+        { zps.get(qz).set(event);
+          for (int s=0; s<dataBase.size(); s++)
+            dataBase.get(s).rp_recalc();
+        }
+      draw();
+    }
+
 
 @ @<Further methods in |CurveBin|@>=
 	public void draw() {
