@@ -21,12 +21,28 @@ public class CurveLine {
 	private Vector<Complex> bezirLines2=new Vector<Complex>();
 	private Vector<Complex> bezirLines3=new Vector<Complex>();
 
-	//none default Constructor 
         ComplexExtend[] points = new ComplexExtend[3];
+
+        int curvH = 5; int curvW = 2*curvH-1;
+
+        Complex[] rp,zp;
+
 	CurveLine(Complex i0, Complex i1, Complex i2) {
-		this.points[0]=new ComplexExtend(i0,"S");
-		this.points[1]=new ComplexExtend(i1);
-		this.points[2]=new ComplexExtend(i2);
+	   this.points[0]=new ComplexExtend(i0,"S");
+	   this.points[1]=new ComplexExtend(i1);
+	   this.points[2]=new ComplexExtend(i2);
+           rp = new Complex[curvW];
+           zp = new Complex[curvW];
+           for (int k=0; k<curvW; k++)
+             { zp[k] = new Complex(0,0);
+               rp[k] = new Complex(0,0);
+             }
+           for (int k=1; k<curvH; k++)
+             { double arg = 2*Math.PI*k/curvH;
+               rp[k].set(new Complex(1-Math.cos(arg),-Math.sin(arg)));
+               rp[k+curvW/2].set(new Complex(1-Math.cos(arg),-Math.sin(arg)));
+             }
+           zp_recalc();
 	}
 
         @<Methods in |CurveLine|@>
@@ -204,3 +220,41 @@ public class CurveLine {
 		}
 		System.out.println();
 	}
+
+
+@ @<Methods in |CurveLine|@>=
+  void zp_recalc()
+    { double fl = points[2].getPnt().div(points[1].getPnt()).real();
+      Complex dz1,dz2;
+      dz1 = points[1].getPnt().subtract(points[0].getPnt());
+      dz2 = points[2].getPnt().subtract(points[0].getPnt());
+      for (int k=0; k<curvW; k++)
+        { zp[k].set(points[0].getPnt().add(0));
+          if (k > 0)
+            { if (k < curvH)
+                zp[k].set(zp[k].add(dz1.times(rp[k])));
+              else
+                if (fl > 0)
+                  zp[k].set(zp[k].add(dz2.times(rp[k])));
+                else
+                  zp[k].set(zp[k].add(dz2.times(rp[k].conj())));
+            }
+        }
+    }
+
+
+@ @<Methods in |CurveLine|@>=
+  void rp_recalc()
+    { double fl = points[2].getPnt().div(points[1].getPnt()).real();
+      for (int k=0; k<curvW; k++)
+        { Complex dz = zp[k].subtract(points[0].getPnt());
+          if (k < curvH)
+            rp[k].set(dz.div(points[1].getPnt()));
+          else
+            { rp[k].set(dz.div(points[2].getPnt()));
+              if (fl < 0)
+                rp[k].set(rp[k].conj());
+            }
+        }
+    }
+

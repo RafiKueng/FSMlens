@@ -234,8 +234,24 @@ added at the end of the vector
                         g.setColor(Color.green);
 			g.fillOval(x - 5, y - 5, 10, 10);
 		}
+                @<Draw the extra points@>
 
 	}
+
+
+@ @<Draw the extra points@>=
+  for (int i=0; i<dataBase.size(); i++)
+    { CurveLine sad = dataBase.get(i);
+      sad.printCurves();
+      System.out.println(sad.curvW);
+      sad.zp_recalc();
+      for (int k=1; k<sad.curvW; k++)
+        { int x = (int)(sad.zp[k].real()+0.5);
+          int y = (int)(sad.zp[k].imag()+0.5);
+          System.out.println(k+" "+x+" "+y);
+          g.fillOval(x-2,y-2,4,4);
+        }
+    }
 
 
   
