@@ -43,8 +43,6 @@ public class CurveBin {
 		this.g = g;
 		this.points.add(event);
 		this.expandCurve(event);
-                //this.drawPoints();
-                //this.drawCurve();
 
 	}
         
@@ -92,49 +90,13 @@ coordinates of a given complex number
 	x=(int)(temp.real()); int y=(int)(temp.imag());
 	g.fillOval(x-5,y-5,10,10); }
 
-@ @<Methods in |CurveBin|@>=
-	private void drawPoints() {
-		for (int i = 0; i < points.size(); i++) {
-			Complex temp = points.get(i);
-			int x = (int) (temp.real());
-			int y = (int) (temp.imag());
-			g.fillOval(x - 5, y - 5, 10, 10);
-		}
 
-	}
 
-@ TODO: create a function which draws the bezier lines; perhaps also
-calculates them according to given nodes
-
-@<Methods in |CurveBin|@>=
-	private void drawCurve() {
-		Iterator<CurveLine> iter = dataBase.iterator();
-		while (iter.hasNext()) {
-			Vector<Complex> vec = iter.next().curve();
-			int x1, x2, y1, y2;
-			for (int i = 0; i < vec.size() - 1; i++) {
-				x1 = (int) vec.get(i).real();
-				y1 = (int) vec.get(i).imag();
-				x2 = (int) vec.get(i + 1).real();
-
-				y2 = (int) vec.get(i + 1).imag();
-                                if ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2) < 100)
-  				  g.drawLine(x1, y1, x2, y2);
-
-			}
-		}
-	}
 
 
 
 @ @<Methods in |CurveBin|@>=
 
-	public void draw() {
-		this.drawCurve();
-		this.drawPoints();
-	}
-
-  
 	
 	// adding a new point to the vector externally
 	private void addPoint(Complex pnt) {
@@ -234,3 +196,46 @@ added at the end of the vector
 		points.get(q).set(event);
                 this.draw();
 	}
+
+@ @<Further methods in |CurveBin|@>=
+	public void draw() {
+		this.drawCurve();
+		this.drawPoints();
+	}
+
+
+@ @<Further methods in |CurveBin|@>=
+	private void drawCurve() {
+		Iterator<CurveLine> iter = dataBase.iterator();
+		while (iter.hasNext()) {
+			Vector<Complex> vec = iter.next().curve();
+			int x1, x2, y1, y2;
+			for (int i = 0; i < vec.size() - 1; i++) {
+				x1 = (int) vec.get(i).real();
+				y1 = (int) vec.get(i).imag();
+				x2 = (int) vec.get(i + 1).real();
+
+				y2 = (int) vec.get(i + 1).imag();
+                                if ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2) < 100)
+  				  g.drawLine(x1, y1, x2, y2);
+
+			}
+		}
+	}
+
+
+
+@ @<Further methods in |CurveBin|@>=
+	private void drawPoints() {
+		for (int i = 0; i < points.size(); i++) {
+			Complex temp = points.get(i);
+			int x = (int) (temp.real());
+			int y = (int) (temp.imag());
+                        g.setColor(Color.green);
+			g.fillOval(x - 5, y - 5, 10, 10);
+		}
+
+	}
+
+
+  
