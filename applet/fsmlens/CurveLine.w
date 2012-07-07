@@ -224,10 +224,10 @@ public class CurveLine {
 
 @ @<Methods in |CurveLine|@>=
   void zp_recalc()
-    { double fl = points[2].getPnt().div(points[1].getPnt()).real();
-      Complex dz1,dz2;
+    { Complex dz1,dz2;
       dz1 = points[1].getPnt().subtract(points[0].getPnt());
       dz2 = points[2].getPnt().subtract(points[0].getPnt());
+      double fl = dz2.div(dz1).real();
       for (int k=0; k<curvW; k++)
         { zp[k].set(points[0].getPnt());
           if (k > 0)
@@ -245,9 +245,9 @@ public class CurveLine {
 
 @ @<Methods in |CurveLine|@>=
   void rp_recalc()
-    { double fl = points[2].getPnt().div(points[1].getPnt()).real();
-      Complex dz1 = points[1].getPnt().subtract(points[0].getPnt());
+    { Complex dz1 = points[1].getPnt().subtract(points[0].getPnt());
       Complex dz2 = points[2].getPnt().subtract(points[0].getPnt());
+      double fl = dz2.div(dz1).real();
       for (int k=0; k<curvW; k++)
         { Complex dz = zp[k].subtract(points[0].getPnt());
           if (k < curvH)

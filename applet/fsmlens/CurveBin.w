@@ -267,9 +267,7 @@ added at the end of the vector
 @ @<Draw the extra points@>=
   for (int i=0; i<dataBase.size(); i++)
     { CurveLine sad = dataBase.get(i);
-      sad.printCurves();
-      System.out.println(sad.curvW);
-      sad.zp_recalc();
+      @<Draw newfangled curves@>
       for (int k=1; k<sad.curvW; k++)
         { int x = (int)(sad.zp[k].real()+0.5);
           int y = (int)(sad.zp[k].imag()+0.5);
@@ -278,5 +276,57 @@ added at the end of the vector
         }
     }
 
+@ @<Draw newfangled curves@>=
+  int H = sad.curvH;
+  int W = 2*H-1;
+  Complex[] z = sad.zp;
+  curv(z,0,1,W-1,2);
+  curv(z,1,2,0,3);
+  for (int k=2; k<H-2; k++)
+    curv(z,k,k+1,k-1,k+2);
+  curv(z,H-2,H-1,H-3,0);
+  curv(z,H-1,0,H-2,H);
+  curv(z,0,H,H-1,H+1);
+  curv(z,H,H+1,0,H+2);
+  for (int k=H+1; k<2*H-3; k++)
+    curv(z,k,k+1,k-1,k+2);
+  curv(z,W-2,W-1,W-3,0);
+  curv(z,W-1,0,W-2,1);
+
+
 
   
+@ @<Further methods in |CurveBin|@>=
+  void curvli(Complex[] z, int i, int j, int k, int l)
+    { int x1,y1,x2,y2;
+      x1 = (int) (z[i].real()+0.5);
+      y1 = (int) (z[i].imag()+0.5);
+      x2 = (int) (z[j].real()+0.5);
+      y2 = (int) (z[j].imag()+0.5);
+      g.drawLine(x1,y1,x2,y2);
+    }
+
+@ @<Further methods in |CurveBin|@>=
+  void curv(Complex[] z, int i, int j, int k, int l)
+    { int xo=0,yo=0,x,y;
+      Complex a,b,am,bp,w;
+      a = z[i]; b = z[j];
+      am = b.subtract(z[k]).times(0.2).add(a);
+      bp = a.subtract(z[l]).times(0.2).add(b);
+      for (int n=0; n<11; n++)
+        { double t,omt;
+          t = 0.1*n; omt = 1 - t;
+	  w = a.times(omt*omt*omt);
+          w.set(w.add(am.times(3*t*omt*omt)));
+          w.set(w.add(bp.times(3*t*t*omt)));
+          w.set(w.add(b.times(t*t*t)));
+          x = (int) (w.real()+0.5);
+          y = (int) (w.imag()+0.5);
+	  if (n > 0)
+            g.drawLine(xo,yo,x,y);
+          xo = x; yo = y;
+        }
+    }
+
+
+
