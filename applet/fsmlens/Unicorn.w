@@ -3,7 +3,7 @@
 @(Unicorn.java@>=
   package fsmlens;
   @<Imports for |Unicorn|@>
-  public class Unicorn extends UBase implements ActionListener, MouseListener, MouseMotionListener
+  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener
     { @<Code to read and show raw lenses@>
       @<Drawing curves with the mouse@>
       @<get the Picture out@>
@@ -49,7 +49,12 @@ import javax.imageio.stream.*;
 import javax.imageio.metadata.*;
 import static java.lang.Math.*;
 
-
+@ @<Code to read and show raw lenses@>=
+  public void drawAxes(double r)
+    { super.reset();
+      xmin = ymax = 0; xmax = wd; ymin = ht;
+      setColor(Color.green.getRGB());
+    }
 
 
 @ @<Code to read and show raw lenses@>=
@@ -95,7 +100,7 @@ import static java.lang.Math.*;
 @ @<Code to read and show raw lenses@>=
 
   Monster home;
-  Graphics g;
+//  Graphics g;
   Image img;
   BufferedImage intensity = null;
   
@@ -103,11 +108,11 @@ import static java.lang.Math.*;
     { str = "images/" + str;
       JApplet app = new JApplet();
       Image img = app.getToolkit().getImage(getClass().getResource(str));
-      image = toBufferedImage(img,wd,ht);
+      image = toBufferedImage(img,wd,ht); image = null;
       @<check if there is alpha channel with intensity@>
       imageOrg = image;
-      g = image.getGraphics();
-      g.setColor(Color.blue);
+//      g = image.getGraphics();
+//      g.setColor(Color.blue);
       drawAxes(1);
     }
 
@@ -162,12 +167,16 @@ import static java.lang.Math.*;
                 
             }
             
-            Complex mouseClickLocation = new Complex(x1N,y1N);
+            Complex mouseClickLocation = new Complex(x1,y1);
+            System.out.println("Click at "+x1+" "+y1);
+            drawPoint(x1,y1);
+            repaint();
+            if (5 > 3) return;
             
             if(curveBin == null)
             {
                 
-                curveBin = new CurveBin(mouseClickLocation,g);            
+                curveBin = new CurveBin(this,mouseClickLocation);            
 
                 // TODO check if this g remains valid (or is a new one created every time on update...)
             }
@@ -208,20 +217,20 @@ import static java.lang.Math.*;
 
     synchronized void mouseDragCalc(MouseEvent event)
     {
-        reset();
+//        reset();
         drawAxes(1);
         x2N = event.getX();
         y2N = event.getY();
        
        
-        mouseDraggedLocation = new Complex(x2N,y2N);
+        mouseDraggedLocation = new Complex(x(x2N),y(y2N));
         
         if(quadrLine.equals("Line"))
     
         {
             
          
-            curveBin.updatePoint(mouseDraggedLocation,g);
+            curveBin.updatePoint(mouseDraggedLocation);
             repaint();
             // TODO expand this in case of multiple curveBin
             
@@ -267,9 +276,9 @@ import static java.lang.Math.*;
 @ @<Drawing the source@>=
     public void drawSource(int xMax, int yMax)
     {
-        g.setColor(Color.white);
-        g.fillOval(xMax,yMax,10,10);
-        repaint();
+//        g.setColor(Color.white);
+//        g.fillOval(xMax,yMax,10,10);
+//        repaint();
     }
 
 
