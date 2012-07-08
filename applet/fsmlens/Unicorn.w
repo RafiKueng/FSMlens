@@ -56,7 +56,6 @@ import static java.lang.Math.*;
   public Unicorn(Monster home, int picSize, Illus illus)
     { super(picSize,picSize);
       this.home = home;
-      //this.cuveLines = cuveLines;
       this.picSize = picSize; 
       this.illus = illus;
       rgbPix = new int[picSize][picSize][2];
@@ -66,7 +65,6 @@ import static java.lang.Math.*;
       rect.addActionListener(this);
       hook.add(choice);
       hook.add(rect);
-      //hook.setBackground(Color.black);
       addMouseListener(this);
       addMouseMotionListener(this);
       rgbMatrix();
@@ -104,8 +102,6 @@ import static java.lang.Math.*;
 
   Monster home;
   Graphics g;
-  //CuveLines cuveLines; //Global cuveLine
-  //CuveLines cuveLines2;
   Image img;
   BufferedImage imgrect = null;
   BufferedImage intensity = null;
@@ -142,13 +138,7 @@ import static java.lang.Math.*;
     public void mouseExited(MouseEvent event) { }
     public void mouseReleased(MouseEvent event) { }
     public void mouseMoved(MouseEvent event) { }
-
-
-@ @<Drawing curves with the mouse@>=
-    public void mouseClicked(MouseEvent event)
-    {
-        //System.out.println("click on "+x(event.getX())+" "+y(event.getY()));
-    }
+    public void mouseClicked(MouseEvent event) { }
 
 
 @ @<Drawing curves with the mouse@>=
@@ -168,8 +158,6 @@ import static java.lang.Math.*;
 
       int mouseModif = event.getModifiers();
 
-//      System.out.println("unic/mpressed " + x1N+" / " + y1N);
-
       double[] maxVal2 = new double[3];
       if(quadrLine.equals("Rectangle")){
         if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
@@ -184,16 +172,12 @@ import static java.lang.Math.*;
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
         repaint();
         }
-        // if mouse is clicke a new cuveLine is drawn
       if(quadrLine.equals("Line")){
-        //    System.out.println("unic/mpres/line " + event.getButton());
             
             if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
-//                System.out.println("in Mouse Event Button 3 pressed");
-                //state=!state;
                 
-                /* TODO select the CurveBin whitch is selected and should be modified */
+                // TODO select the CurveBin whitch is selected and should be modified
                 
             }
             
@@ -201,23 +185,19 @@ import static java.lang.Math.*;
             
             if(curveBin == null)
             {
-//                System.out.println("unic/mpres/line/if1 ");
                 
                 curveBin = new CurveBin(mouseClickLocation,g);            
 
-                /*TODO check if this g remains valid (or is a new one created every time on update...)*/
+                // TODO check if this g remains valid (or is a new one created every time on update...)
             }
             
             else if (event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
-//                System.out.println("unic/mpres/line/if2 ");
                 curveBin.expandCurve(mouseClickLocation);
             }
             
             else if (event.getButton()==MouseEvent.BUTTON1 || mouseModif==18)
             {
-//                System.out.println("unic/mpres/line/if3 ");
-//                curveBin.updatePoint(mouseClickLocation);
             }
             
             
@@ -229,10 +209,6 @@ import static java.lang.Math.*;
             repaint();
         }
         
-//        System.out.println("unic/mousepressed: printing points");
-//        if(curveBin!=null){
-//          curveBin.printPoints();
-//          }       
     }
 
 
@@ -252,7 +228,6 @@ import static java.lang.Math.*;
     synchronized void mouseDragCalc(MouseEvent event)
     {
         reset();
-        //erase();
         drawAxes(1);
         x2N = event.getX();
         y2N = event.getY();
@@ -266,12 +241,11 @@ import static java.lang.Math.*;
          
             curveBin.updatePoint(mouseDraggedLocation,g);
             repaint();
-            /*TODO expand this in case of multiple curveBin */
+            // TODO expand this in case of multiple curveBin
             
         }
 
         rgbMatrix();
-        //points = curveBin.getPoints();
         dataBase = curveBin.getData();
         double[] maxVal2 = new double[3];
         Complex point;
@@ -281,7 +255,6 @@ import static java.lang.Math.*;
           exPoints = dataBase.get(i).points;
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
-//            System.out.println(exPoints[j].getExtrema());
             if(exPoints[j].getExtrema() == "H"){
                 masscenter[0] = x(complex.real());
                 masscenter[1] = y(complex.imag());
@@ -304,7 +277,6 @@ import static java.lang.Math.*;
             }
         } 
         sort();
-        //illus.ghostWrite(curveBin.dataBase,picSize);
         setPoints();
     }
 
@@ -326,7 +298,6 @@ import static java.lang.Math.*;
     repaint();    
     rgbMatrix();
     maxKoord.clear();
-    //imageOrg = null;
     }
 
 @ @< Reset the curves@>=
