@@ -203,25 +203,6 @@ added at the end of the vector
 	}
 
 
-@ @<Further methods in |CurveBin|@>=
-	private void drawCurve() {
-		Iterator<CurveLine> iter = dataBase.iterator();
-		while (iter.hasNext()) {
-			Vector<Complex> vec = iter.next().curve();
-			int x1, x2, y1, y2;
-			for (int i = 0; i < vec.size() - 1; i++) {
-				x1 = (int) vec.get(i).real();
-				y1 = (int) vec.get(i).imag();
-				x2 = (int) vec.get(i + 1).real();
-
-				y2 = (int) vec.get(i + 1).imag();
-                                if ((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2) < 100)
-  				  g.drawLine(x1, y1, x2, y2);
-
-			}
-		}
-	}
-
 
 
 @ @<Further methods in |CurveBin|@>=
