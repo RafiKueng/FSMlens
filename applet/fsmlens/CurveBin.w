@@ -224,7 +224,9 @@ added at the end of the vector
 
 @ @<Further methods in |CurveBin|@>=
 	public void draw() {
-		this.drawCurve();
+//		this.drawCurve();
+		Iterator<CurveLine> iter = dataBase.iterator();
+		while (iter.hasNext()) iter.next().calcNodes();
 		this.drawPoints();
 	}
 

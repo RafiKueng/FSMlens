@@ -106,7 +106,7 @@ public class CurveLine {
 	}
 
 @ @<Methods in |CurveLine|@>=
-	private void calcNodes() {
+	void calcNodes() {
 		updateExtrema();//<----------------------------------------Perhaps is better to calle this update function in some other place
 		Complex inPoints[]=new Complex[3];
 		for(int i=0;i<3;i++)

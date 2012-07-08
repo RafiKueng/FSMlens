@@ -80,7 +80,7 @@ import static java.lang.Math.*;
   public void actionPerformed(ActionEvent event)
     { showImage((String) choice.getSelectedItem());
       quadrLine = ((String) rect.getSelectedItem());
-      System.out.println("repainting"); repaint();
+      repaint();
     }    
 
 
@@ -168,7 +168,7 @@ import static java.lang.Math.*;
 
       int mouseModif = event.getModifiers();
 
-      System.out.println("unic/mpressed " + x1N+" / " + y1N);
+//      System.out.println("unic/mpressed " + x1N+" / " + y1N);
 
       double[] maxVal2 = new double[3];
       if(quadrLine.equals("Rectangle")){
@@ -182,15 +182,15 @@ import static java.lang.Math.*;
         else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
         BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2); 
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
-        System.out.println("repainting"); repaint();
+        repaint();
         }
         // if mouse is clicke a new cuveLine is drawn
       if(quadrLine.equals("Line")){
-            System.out.println("unic/mpres/line " + event.getButton());
+        //    System.out.println("unic/mpres/line " + event.getButton());
             
             if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
-                System.out.println("in Mouse Event Button 3 pressed");
+//                System.out.println("in Mouse Event Button 3 pressed");
                 //state=!state;
                 
                 /* TODO select the CurveBin whitch is selected and should be modified */
@@ -201,7 +201,7 @@ import static java.lang.Math.*;
             
             if(curveBin == null)
             {
-                System.out.println("unic/mpres/line/if1 ");
+//                System.out.println("unic/mpres/line/if1 ");
                 
                 curveBin = new CurveBin(mouseClickLocation,g);            
 
@@ -210,13 +210,13 @@ import static java.lang.Math.*;
             
             else if (event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
-                System.out.println("unic/mpres/line/if2 ");
+//                System.out.println("unic/mpres/line/if2 ");
                 curveBin.expandCurve(mouseClickLocation);
             }
             
             else if (event.getButton()==MouseEvent.BUTTON1 || mouseModif==18)
             {
-                System.out.println("unic/mpres/line/if3 ");
+//                System.out.println("unic/mpres/line/if3 ");
 //                curveBin.updatePoint(mouseClickLocation);
             }
             
@@ -226,10 +226,10 @@ import static java.lang.Math.*;
                 System.out.println("!!!!!! Error, this else should never occur... in MousePressed");
             }
 
-            System.out.println("repainting"); repaint();
+            repaint();
         }
         
-        System.out.println("unic/mousepressed: printing points");
+//        System.out.println("unic/mousepressed: printing points");
         if(curveBin!=null){
           curveBin.printPoints();
           }       
@@ -242,7 +242,14 @@ import static java.lang.Math.*;
     Vector<Complex> points = new Vector<Complex>();
     Vector<CurveLine> dataBase = new Vector<CurveLine>();
     ComplexExtend[] exPoints = new ComplexExtend[3];
+
     public void mouseDragged(MouseEvent event)
+    { mouseDragCalc(event);
+      repaint();
+    }
+
+
+    synchronized void mouseDragCalc(MouseEvent event)
     {
         reset();
         //erase();
@@ -258,7 +265,7 @@ import static java.lang.Math.*;
             
          
             curveBin.updatePoint(mouseDraggedLocation,g);
-            System.out.println("repainting"); repaint();
+            repaint();
             /*TODO expand this in case of multiple curveBin */
             
         }
@@ -274,7 +281,7 @@ import static java.lang.Math.*;
           exPoints = dataBase.get(i).points;
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
-            System.out.println(exPoints[j].getExtrema());
+//            System.out.println(exPoints[j].getExtrema());
             if(exPoints[j].getExtrema() == "H"){
                 masscenter[0] = x(complex.real());
                 masscenter[1] = y(complex.imag());
@@ -299,7 +306,6 @@ import static java.lang.Math.*;
         sort();
         //illus.ghostWrite(curveBin.dataBase,picSize);
         setPoints();
-        System.out.println("repainting"); repaint();
     }
 
     
@@ -309,7 +315,7 @@ import static java.lang.Math.*;
     {
         g.setColor(Color.white);
         g.fillOval(xMax,yMax,10,10);
-        System.out.println("repainting"); repaint();
+        repaint();
     }
 
 
@@ -317,7 +323,7 @@ import static java.lang.Math.*;
     public void reset()
     {
     showImage((String) choice.getSelectedItem());
-    System.out.println("repainting"); repaint();    
+    repaint();    
     rgbMatrix();
     maxKoord.clear();
     //imageOrg = null;
