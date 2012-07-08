@@ -43,7 +43,7 @@
       sour_txt.addActionListener(this);  @/
       cstep_txt = new InputField("step",4," ",hook);
       cstep_txt.addActionListener(this);  @/
-      zm_txt = new InputField("zm",3," ",hook);
+      zm_txt = new InputField("zm",3," ",new JPanel()); // Dummy
       zm_txt.addActionListener(this);
     }
 

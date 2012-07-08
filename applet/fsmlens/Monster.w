@@ -48,7 +48,7 @@
       @<Put plots to East@>
       @<Put raw image in the middle@>
       setWaiting();
-      show("Lens model applet version 0.1", "Show window");
+      show("Flying Spaghetti Monster Lens version 0.2", "Show window");
     }
 
 @ @<Print startup information@>=
@@ -97,10 +97,10 @@
   synthimg = new Synthimg(this,unicorn,picSize);
   synth = new Synth(this,unicorn,synthimg,picSize);
   FigDeck pd = new FigDeck();
-  pd.addFigure("pixellation",lenses.plotPix);
+  pd.addFigure("arrival time",lenses.plotArriv);
   pd.addFigure("mass",lenses.plotMass);
   pd.addFigure("potential",lenses.plotPoten);
-  pd.addFigure("arrival time",lenses.plotArriv);
+  pd.addFigure("pixellation",lenses.plotPix);
   mainPane.add("East",pd);
 
 @ @<Put raw image in the middle@>=

@@ -43,7 +43,7 @@
   if (Dual.mode() != 0)
     { cstep_txt = new InputField("step",5," ",hook);
       cstep_txt.addActionListener(this);  @/
-      zm_txt = new InputField("zm",3," ",hook);
+      zm_txt = new InputField("zm",3," ",new JPanel());  // Dummy
       zm_txt.addActionListener(this);  @/
     }
 

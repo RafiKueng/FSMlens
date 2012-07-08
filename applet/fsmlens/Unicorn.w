@@ -60,11 +60,11 @@ import static java.lang.Math.*;
       this.illus = illus;
       rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
-      rect = new JComboBox();
+//      rect = new JComboBox();
       choice.addActionListener(this);
-      rect.addActionListener(this);
+//      rect.addActionListener(this);
       hook.add(choice);
-      hook.add(rect);
+//      hook.add(rect);
       addMouseListener(this);
       addMouseMotionListener(this);
       rgbMatrix();
@@ -74,11 +74,13 @@ import static java.lang.Math.*;
 
 @ @<Code to read and show raw lenses@>=
   JComboBox choice;
-  JComboBox rect;
+//  JComboBox rect;
   public void actionPerformed(ActionEvent event)
-    { showImage((String) choice.getSelectedItem());
-      quadrLine = ((String) rect.getSelectedItem());
-      repaint();
+    { if (event.getSource() == choice)
+        { showImage((String) choice.getSelectedItem());
+//        quadrLine = ((String) rect.getSelectedItem());
+          repaint();
+        }
     }    
 
 
@@ -91,8 +93,8 @@ import static java.lang.Math.*;
         choice.addItem("EinsteinCross.png");
         choice.addItem("pngTranspDemo.png");
 
-        rect.addItem("Line");
-        rect.addItem("Rectangle");
+//        rect.addItem("Line");
+//        rect.addItem("Rectangle");
   
 
 
@@ -103,7 +105,7 @@ import static java.lang.Math.*;
   Monster home;
   Graphics g;
   Image img;
-  BufferedImage imgrect = null;
+//  BufferedImage imgrect = null;
   BufferedImage intensity = null;
   
   void showImage(String str)
@@ -159,6 +161,7 @@ import static java.lang.Math.*;
       int mouseModif = event.getModifiers();
 
       double[] maxVal2 = new double[3];
+/*
       if(quadrLine.equals("Rectangle")){
         if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
           { g.setColor(Color.red); oneortwo=2;}
@@ -172,6 +175,8 @@ import static java.lang.Math.*;
         maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
         repaint();
         }
+*/
+
       if(quadrLine.equals("Line")){
             
             if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
@@ -236,6 +241,7 @@ import static java.lang.Math.*;
         mouseDraggedLocation = new Complex(x2N,y2N);
         
         if(quadrLine.equals("Line"))
+    
         {
             
          
