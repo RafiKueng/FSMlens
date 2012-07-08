@@ -11,7 +11,7 @@
   import java.awt.Graphics.*;
   import java.lang.Object.*;
   import java.util.*;
-  public class Synthimg extends Figure
+  public class Synthimg extends UBase
     {
         @<Code to generate synth pic@>
         @<set somer picture@>

@@ -13,7 +13,7 @@ This file is not doing anything.
   import java.awt.Graphics.*;
   import java.lang.Object.*;
   import java.util.*;
-  public class Synth extends Figure implements ActionListener
+  public class Synth extends UBase implements ActionListener
     {
         @<Code to generate synth pic@>
         @<set somer picture@>

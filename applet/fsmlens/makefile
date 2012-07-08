@@ -1,7 +1,7 @@
 all:	Monster.java Illus.java Tuple.java \
         LensBase.java LensPix.java LensPrior.java LensData.java \
         LensPost.java Lens.java Lenses.java \
-	Unicorn.java Synth.java Synthimg.java \
+	UBase.java Unicorn.java Synth.java Synthimg.java \
         CurveBin.java Complex.java CurveLine.java ComplexExtend.java\
         PlotPix.java PlotMass.java PlotPoten.java PlotArriv.java \
         Poten.java Shear.java Cosm.java Simpwalk.java
@@ -13,6 +13,9 @@ Monster.java: Monster.w
 
 Illus.java: Illus.w
 	javatangle Illus.w
+
+UBase.java: UBase.w
+	javatangle UBase.w
 
 Unicorn.java: Unicorn.w
 	javatangle Unicorn.w

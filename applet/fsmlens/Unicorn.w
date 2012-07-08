@@ -3,7 +3,7 @@
 @(Unicorn.java@>=
   package fsmlens;
   @<Imports for |Unicorn|@>
-  public class Unicorn extends Figure implements ActionListener, MouseListener, MouseMotionListener
+  public class Unicorn extends UBase implements ActionListener, MouseListener, MouseMotionListener
     { @<Code to read and show raw lenses@>
       @<Drawing curves with the mouse@>
       @<get the Picture out@>
@@ -421,3 +421,5 @@ import static java.lang.Math.*;
      illus.setKoord(maxKoord);
     }
     
+
+  
