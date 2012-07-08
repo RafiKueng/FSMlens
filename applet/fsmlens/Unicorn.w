@@ -230,9 +230,9 @@ import static java.lang.Math.*;
         }
         
 //        System.out.println("unic/mousepressed: printing points");
-        if(curveBin!=null){
-          curveBin.printPoints();
-          }       
+//        if(curveBin!=null){
+//          curveBin.printPoints();
+//          }       
     }
 
 

@@ -81,7 +81,6 @@ vector points which is closest to the given number.
 				q = p;
 			}
 		}
-                System.out.println("closest point"+q+" "+dsmin);
 		return q;
 	}
 
@@ -118,41 +117,13 @@ coordinates of a given complex number
           return dataBase;
         }
 
-@ Updating the point closest to a given event with the coordinates of
-the given event
 
-@<Old methods in |CurveBin|@>=
-	public void updatePoint(Complex event, Graphics g) {
-		this.g = g;
-		int q = this.findeClosest(event);
-		points.get(q).set(event);
-                this.draw();
-	}
-	public void updatePoint(Complex event) {
-		int q = this.findeClosest(event);
-
-		points.get(q).set(event);
-
-		this.draw();
-	}
 
 @ @<Methods in |CurveBin|@>=
 	public CurveLine getCurve(int index) {
 		return dataBase.get(index);
 	}
 
-@ @<Methods in |CurveBin|@>=
-	public void printPoints() {
-		System.out.println("the points used at the moment are: ");
-		for (int i = 0; i < points.size(); i++) {
-			points.get(i).printNumber();
-		}
-                for (int i=0; i<dataBase.size(); i++)
-                  {
-                     dataBase.get(i).printCurves();
-                   }
-		System.out.println();
-	}
 
 @ This function uses a given mouse event and expands the closest
 maxima/minima in to a saddle point and to maximas/minias param event a
@@ -226,8 +197,9 @@ added at the end of the vector
 	public void draw() {
 //		this.drawCurve();
 		Iterator<CurveLine> iter = dataBase.iterator();
-		while (iter.hasNext()) iter.next().calcNodes();
+		while (iter.hasNext()) iter.next().updateExtrema();
 		this.drawPoints();
+                System.out.println("sizes "+points.size()+" "+zps.size());
 	}
 
 
@@ -273,7 +245,6 @@ added at the end of the vector
       for (int k=1; k<sad.curvW; k++)
         { int x = (int)(sad.zp[k].real()+0.5);
           int y = (int)(sad.zp[k].imag()+0.5);
-          System.out.println(k+" "+x+" "+y);
           g.fillOval(x-2,y-2,4,4);
         }
     }
@@ -296,17 +267,6 @@ added at the end of the vector
   curv(z,W-1,0,W-2,1);
 
 
-
-  
-@ @<Further methods in |CurveBin|@>=
-  void curvli(Complex[] z, int i, int j, int k, int l)
-    { int x1,y1,x2,y2;
-      x1 = (int) (z[i].real()+0.5);
-      y1 = (int) (z[i].imag()+0.5);
-      x2 = (int) (z[j].real()+0.5);
-      y2 = (int) (z[j].imag()+0.5);
-      g.drawLine(x1,y1,x2,y2);
-    }
 
 @ @<Further methods in |CurveBin|@>=
   void curv(Complex[] z, int i, int j, int k, int l)
