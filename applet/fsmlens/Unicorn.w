@@ -155,7 +155,6 @@ import static java.lang.Math.*;
       oneortwo = 1;
       subimageSize = 25;
       squareOne();
-      //drawPoint(0.2,0.2);
       repaint();
       x1N = event.getX();
       y1N = event.getY();
@@ -227,7 +226,6 @@ import static java.lang.Math.*;
     {
        squareOne();
       setColor(Color.green.getRGB());
-      //drawPoint(0.3,0.3);
       repaint();
         x2N = event.getX();
         y2N = event.getY();
@@ -264,7 +262,7 @@ import static java.lang.Math.*;
                 }
             if(exPoints[j].getExtrema() != "H"){
                 x1N = xpix(complex.real());
-                y1N = ht - ypix(complex.imag());
+                y1N = ypix(complex.imag());
         System.out.println("Reversibility check: "+
            complex.real()+" "+x1N+" "+x(x1N)+" "+
            complex.imag()+" "+y1N+" "+y(y1N));
@@ -396,7 +394,7 @@ import static java.lang.Math.*;
    public void sort(){
    double[] masscent = new double[2];
    ArrayList<double[]> maxKoordProv = new ArrayList<double[]>();
-   double[] sort = new  double[3];
+   double[] sort = new double[3];
    Vector<Integer> length = new Vector<Integer>();
    for(int i=0; i<maxKoord.size();i++){
      sort = maxKoord.get(i);
@@ -407,7 +405,7 @@ import static java.lang.Math.*;
    for(int i=0; i<maxKoord.size();i++){
        sort = maxKoord.get(i);
        double sxy = sqrt(xpix(sort[0])*xpix(sort[0])+
-                         (0-ypix(sort[1]))*(0-ypix(sort[1])));
+                         ypix(sort[1])*ypix(sort[1]));
        int leng = (int) sxy;
        if(length.contains(leng)==false){
          if(sort[2]==1) maxKoordProv.add(sort);
@@ -418,7 +416,7 @@ import static java.lang.Math.*;
    for(int i=0; i<maxKoord.size();i++){
        sort = maxKoord.get(i);
        double sxy = sqrt(xpix(sort[0])*xpix(sort[0])+
-                         (0-ypix(sort[1]))*(0-ypix(sort[1])));
+                         ypix(sort[1])*ypix(sort[1]));
        int leng = (int) sxy;
        if(length2.contains(leng)==false){
          if(sort[2]==2) maxKoordProv.add(sort);
