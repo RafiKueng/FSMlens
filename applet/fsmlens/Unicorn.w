@@ -160,6 +160,9 @@ import static java.lang.Math.*;
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
+      x1 = 2.0*x1N/((double)picSize)-1.0;
+      y1 = 1.0-2.0*y1N/((double)picSize);
+      System.out.println(x1N + " " + y1N + " " + x1 + " " + y1);
 
       int mouseModif = event.getModifiers();
 
@@ -175,7 +178,7 @@ import static java.lang.Math.*;
             }
             
             Complex mouseClickLocation = new Complex(x1N,y1N);
-            mouseClickLocation = new Complex(x1,y1);
+           // mouseClickLocation = new Complex(x1N,y1N);
             
             if(curveBin == null)
             {
@@ -230,15 +233,16 @@ import static java.lang.Math.*;
         double x,y;
         x = x(x2N);
         y = y(y2N);
-       
+        x = 2.0*x2N/((double)picSize)-1;
+        y = 1-2.0*y2N/((double)picSize);
         mouseDraggedLocation = new Complex(x2N,y2N);
-        mouseDraggedLocation = new Complex(x,y);
+      //  mouseDraggedLocation = new Complex(x,y);
+       System.out.println(x + " " + y + " " + x2N + " " + y2N);
         
         if(true)
     
         {
             
-         
             curveBin.updatePoint(mouseDraggedLocation,g);
             repaint();
             // TODO expand this in case of multiple curveBin
