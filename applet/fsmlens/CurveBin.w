@@ -86,10 +86,9 @@ vector points which is closest to the given number.
 coordinates of a given complex number
 
 @<TODO Methods in |CurveBin|@>=
-  public void redrawPoint(int index) { Complex temp=points.get(index); int
-	x=(int)(temp.real()); int y=(int)(temp.imag());
-//	g.fillOval(x-5,y-5,10,10); }
-	g.drawPoint(x,y); }
+  public void redrawPoint(int index) { Complex temp=points.get(index);
+	g.drawPoint(temp.real(),temp.imag());
+  }
 
 
 
@@ -206,13 +205,15 @@ added at the end of the vector
 
 @ @<Further methods in |CurveBin|@>=
 	private void drawPoints() {
+                g.setDotsize(4);
 		for (int i = 0; i < points.size(); i++) {
 			Complex temp = points.get(i);
-			int x = (int) (temp.real());
-			int y = (int) (temp.imag());
+//			int x = (int) (temp.real());
+//			int y = (int) (temp.imag());
 //			g.fillOval(x - 5, y - 5, 10, 10);
-//			g.drawPoint(x,y);
+			g.drawPoint(temp.real(),temp.imag());
 		}
+                g.setDotsize(2);
                 @<Draw the extra points@>
 
 	}
@@ -223,8 +224,9 @@ added at the end of the vector
     { CurveLine sad = dataBase.get(i);
       @<Draw newfangled curves@>
       for (int k=1; k<sad.curvW; k++)
-        { int x = (int)(sad.zp[k].real()+0.5);
-          int y = (int)(sad.zp[k].imag()+0.5);
+        { double x,y;
+          x = sad.zp[k].real();
+          y = sad.zp[k].imag();
 //          g.fillOval(x-2,y-2,4,4);
           g.drawPoint(x,y);
         }
@@ -251,7 +253,7 @@ added at the end of the vector
 
 @ @<Further methods in |CurveBin|@>=
   void curv(Complex[] z, int i, int j, int k, int l)
-    { int xo=0,yo=0,x,y;
+    { double xo=0,yo=0,x,y;
       Complex a,b,am,bp,w;
       a = z[i]; b = z[j];
       am = b.subtract(z[k]).times(0.2).add(a);
@@ -263,8 +265,8 @@ added at the end of the vector
           w.set(w.add(am.times(3*t*omt*omt)));
           w.set(w.add(bp.times(3*t*t*omt)));
           w.set(w.add(b.times(t*t*t)));
-          x = (int) (w.real()+0.5);
-          y = (int) (w.imag()+0.5);
+          x = w.real();
+          y = w.imag();
 	  if (n > 0)
             g.drawLine(xo,yo,x,y);
           xo = x; yo = y;

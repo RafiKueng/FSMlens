@@ -96,6 +96,7 @@ import static java.lang.Math.*;
   void squareOne()
     { super.reset();
       g.setColor(Color.green.getRGB());
+      lmar = rmar = tmar = bmar = 0;
       xmin = ymin = 0; xmax = ymax = picSize;
       drawAxes();
     }
