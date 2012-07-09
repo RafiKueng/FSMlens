@@ -9,8 +9,6 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.awt.Graphics.*;
-import java.lang.Object.*;
 import java.util.*;
 import java.util.Iterator;
 import java.util.Vector;
@@ -22,11 +20,11 @@ public class CurveBin {
 	Vector<Complex> zps = new Vector<Complex>();
 
 	Vector<CurveLine> dataBase = new Vector<CurveLine>();
-	private Graphics g;
+	private Unicorn g;
 
 
 	// Default constructor
-	public CurveBin(Graphics g) {
+	public CurveBin(Unicorn g) {
 		this.g = g;
 		Complex temp1 = new Complex(182, 72);
 		Complex temp2 = new Complex(100, 162);
@@ -39,7 +37,7 @@ public class CurveBin {
 
 
 	}
-	public CurveBin(Complex event, Graphics g) 
+	public CurveBin(Complex event, Unicorn g) 
 	{
 		this.g = g;
 		this.points.add(event);
@@ -90,7 +88,8 @@ coordinates of a given complex number
 @<TODO Methods in |CurveBin|@>=
   public void redrawPoint(int index) { Complex temp=points.get(index); int
 	x=(int)(temp.real()); int y=(int)(temp.imag());
-	g.fillOval(x-5,y-5,10,10); }
+//	g.fillOval(x-5,y-5,10,10); }
+	g.drawPoint(x,y); }
 
 
 
@@ -164,7 +163,7 @@ added at the end of the vector
 
 
 @ @<Further methods in |CurveBin|@>=
-  public void updatePoint(Complex event, Graphics g)
+  public void updatePoint(Complex event, Unicorn g)
     { this.g = g;
       int q=0,qz=0; double ds=0,dsmin=0,dsminz=0;
       for (int p = 0; p < points.size(); p++)
@@ -211,8 +210,8 @@ added at the end of the vector
 			Complex temp = points.get(i);
 			int x = (int) (temp.real());
 			int y = (int) (temp.imag());
-                        g.setColor(Color.green);
-			g.fillOval(x - 5, y - 5, 10, 10);
+//			g.fillOval(x - 5, y - 5, 10, 10);
+//			g.drawPoint(x,y);
 		}
                 @<Draw the extra points@>
 
@@ -226,7 +225,8 @@ added at the end of the vector
       for (int k=1; k<sad.curvW; k++)
         { int x = (int)(sad.zp[k].real()+0.5);
           int y = (int)(sad.zp[k].imag()+0.5);
-          g.fillOval(x-2,y-2,4,4);
+//          g.fillOval(x-2,y-2,4,4);
+          g.drawPoint(x,y);
         }
     }
 

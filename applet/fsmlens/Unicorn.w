@@ -93,9 +93,17 @@ import static java.lang.Math.*;
   
  
 @ @<Code to read and show raw lenses@>=
+  void squareOne()
+    { super.reset();
+      g.setColor(Color.green.getRGB());
+      xmin = ymin = 0; xmax = ymax = picSize;
+      drawAxes();
+    }
+
+@ @<Code to read and show raw lenses@>=
 
   Monster home;
-  Graphics g;
+  Unicorn g;
   Image img;
   BufferedImage intensity = null;
   
@@ -106,9 +114,12 @@ import static java.lang.Math.*;
       image = toBufferedImage(img,wd,ht);
       @<check if there is alpha channel with intensity@>
       imageOrg = image;
-      g = image.getGraphics();
-      g.setColor(Color.blue);
-      drawAxes(1);
+//      g = image.getGraphics();
+//      g.setColor(Color.blue);
+      g = this;
+      squareOne();
+      drawPoint(0.1,0.1);
+      repaint();
     }
 
     
@@ -129,9 +140,9 @@ import static java.lang.Math.*;
 @ @<Drawing curves with the mouse@>=
     public void mouseEntered(MouseEvent event) { }
     public void mouseExited(MouseEvent event) { }
+    public void mousePressed(MouseEvent event)  { }
     public void mouseReleased(MouseEvent event) { }
     public void mouseMoved(MouseEvent event) { }
-    public void mouseClicked(MouseEvent event) { }
 
 
 @ @<Drawing curves with the mouse@>=
@@ -139,11 +150,13 @@ import static java.lang.Math.*;
   boolean state=true;
   double oneortwo;
   int subimageSize;
-  public void mousePressed(MouseEvent event)
+  public void mouseClicked(MouseEvent event)
     { 
       oneortwo = 1;
       subimageSize = 25;
-      drawAxes(1);
+      squareOne();
+      drawPoint(0.2,0.2);
+      repaint();
       x1N = event.getX();
       y1N = event.getY();
       x1 = x(x1N);
@@ -163,6 +176,7 @@ import static java.lang.Math.*;
             }
             
             Complex mouseClickLocation = new Complex(x1N,y1N);
+            mouseClickLocation = new Complex(x1,y1);
             
             if(curveBin == null)
             {
@@ -208,13 +222,18 @@ import static java.lang.Math.*;
 
     synchronized void mouseDragCalc(MouseEvent event)
     {
-        reset();
-        drawAxes(1);
+       squareOne();
+      setColor(Color.green.getRGB());
+      drawPoint(0.3,0.3);
+      repaint();
         x2N = event.getX();
         y2N = event.getY();
-       
+        double x,y;
+        x = x(x2N);
+        y = y(y2N);
        
         mouseDraggedLocation = new Complex(x2N,y2N);
+        mouseDraggedLocation = new Complex(x,y);
         
         if(true)
     
@@ -267,8 +286,8 @@ import static java.lang.Math.*;
 @ @<Drawing the source@>=
     public void drawSource(int xMax, int yMax)
     {
-        g.setColor(Color.white);
-        g.fillOval(xMax,yMax,10,10);
+//        g.setColor(Color.white);
+//        g.fillOval(xMax,yMax,10,10);
         repaint();
     }
 
