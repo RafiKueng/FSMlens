@@ -160,7 +160,6 @@ import static java.lang.Math.*;
       y1N = event.getY();
       x1 = x(x1N);
       y1 = y(y1N);
-      System.out.println(x1N + " " + y1N + " " + x1 + " " + y1);
 
       int mouseModif = event.getModifiers();
 
@@ -258,14 +257,11 @@ import static java.lang.Math.*;
             complex = exPoints[j].getPnt();
             if(exPoints[j].getExtrema() == "H"){
                 masscenter[0] = complex.real();
-                masscenter[1] = complex.imag();
+                masscenter[1] = complex.imag();               
                 }
             if(exPoints[j].getExtrema() != "H"){
                 x1N = xpix(complex.real());
                 y1N = ypix(complex.imag());
-        System.out.println("Reversibility check: "+
-           complex.real()+" "+x1N+" "+x(x1N)+" "+
-           complex.imag()+" "+y1N+" "+y(y1N));
                 int kind;
                 if(exPoints[j].getExtrema() == "S") kind = 2;
                 else kind = 1;
@@ -381,9 +377,6 @@ import static java.lang.Math.*;
     if(pixIm.getRGB(xPos+xMax,yPos+yMax)<-1000) rgbPix[xMax+xPos][yMax+yPos][0] = -1;
     double[] maxVal = new double[3];
     maxVal[0] = x((double)(xMax+xPos)); maxVal[1] = y((double)(yMax+yPos));
-    System.out.println("pixel pos "+xPos+" "+yPos);
-    System.out.println("max pos   "+xMax+" "+yMax);
-    System.out.println("maxval "+maxVal[0]+" "+maxVal[1]);
     maxVal[2] = kind;
     maxKoord.add(maxVal);
     return maxVal;
@@ -408,7 +401,8 @@ import static java.lang.Math.*;
                          ypix(sort[1])*ypix(sort[1]));
        int leng = (int) sxy;
        if(length.contains(leng)==false){
-         if(sort[2]==1) maxKoordProv.add(sort);
+        // if(sort[2]==1) maxKoordProv.add(sort);
+         if(sort[2]==1) maxKoordProv.add(0,sort);
          length.add(leng);
          }
      }
