@@ -18,7 +18,6 @@
       @< Reset the curves@>
       @<sort maxKoord for illus@>
       @<full check of rgb@>
-      String quadrLine="Line"; 
       int x1N,y1N, picSize; 
       double x2N,y2N;
       int[][][] rgbPix;
@@ -60,11 +59,8 @@ import static java.lang.Math.*;
       this.illus = illus;
       rgbPix = new int[picSize][picSize][2];
       choice = new JComboBox();
-//      rect = new JComboBox();
       choice.addActionListener(this);
-//      rect.addActionListener(this);
       hook.add(choice);
-//      hook.add(rect);
       addMouseListener(this);
       addMouseMotionListener(this);
       rgbMatrix();
@@ -74,11 +70,9 @@ import static java.lang.Math.*;
 
 @ @<Code to read and show raw lenses@>=
   JComboBox choice;
-//  JComboBox rect;
   public void actionPerformed(ActionEvent event)
     { if (event.getSource() == choice)
         { showImage((String) choice.getSelectedItem());
-//        quadrLine = ((String) rect.getSelectedItem());
           repaint();
         }
     }    
@@ -93,8 +87,6 @@ import static java.lang.Math.*;
         choice.addItem("EinsteinCross.png");
         choice.addItem("pngTranspDemo.png");
 
-//        rect.addItem("Line");
-//        rect.addItem("Rectangle");
   
 
 
@@ -105,7 +97,6 @@ import static java.lang.Math.*;
   Monster home;
   Graphics g;
   Image img;
-//  BufferedImage imgrect = null;
   BufferedImage intensity = null;
   
   void showImage(String str)
@@ -161,23 +152,8 @@ import static java.lang.Math.*;
       int mouseModif = event.getModifiers();
 
       double[] maxVal2 = new double[3];
-/*
-      if(quadrLine.equals("Rectangle")){
-        if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
-          { g.setColor(Color.red); oneortwo=2;}
-        else if(event.getButton()==MouseEvent.BUTTON2 || mouseModif==24)
-          { g.setColor(Color.green); oneortwo=3;}
-        else{ g.setColor(Color.blue); oneortwo = 1;}
-        g.drawRect((x1N-subimageSize/2),(y1N-subimageSize/2),subimageSize,subimageSize);
-        if(imgInt != null) imgrect = imgInt.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
-        else  imgrect = imageOrg.getSubimage((x1N-(subimageSize-2)/2),(y1N-(subimageSize-2)/2),subimageSize-2,subimageSize-2);
-        BufferedImage img = toBufferedImage(imgrect,subimageSize-2,subimageSize-2); 
-        maxVal2 = checkRGB(img,x1N-subimageSize/2,y1N-subimageSize/2,(int)oneortwo);
-        repaint();
-        }
-*/
 
-      if(quadrLine.equals("Line")){
+      if(true){
             
             if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
@@ -240,7 +216,7 @@ import static java.lang.Math.*;
        
         mouseDraggedLocation = new Complex(x2N,y2N);
         
-        if(quadrLine.equals("Line"))
+        if(true)
     
         {
             
