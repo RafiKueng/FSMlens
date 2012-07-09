@@ -54,7 +54,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 	  this.synthimg = synthimg;
           copyButton = new JButton("Copy"); 
           copyButton.addActionListener(this);
-//	  hook.add(copyButton);
+	  hook.add(copyButton);
           reconstButton = new JButton("Source");
           reconstButton.addActionListener(this);
 //          hook.add(reconstButton);

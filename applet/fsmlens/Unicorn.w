@@ -96,7 +96,7 @@ import static java.lang.Math.*;
   void squareOne()
     { super.reset();
       g.setColor(Color.green.getRGB());
-      lmar = rmar = tmar = bmar = 0;
+      //lmar = rmar = tmar = bmar = 0;
       xmin = ymin = 0; xmax = ymax = picSize;
       xmin = ymin = -1; xmax = ymax = 1;
     }
@@ -155,7 +155,7 @@ import static java.lang.Math.*;
       oneortwo = 1;
       subimageSize = 25;
       squareOne();
-      drawPoint(0.2,0.2);
+      //drawPoint(0.2,0.2);
       repaint();
       x1N = event.getX();
       y1N = event.getY();
@@ -227,14 +227,13 @@ import static java.lang.Math.*;
     {
        squareOne();
       setColor(Color.green.getRGB());
-      drawPoint(0.3,0.3);
+      //drawPoint(0.3,0.3);
       repaint();
         x2N = event.getX();
         y2N = event.getY();
         double x,y;
         x = x(x2N);
-        y = y(y2N);
-        System.out.println("Drag coordinate "+x+" "+y);      
+        y = y(y2N);    
 //        mouseDraggedLocation = new Complex(x2N,y2N);
         mouseDraggedLocation = new Complex(x,y);
 
