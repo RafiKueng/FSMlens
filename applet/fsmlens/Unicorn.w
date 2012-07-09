@@ -98,7 +98,6 @@ import static java.lang.Math.*;
       g.setColor(Color.green.getRGB());
       lmar = rmar = tmar = bmar = 0;
       xmin = ymin = 0; xmax = ymax = picSize;
-      drawAxes();
     }
 
 @ @<Code to read and show raw lenses@>=
@@ -119,7 +118,6 @@ import static java.lang.Math.*;
 //      g.setColor(Color.blue);
       g = this;
       squareOne();
-      drawPoint(0.1,0.1);
       repaint();
     }
 
@@ -258,12 +256,12 @@ import static java.lang.Math.*;
           for( int j=0; j<3; j++){
             complex = exPoints[j].getPnt();
             if(exPoints[j].getExtrema() == "H"){
-                masscenter[0] = x(complex.real());
-                masscenter[1] = y(complex.imag());
+                masscenter[0] = complex.real();
+                masscenter[1] = complex.imag();
                 }
             if(exPoints[j].getExtrema() != "H"){
-                x1N = (int)complex.real();
-                y1N = (int)complex.imag();
+                x1N = xpix(complex.real());
+                y1N = ypix(complex.imag());
                 int kind;
                 if(exPoints[j].getExtrema() == "S") kind = 2;
                 else kind = 1;
