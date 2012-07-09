@@ -147,8 +147,8 @@ added at the end of the vector
 @<Methods in |CurveBin|@>=
 	public void expandCurve(Complex event) {
 		int q = this.findeClosest(event);
-		addPoint(event.add(new Complex(15, 15)));
-		addPoint(event.add(new Complex(-15, -15)));
+		addPoint(event.add(new Complex(0.1, 0.1)));
+		addPoint(event.add(new Complex(-0.1, -0.1)));
 		int size = points.size();
 		addCurve(points.get(q), points.get(size - 1), points.get(size - 2)); 
 		this.draw();
