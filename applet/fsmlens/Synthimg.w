@@ -63,7 +63,7 @@ public Synthimg(Monster home, Unicorn unicorn, int picSize)
 @ @<set somer picture@>=
   public int[][][] setPixPic()
     {    
-        String choose = unicorn.quadrLine;
+        String choose = "Line";
         int xNew=0,yNew=0;
         rgbPix = unicorn.getrgbMatrix();
         double[] sourcCoo = new double[3]; 

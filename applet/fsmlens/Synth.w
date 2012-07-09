@@ -34,7 +34,7 @@ This file is not doing anything.
         int[][][] pixCount;
         int picSize;
         double[] masscent = new double[2];
-        String choose;
+        String choose = "Line";
         int surSize = 3;
     }
 
@@ -72,7 +72,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
-          String quadrLine2 = unicorn.quadrLine;
         }
 
 
@@ -102,7 +101,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   public void setPic()
     {
         g.clearRect(0,0,picSize,picSize);
-        choose = unicorn.quadrLine;
 	rgbPix = unicorn.getrgbMatrix();
         drawPic();
         if(choose.equals("Rectangle")) unicorn.setPoints();
@@ -112,7 +110,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
-        choose = unicorn.quadrLine;
         setPic();
         pixCount = new int[picSize][picSize][2];
         int xNew=0,yNew=0;
