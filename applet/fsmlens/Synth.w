@@ -34,7 +34,7 @@ This file is not doing anything.
         int[][][] pixCount;
         int picSize;
         double[] masscent = new double[2];
-        String choose;
+        String choose = "Line";
         int surSize = 3;
     }
 
@@ -72,7 +72,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
           image = new BufferedImage(wd,ht,1);
           g = image.getGraphics();
 	  drawAxes(1);
-          String quadrLine2 = unicorn.quadrLine;
         }
 
 
@@ -102,7 +101,6 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
   public void setPic()
     {
         g.clearRect(0,0,picSize,picSize);
-        choose = unicorn.quadrLine;
 	rgbPix = unicorn.getrgbMatrix();
         drawPic();
         if(choose.equals("Rectangle")) unicorn.setPoints();
@@ -112,9 +110,11 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
 @ @<reconstruct the image plane@>=
   public void getPixPic()
     {    
-        choose = unicorn.quadrLine;
-        setPic();
+        rgbPix = new int[picSize][picSize][2];
         pixCount = new int[picSize][picSize][2];
+        resetMatrix();
+        drawPic();
+        setPic();
         int xNew=0,yNew=0;
         double[] sourcCoo = new double[3];     
         masscent = unicorn.masscenter;
@@ -174,7 +174,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
                   double[] sourcCooNew = new double[3]; 
  	          sourcCoo = home.sourCoord(sourcCoo);
                   xNew = xpix(sourcCoo[1]+masscent[0]); 
-	          yNew = ypix(sourcCoo[2]+masscent[1]);   
+	          yNew = ypix(sourcCoo[2]+masscent[1]);                    
                    if(choose.equals("Rectangle")){
                     xNew = xpix(sourcCoo[1]);
 	            yNew = ypix(sourcCoo[2]);
@@ -267,7 +267,7 @@ public Synth(Monster home, Unicorn unicorn, Synthimg synthimg, int picSize)
       if(nymin<=ymax) ymax = nymin;      
       }
     int outcast = 10;
-    xMax = xpix(xmin)+outcast; xMin = xpix(xmax)-outcast; yMax = ypix(ymin)+outcast; yMin = ypix(ymax)-outcast;
+    xMax = xpix(xmin)+outcast; xMin = xpix(xmax)-outcast; yMin = ypix(ymin)+outcast; yMax = ypix(ymax)-outcast;
     }
 
 

@@ -90,21 +90,14 @@ interactive stuff.  Space filler on top.
     }
 
 
-@ Now we start the drawing code. We put measurements mostly in pixels,
-but absolute coordinates are stored times |scl| and reconverted while
-painting.
+@ Now we start the drawing code.
 
 @<Coordinate-pixel conversion@>=
-  final int scl=1;
-  final double rscl=1;
   protected int xpix(double x)
-    { return scl*lmar + (int)(scl*(x-xmin)/(xmax-xmin)*(wd-lmar-rmar)+0.5);
+    { return lmar + (int)((x-xmin)/(xmax-xmin)*(wd-lmar-rmar)+0.5);
     }
   protected int ypix(double y)
-    { return scl*bmar + (int)(scl*(y-ymin)/(ymax-ymin)*(ht-bmar-tmar)+0.5);
-    }
-  int unscl(int n)
-    { return (int)(n/rscl+0.5);
+    { return ht - bmar - (int)((y-ymin)/(ymax-ymin)*(ht-bmar-tmar)+0.5);
     }
   protected double x(double nx)
     { return xmin + (nx-lmar)*(xmax-xmin)/(wd-lmar-rmar);
@@ -173,24 +166,24 @@ painting.
   else if (o instanceof int[])
     { int[] v = (int[]) o;  @/
       if (v[0]==1)
-        { nx = unscl(v[1]); ny = ht-unscl(v[2]);
+        { nx = v[1]; ny = v[2];
           g.fillOval(nx-v[3],ny-v[3],2*v[3],2*v[3]);
         }
       else if (v[0]==2)
-        { nx = unscl(v[1]); ny = ht-unscl(v[2]);
-          nnx = unscl(v[3]); nny = ht-unscl(v[4]);
+        { nx = v[1]; ny = v[2];
+          nnx = v[3]; nny = v[4];
           g.drawLine(nx,ny,nnx,nny);
         }
       else if (v[0]==4)
-        { nx = unscl(v[1]); ny = ht-unscl(v[2]);
-          nnx = unscl(v[3]); nny = unscl(v[4]);
+        { nx = v[1]; ny = v[2];
+          nnx = v[3]; nny = v[4];
           g.drawOval(nx,ny,nnx,nny);
         }
     }
   else if (o instanceof String)
     { int[] v = (int[]) list.elementAt(++i);
       String s = new String((String) o);  @/
-      nx = unscl(v[1]); ny = ht-unscl(v[2]);  @/
+      nx = v[1]; ny = v[2];  @/
       nx -= (1+v[3])*g.getFontMetrics().stringWidth(s)/2;
       ny += (1+v[4])*fontsize/2;  @/
       g.drawString(s,nx,ny);
