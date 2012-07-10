@@ -60,7 +60,8 @@ public class CurveLine {
 		Complex ext1=vec(points[0].getPnt(),points[1].getPnt());
 		Complex ext2=vec(points[0].getPnt(),points[2].getPnt());
 		angle=angle(ext1,ext2);
-		if(angle>=Math.PI/4.0 && angle<=3.0*Math.PI/4.0)
+		//if(angle>=Math.PI/4.0 && angle<=3.0*Math.PI/4.0)
+                if(Math.abs(angle)>=Math.PI/8.0)
 		{
 			//there are two minimas
 			points[1].setExtrema("L");
@@ -98,7 +99,8 @@ public class CurveLine {
 	}
 	public Complex vec(Complex x, Complex y)
 	{
-		return x.subtract(y);
+		//return x.subtract(y);
+                return y.subtract(x);
 	}
 
 	
