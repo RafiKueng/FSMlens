@@ -91,7 +91,7 @@
 
 @ @<Put plots to East@>=
 
-  int picSize = 400;
+  int picSize = 300;
   unicorn = new Unicorn(this,picSize,inp);
 
   synthimg = new Synthimg(this,unicorn,picSize);
@@ -105,7 +105,6 @@
 
 @ @<Put raw image in the middle@>=
   JPanel ip = new JPanel();  ip.setLayout(new BorderLayout());
-  //ip.setBackground(Color.black);
   ip.add("West",unicorn.getPanel());
   ip.add("East",synth.getPanel());
   mainPane.add("Center",ip);

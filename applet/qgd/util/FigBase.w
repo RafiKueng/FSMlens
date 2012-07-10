@@ -53,7 +53,7 @@ interactive stuff.  Space filler on top.
 @ @<Fields and constructor for |FigBase|@>=
   public FigBase(int ht, int wd)
     { this.ht = ht; this.wd = wd;  @/
-      setBackground(Color.white);  @/
+      setBackground(Color.black);  @/
       panel = new JPanel();  hook = new JPanel();
       @<Bury |hook|, |this|, |eps|, |txt| in |panel|@>
       @<Initialize fields in |FigBase|@>
@@ -154,8 +154,10 @@ painting.
 @ Now we start the output stuff.
 
 @<Screen output from |FigBase|@>=
-  public synchronized void paintComponent(Graphics g)
-    { super.paintComponent(g);
+  public synchronized void paintComponent(Graphics g1)
+    { super.paintComponent(g1);
+      Graphics2D g = (Graphics2D) g1;
+      g.setStroke(new BasicStroke(2));
       if (image!=null) g.drawImage(image,0,0,this);
       int fontsize = this.fontsize;
       g.setFont(new Font("Times", Font.PLAIN, fontsize));

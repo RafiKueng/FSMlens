@@ -86,12 +86,13 @@ import static java.lang.Math.*;
 
     
 @ @<Initialize fields in |Unicorn|@>=
-        choice.addItem("PG1115V.gif");
         choice.addItem("Q0047V.gif");
-        choice.addItem("PG1115V_gray.gif");
-        choice.addItem("PG1115V_gray.jpg");
+        choice.addItem("J0022+143.jpg");
+        choice.addItem("J1148+193.jpg");
+//        choice.addItem("J1206+514.jpg");
+        choice.addItem("serendib.png");
+        choice.addItem("PG1115V.gif");
         choice.addItem("EinsteinCross.png");
-        choice.addItem("pngTranspDemo.png");
 
 //        rect.addItem("Line");
 //        rect.addItem("Rectangle");
