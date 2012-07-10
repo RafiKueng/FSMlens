@@ -150,7 +150,7 @@ interactive stuff.  Space filler on top.
   public synchronized void paintComponent(Graphics g1)
     { super.paintComponent(g1);
       Graphics2D g = (Graphics2D) g1;
-      g.setStroke(new BasicStroke(2));
+//      g.setStroke(new BasicStroke(2));
       if (image!=null) g.drawImage(image,0,0,this);
       int fontsize = this.fontsize;
       g.setFont(new Font("Times", Font.PLAIN, fontsize));

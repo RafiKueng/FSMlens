@@ -155,8 +155,7 @@ import static java.lang.Math.*;
     { 
       oneortwo = 1;
       subimageSize = 25;
-      squareOne();
-      repaint();
+//      squareOne();
       x1N = event.getX();
       y1N = event.getY();
       x1 = x(x1N);
@@ -166,45 +165,35 @@ import static java.lang.Math.*;
 
       double[] maxVal2 = new double[3];
 
-      if(true){
             
-            if(event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
-            {
-                
-                // TODO select the CurveBin whitch is selected and should be modified
-                
-            }
-            
-
-//            Complex mouseClickLocation = new Complex(x1N,y1N);
-            Complex mouseClickLocation = new Complex(x1,y1);
+      Complex mouseClickLocation = new Complex(x1,y1);
+     
+      mouseClickLocation.printNumber();
+      System.out.println();
 
             
             if(curveBin == null)
             {
                 
-                curveBin = new CurveBin(mouseClickLocation,g);            
+                curveBin = new CurveBin(mouseClickLocation,g);
+                System.out.println("if0");
 
-                // TODO check if this g remains valid (or is a new one created every time on update...)
             }
             
             else if (event.getButton()==MouseEvent.BUTTON3 || mouseModif==20)
             {
                 curveBin.expandCurve(mouseClickLocation);
+                System.out.println("if1");
             }
             
             else if (event.getButton()==MouseEvent.BUTTON1 || mouseModif==18)
-            {
-            }
-            
-            
-            else 
-            {
-                System.out.println("!!!!!! Error, this else should never occur... in MousePressed");
+            {  System.out.println("if2");
             }
 
+            else  System.out.println("Should not happen");
+
+
             repaint();
-        }
         
     }
 
