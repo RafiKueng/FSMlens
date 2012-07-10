@@ -92,7 +92,7 @@
     { 
       this.picsize = picsize/2.0;
       StringBuffer strb = new StringBuffer("object UnicornInput \n");
-      strb.append("pixrad 8 \n");
+      strb.append("symm pixrad 8 \n");
       strb.append("zlens 0.3 \n");
       strb.append("g 14 \n");
 
@@ -144,11 +144,11 @@
     double[] maxVal = new double[3];
     str = new String("Unicorn Input");
     strb = new StringBuffer("object UnicornInput \n");
-    strb.append("pixrad 8 \n");
-    strb.append("zlens 0.311 \n");
+    strb.append("symm pixrad 8 \n");
+    strb.append("zlens 0.5 \n");
     strb.append("g 14 \n");
     int size = maxKoord.size();
-    strb.append("multi " + size + " 1.722  \n");
+    strb.append("multi " + size + " 1.0  \n");
     for(int i=0;i<size;i++)
       {
       maxVal = maxKoord.get(i);
