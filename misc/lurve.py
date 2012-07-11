@@ -64,7 +64,7 @@ class Lurve:
         if next[2]:
             next[2].trace(par[2]);
             
-    def point(self,z,r=2,col="black"):
+    def point(self,z,r=2,col="white"):
         x = z.real
         y = z.imag
         self.canv.create_oval(x-r,y-r,x+r,y+r,outline=col,fill=col)
@@ -82,16 +82,17 @@ class Lurve:
             w = a + t*(b-a)
             w = (1-t)**3 * a + 3*(1-t)**2*t * am + 3*(1-t)*t**2 * bp + t**3 * b
             if n > 0:
-                self.canv.create_line(wo.real,wo.imag,w.real,w.imag)
+                self.canv.create_line(wo.real,wo.imag,w.real,w.imag,
+                                      fill="white")
             wo = w
         M = self.M
-        self.point(M[0],r=4,col='green')
+        self.point(M[0],r=6,col='magenta')
         for k in (1,2):
             if not self.next[k]:
                 if self.par[k]==1:
-                    self.point(M[0]+M[k],r=4,col='blue')
+                    self.point(M[0]+M[k],r=6,col='red')
                 if self.par[k]==-1:
-                    self.point(M[0]+M[k],r=4,col='red')
+                    self.point(M[0]+M[k],r=6,col='yellow')
 
     def closep(self,w):
         M = self.M
@@ -125,15 +126,14 @@ class Lurve:
 from numpy import pi, exp
 from Tkinter import *
 root = Tk()
-canv = Canvas(root, width=400, height=400)
+canv = Canvas(root, width=600, height=600, background="black")
 
-lemur = Lurve(canv,[200+200j,-150+0j,-50+0j])
+lemur = Lurve(canv,[300+300j,-200+0j,-50+0j])
 
 def moved(event):
     w = event.x + 1j*event.y
     loop,q,ds = lemur.closep(w)
     loopz,qz,dsz = lemur.closez(w)
-    print q,ds,qz,dsz
     if ds > 20 and dsz > 20:
         return
     if ds < dsz:
@@ -148,7 +148,6 @@ def moved(event):
         M = loopz.M
         r = loopz.r
         par = loopz.par
-        print qz
         if qz < loopz.H:
             r[qz] = (w - M[0])/M[1]
         else:
