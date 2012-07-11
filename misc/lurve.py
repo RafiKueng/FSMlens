@@ -91,11 +91,19 @@ class Lurve:
                 if self.par[k]==-1:
                     self.point(M[0]+M[k],r=4,col='red')
 
-        def point(z,r=1,col="black"):
-            x = z.real
-            y = z.imag
-            self.canv.create_oval(x-r,y-r,x+r,y+r,outline=col,fill=col)
-
+    def closep(self,w):
+        M = self.M
+        loop,ix,ds = (self,0,abs(M[0]-w))
+        for k in (1,2):
+            if self.next[k]:
+                child,k,dstry = self.next[k].closep(w)
+                if dstry < ds:
+                    loop,ix,ds = (child,k,dstry)
+            else:
+                dstry = abs(M[0]+M[k]-w)
+                if dstry < ds:
+                    loop,ix,ds = (self,k,dstry)
+        return (loop,ix,ds)
 
 from numpy import pi, exp
 from Tkinter import *
@@ -103,14 +111,23 @@ root = Tk()
 canv = Canvas(root, width=400, height=400)
 
 lemur = Lurve(canv,[200+200j,-150+0j,-50+0j])
-lemur.breed(1)
 
 def moved():
-    pass
+    w = event.x + 1j*event.y
+
+def dclick(event):
+    w = event.x + 1j*event.y
+    loop,ix,ds = lemur.closep(w)
+    loop.breed(ix)
+    draw()
+
+
 def draw():
     canv.delete(ALL)
     lemur.trace(1)
+
 canv.bind("<B1-Motion>", moved)
+canv.bind("<Double-Button-1>", dclick)
 canv.pack()
 draw()
 
