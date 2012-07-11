@@ -3,8 +3,8 @@ class Lurve:
     def __init__(self,canv,loc):
         self.canv = canv
         self.M = [loc[0],loc[1]/2,loc[2]/2]
-        self.par = [None,1,1]
         self.next = [None,None,None]
+        self.par = [None,1,1]
         H = 5
         W = 2*H-1
         self.H = H
@@ -27,14 +27,17 @@ class Lurve:
         M = self.M
         r = self.r
         z = self.z
-        print self.M
+        next = self.next
+        for k in (1,2):
+            if next[k]:
+                M[k] = next[k].M[0] - M[0]
         z[0] = M[0]
-        par = [None,1,1]
+        par = [None,opar,opar]
         if (M[2]/M[1]).real > 0:
             if abs(M[1]) < abs(M[2]):
-                par[1] = -1
+                par[1] *= -1
             else:
-                par[2] = -1
+                par[2] *= -1
         self.par = par
         for k in range(1,W):
             if k < H:
@@ -56,11 +59,10 @@ class Lurve:
             self.curv(z,k,k+1,k-1,k+2)
         self.curv(z,-2,-1,-3,0)
         self.curv(z,-1,0,-2,1)
-        next = self.next
         if next[1]:
-            next[1].trace(opar*par[1]);
+            next[1].trace(par[1]);
         if next[2]:
-            next[2].trace(opar*par[2]);
+            next[2].trace(par[2]);
             
     def point(self,z,r=2,col="black"):
         x = z.real
@@ -105,6 +107,24 @@ class Lurve:
                     loop,ix,ds = (self,k,dstry)
         return (loop,ix,ds)
 
+    def closez(self,w):
+        z = self.z
+        loop,ix,ds = (self,1,abs(z[1]-w))
+        for k in range(2,self.W):
+            dstry = abs(z[k]-w)
+            if dstry < ds:
+                loop,ix,ds = (self,k,dstry)
+        for k in (1,2):
+            if self.next[k]:
+                child,k,dstry = self.next[k].closez(w)
+                if dstry < ds:
+                    loop,ix,ds = (child,k,dstry)
+            else:
+                dstry = abs(M[0]+M[k]-w)
+                if dstry < ds:
+                    loop,ix,ds = (self,k,dstry)
+        return (loop,ix,ds)
+
 from numpy import pi, exp
 from Tkinter import *
 root = Tk()
@@ -112,8 +132,18 @@ canv = Canvas(root, width=400, height=400)
 
 lemur = Lurve(canv,[200+200j,-150+0j,-50+0j])
 
-def moved():
+def moved(event):
     w = event.x + 1j*event.y
+    loop,q,ds = lemur.closep(w)
+    if (ds < 20):
+        M = loop.M
+        if q == 0:
+            M[1] += M[0] - w
+            M[2] += M[0] - w
+            M[0] = w
+        else:
+            M[q] += w - (M[q]+M[0])
+    draw()
 
 def dclick(event):
     w = event.x + 1j*event.y
