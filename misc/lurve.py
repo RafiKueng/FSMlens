@@ -108,6 +108,7 @@ class Lurve:
         return (loop,ix,ds)
 
     def closez(self,w):
+        M = self.M
         z = self.z
         loop,ix,ds = (self,1,abs(z[1]-w))
         for k in range(2,self.W):
@@ -119,10 +120,6 @@ class Lurve:
                 child,k,dstry = self.next[k].closez(w)
                 if dstry < ds:
                     loop,ix,ds = (child,k,dstry)
-            else:
-                dstry = abs(M[0]+M[k]-w)
-                if dstry < ds:
-                    loop,ix,ds = (self,k,dstry)
         return (loop,ix,ds)
 
 from numpy import pi, exp
@@ -135,7 +132,11 @@ lemur = Lurve(canv,[200+200j,-150+0j,-50+0j])
 def moved(event):
     w = event.x + 1j*event.y
     loop,q,ds = lemur.closep(w)
-    if (ds < 20):
+    loopz,qz,dsz = lemur.closez(w)
+    print q,ds,qz,dsz
+    if ds > 20 and dsz > 20:
+        return
+    if ds < dsz:
         M = loop.M
         if q == 0:
             M[1] += M[0] - w
@@ -143,7 +144,19 @@ def moved(event):
             M[0] = w
         else:
             M[q] += w - (M[q]+M[0])
+    else:
+        M = loopz.M
+        r = loopz.r
+        par = loopz.par
+        print qz
+        if qz < loopz.H:
+            r[qz] = (w - M[0])/M[1]
+        else:
+            r[qz] = (w - M[0])/M[2]
+            if par[1]*par[2] == 1:
+                r[qz] = r[qz].conjugate()
     draw()
+
 
 def dclick(event):
     w = event.x + 1j*event.y
