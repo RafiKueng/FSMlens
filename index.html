@@ -7,14 +7,35 @@
 <h1> The Flying Spaghetti Monster Lens</h1>
 
 <p> This project is about interpreting multiple-image lens systems,
-and then modelling them, based on an idea
+and then modelling them, based on an idea put forward by
 <a href="http://adsabs.harvard.edu/abs/1986ApJ...310..568B">
-put forward by Roger Blandford and Ramesh Narayan</a> back when only a
-handful of lenses were known. </p>
+Roger Blandford and Ramesh Narayan in 1986.</a>  At the time, only a
+handful of lenses were known, so their idea was very prescient. </p>
 
 <h2> The Blandford-Narayan classification system </h2>
 
-<p> Fermat's principle. </p>
+<p> From Fermat's principle, light takes paths that make the travel
+time a minimum, maximum or saddle point.  The Blandford-Narayan
+classification involves identifying these on the sky.  Now,
+topographically, there are only so many ways of arranging minima,
+maxima and saddle points.  So, classification involves thinking
+through a limited number of possibilities. </p>
+
+<p> Note that BN86 is a physical classification system, with no
+ambiguities.  For any multiple-image system, there is a correct
+answer, which nature has chosen.  Our job is to work out that
+answer. </p>
+
+<p> To see how it works, let's first consider an ordinary topographic
+example. As a first approximation, let is picture the Irchel campus as
+a kind of large-scale bowl.  But within the bowl, there is structure.
+To the west, there is a double pond, which is a pair of local minima.
+The pathway in between has a saddle point.  The tallest building on
+campus is naturally a maximum, but only a local maximum, as the
+surrounding hills are far higher.  From geometry, there must be
+another saddle point. </p>
+
+<br>
 
 <center>
 <img width=360 src="sad4im.png">
@@ -22,12 +43,36 @@ handful of lenses were known. </p>
 <p> Schematic topography of the Irchel campus </p>
 </center>
 
-<br>
+<p> The schematic here shows the extremal points: maximum in yellow,
+minima in red, and saddle points in magenta.  The white curves are
+equal-elevation contours joining the saddle points, the <i>saddle
+point contours.</i>  (The small white dots no physical significance,
+they are for the user interface of an interactive tool.)  </p>
+
+<p> The saddle-point contours are special, and they always have one of
+the two topological forms shown here.  All other equal-elevation
+contours are simple loops.  The saddle-point contours also
+automatically identify the maxima and minima.  The two type of white
+curves are the essense of the BN86 scheme.  Basically, once you can
+sketch them, you are done. </p>
+
+<p> In gravitational lenses, the yellow points correspond to mass
+clumps, which are naturally maxima of the light-travel time.  One
+rarely sees images there, because galaxy light from the lens itself
+nearly always drowns out the lensed image.  The red and magenta dots
+are the lensed images. </p>
+
+<p> Point-like sources (that is quasars) produce the cleanest lensed
+systems.  But most lensed sources are extended.  Hence the lensed
+imaged are spread out into arcs.  For very large sources, one has to
+think of them as multi-component sources, each with its own image
+system. </p>
 
 <h3> Some complicated examples </h3>
 
-<p> Here are two examples of lenses considered exceptionally
-complicated. </p>
+<p> Although there are only two building blocks in the BN86 system,
+you can nest them as deeply as you like.  Here are two examples with
+interesting heirarchical structure. </p>
 
 <center>
 <img width=300 src="sad6im.png">
@@ -45,12 +90,15 @@ six-image system.</a> </p>
 five-image system.</a> </p>
 </center>
 
-<br><br>
+<p> As you can see, the identification of a lensed system at this
+level of complexity merits a paper in the <i>Astrophysical
+Journal.</i>
+</p>
 
 <h2> Lens modelling based on the Blandford-Narayan system </h2>
 
 <p> Once a human has provided a guess for the correct classification,
-the software will attempt to make models for the lens. </p>
+the FSMlens software will attempt to make models for the lens. </p>
 
 <center>
 <img width=200 src="warren-data.png">
@@ -58,7 +106,7 @@ the software will attempt to make models for the lens. </p>
 <img width=200 src="warren-mass.png">
 <p> <a href="http://www.cfa.harvard.edu/castles/Individual/Q0047.html">
 An arc-like four-image system</a>
-modelled using the program. </p>
+modelled using FSMlens. </p>
 </center>
 
 <br>
