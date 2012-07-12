@@ -23,8 +23,11 @@ class Lurve:
 
     def undo(self,loop):
         for k in (1,2):
-            if self.next[k]==loop:
-                self.next[k] = None
+            if self.next[k]:
+                if self.next[k]==loop:
+                    self.next[k] = None
+                    break
+                self.next[k].undo(loop)
 
 
     def trace(self,opar=1):
@@ -168,7 +171,8 @@ def dclick(event):
 
 def draw():
     canv.delete(ALL)
-    canv.create_image(0, 0, anchor=NW, image=img)
+    if img:
+        canv.create_image(0, 0, anchor=NW, image=img)
     lemur.trace(1)
 
 from numpy import pi, exp
@@ -177,7 +181,7 @@ import sys
 
 
 root = Tk()
-canv = Canvas(root, width=541, height=541)
+canv = Canvas(root, width=541, height=541, background="black")
 
 lemur = Lurve(canv,[300+300j,-200+0j,-50+0j])
 
@@ -191,9 +195,9 @@ cas = ["irchel","HE1104Hcc","SBS1520Hcc",
 
 if len(sys.argv) > 1:
     fname = cas[int(sys.argv[1])]
+    img=PhotoImage(file="images/"+fname+".gif")
 else:
-    fname = "irchel"
-img=PhotoImage(file="images/"+fname+".gif")
+    img = None
 
 draw()
 root.mainloop()
