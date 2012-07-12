@@ -16,10 +16,16 @@ class Lurve:
         self.r = r
         self.z = W*[0j]
         
-    def breed(self,k):
+    def more(self,k):
         M = self.M
         loc = [M[0]+M[k],M[1],M[2]]
         self.next[k] = Lurve(self.canv,loc)
+
+    def undo(self,loop):
+        for k in (1,2):
+            if self.next[k]==loop:
+                self.next[k] = None
+
 
     def trace(self,opar=1):
         H = self.H
@@ -30,7 +36,7 @@ class Lurve:
         next = self.next
         for k in (1,2):
             if next[k]:
-                M[k] = next[k].M[0] - M[0]
+                M[k] = next[k].M[0] - M[0]  # reset from lower level
         z[0] = M[0]
         par = [None,opar,opar]
         if (M[2]/M[1]).real > 0:
@@ -123,13 +129,6 @@ class Lurve:
                     loop,ix,ds = (child,k,dstry)
         return (loop,ix,ds)
 
-from numpy import pi, exp
-from Tkinter import *
-root = Tk()
-canv = Canvas(root, width=600, height=600, background="black")
-
-lemur = Lurve(canv,[300+300j,-200+0j,-50+0j])
-
 def moved(event):
     w = event.x + 1j*event.y
     loop,q,ds = lemur.closep(w)
@@ -160,18 +159,42 @@ def moved(event):
 def dclick(event):
     w = event.x + 1j*event.y
     loop,ix,ds = lemur.closep(w)
-    loop.breed(ix)
+    if ix > 0:
+        loop.more(ix)
+    else:
+        lemur.undo(loop)
     draw()
 
 
 def draw():
     canv.delete(ALL)
+    canv.create_image(0, 0, anchor=NW, image=img)
     lemur.trace(1)
+
+from numpy import pi, exp
+from Tkinter import *
+import sys
+
+
+root = Tk()
+canv = Canvas(root, width=541, height=541)
+
+lemur = Lurve(canv,[300+300j,-200+0j,-50+0j])
 
 canv.bind("<B1-Motion>", moved)
 canv.bind("<Double-Button-1>", dclick)
 canv.pack()
-draw()
 
+cas = ["irchel","HE1104Hcc","SBS1520Hcc",
+       "Q2237Hcc","PG1115Hcc","B1422Hcc","RXJ0911Hcc",
+       "serendib","J1148+193","J0022+143"]
+
+if len(sys.argv) > 1:
+    fname = cas[int(sys.argv[1])]
+else:
+    fname = "irchel"
+img=PhotoImage(file="images/"+fname+".gif")
+
+draw()
 root.mainloop()
 
