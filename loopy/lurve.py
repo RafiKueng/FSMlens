@@ -5,7 +5,7 @@ class Lurve:
         self.M = [loc[0],loc[1]/2,loc[2]/2]
         self.next = [None,None,None]
         self.par = [None,1,1]
-        H = 5
+        H = 6
         W = 2*H-1
         self.H = H
         self.W = W
@@ -19,6 +19,13 @@ class Lurve:
     def more(self,k):
         M = self.M
         loc = [M[0]+M[k],M[1],M[2]]
+        r = abs(M[1]/M[2])
+        if k==1 and r < 1:
+            loc[1] *= r
+            loc[2] *= r
+        if k==2 and r > 1:
+            loc[1] /= r
+            loc[2] /= r
         self.next[k] = Lurve(self.canv,loc)
 
     def undo(self,loop):
@@ -30,7 +37,7 @@ class Lurve:
                 self.next[k].undo(loop)
 
 
-    def trace(self,opar=1):
+    def refresh(self,opar=1):
         H = self.H
         W = self.W
         M = self.M
@@ -56,6 +63,13 @@ class Lurve:
                     z[k] = M[0] + M[2] * r[k]
                 else:
                     z[k] = M[0] + M[2] * r[k].conjugate()
+        self.trace(z,H)
+        if next[1]:
+            next[1].refresh(par[1]);
+        if next[2]:
+            next[2].refresh(par[2]);
+
+    def trace(self,z,H):
         self.curv(z,0,1,-1,2)
         self.curv(z,1,2,0,3)
         for k in range(2,H-2):
@@ -68,10 +82,6 @@ class Lurve:
             self.curv(z,k,k+1,k-1,k+2)
         self.curv(z,-2,-1,-3,0)
         self.curv(z,-1,0,-2,1)
-        if next[1]:
-            next[1].trace(par[1]);
-        if next[2]:
-            next[2].trace(par[2]);
             
     def point(self,z,r=2,col="white"):
         x = z.real
@@ -162,6 +172,8 @@ def moved(event):
 def dclick(event):
     w = event.x + 1j*event.y
     loop,ix,ds = lemur.closep(w)
+    if ds > 20:
+        return
     if ix > 0:
         loop.more(ix)
     else:
@@ -173,21 +185,17 @@ def draw():
     canv.delete(ALL)
     if img:
         canv.create_image(0, 0, anchor=NW, image=img)
-    lemur.trace(1)
+    lemur.refresh(1)
 
 from numpy import pi, exp
 from Tkinter import *
 import sys
 
-
 root = Tk()
 canv = Canvas(root, width=541, height=541, background="black")
-
 lemur = Lurve(canv,[300+300j,-200+0j,-50+0j])
-
 canv.bind("<B1-Motion>", moved)
 canv.bind("<Double-Button-1>", dclick)
-canv.pack()
 
 cas = ["irchel","HE1104Hcc","SBS1520Hcc",
        "Q2237Hcc","PG1115Hcc","B1422Hcc","RXJ0911Hcc",
@@ -199,6 +207,7 @@ if len(sys.argv) > 1:
 else:
     img = None
 
+canv.pack()
 draw()
 root.mainloop()
 
