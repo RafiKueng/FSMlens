@@ -5,7 +5,7 @@ class Lurve:
         self.M = [loc[0],loc[1]/2,loc[2]/2]
         self.next = [None,None,None]
         self.par = [None,1,1]
-        H = 6
+        H = 5
         W = 2*H-1
         self.H = H
         self.W = W
