@@ -5,7 +5,7 @@ class Lurve:
         self.M = [loc[0],loc[1]/2,loc[2]/2]
         self.next = [None,None,None]
         self.par = [None,1,1]
-        H = 5
+        H = 8
         W = 2*H-1
         self.H = H
         self.W = W
@@ -89,13 +89,7 @@ class Lurve:
         self.canv.create_oval(x-r,y-r,x+r,y+r,outline=col,fill=col)
 
 
-    def curv(self,z,i,j,k,l):
-        a = z[i]
-        b = z[j]
-        am = a + 0.2*(b - z[k])
-        bp = b + 0.2*(a - z[l])
-        self.point(a)
-        self.point(b)
+    def bezier(self,a,am,bp,b):
         for n in range(11):
             t = 0.1*n
             w = a + t*(b-a)
@@ -104,6 +98,16 @@ class Lurve:
                 self.canv.create_line(wo.real,wo.imag,w.real,w.imag,
                                       fill="white")
             wo = w
+
+
+    def curv(self,z,i,j,k,l):
+        a = z[i]
+        b = z[j]
+        am = a + 0.2*(b - z[k])
+        bp = b + 0.2*(a - z[l])
+        self.point(a)
+        self.point(b)
+        self.bezier(a,am,bp,b)
         M = self.M
         self.point(M[0],r=6,col='magenta')
         for k in (1,2):
